@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+
+/// Colors cho giao diện sáng mầu
+const PRIMARY_COLOR_L = Color(0xFF00B14F);
+const BACKGROUND_COLOR_L = Color(0xFFFFFFFF);
+const INVERTED_BACKGROUND_COLOR_L = Color(0xFF333333);
+// const ACCENT_COLOR_L = Color(0xFF00B14F);
+const SECONDARY_HEADER_COLOR = Color(0xFFFF9500);
+const ERROR_COLOR_L = Color(0xFFF46666);
+const DISABLE_COLOR_L = Color(0xFFC2C6C9);
+const DISABLE_BUTTON_COLOR_L = Color(0xFFC2C6C9);
+const SHADOW_COLOR_L = Color(0xB7B7B7B7);
+const CARD_COLOR_L = Color(0xFFDFE0E0);
+const HOVER_COLOR_L = Color(0xFF00CA5A);
+const BUTTON_COLOR_L = Color(0xFF00B14F);
+const HIGHLIGHT_COLOR_L = Color(0xFF008E3F);
+const SCAFFOLD_COLOR = Color(0xFFF5F6FA);
+const HINT_COLOR = Color(0xFFADADAD);
+const SPLASH_COLOR = Colors.transparent;
+
+/// Color when minh join
+/// Color when minh join
+const COLOR_ICON_NOTIFICATION = Color(0xFF61B551);
+const COLOR_WHITE = Color(0xFFFFFFFF);
+const COLOR_NEUTRAL_100 = Color(0xFFD6D6D6);
+const COLOR_NEUTRAL_300 = Color(0xFF858585);
+const COLOR_NEUTRAL_500 = Color(0xFF333333);
+const COLOR_NEUTRAL_900 = Color(0xFF34404B);
+const COLOR_NEUTRAL_200 = Color(0xFFADADAD);
+
+const COLOR_SEMANTIC_INFO = Color(0xFF2F80ED);
+const COLOR_SEMANTIC_INFO_100 = Color(0x4DD5E6FB);
+
+const COLOR_SEMANTIC_SUCCESS = Color(0xFF33CC7F);
+const COLOR_SEMANTIC_SUCCESS_200 = Color(0xFFC2F0D9);
+
+const COLOR_SEMANTIC_WARNING = Color(0xFFFFBE40);
+const COLOR_SEMANTIC_ERROR = Color(0xFFF46666);
+
+const COLOR_BLACK = Color(0xFF000000);
+const TEXT_WHITE = Color(0xFFFFFFFF);
+const BORDER_SECOND = Color(0xFFC4C4C4);
+const BIOMETRIC_COLOR = Color.fromRGBO(0, 28, 61, 0.05);
+
+/// Mini Game
+const COLOR_INPUT_REFERRAL = Color(0xFF2B0A38);
+
+const COLOR_ADADAD = Color(0xFFADADAD);
+const COLOR_333333 = Color(0xFF333333);
+const COLOR_858585 = Color(0xFF858585);
+const COLOR_00C805 = Color(0xFF00C805);
+const COLOR_F46666 = Color(0xFFF46666);
+const COLOR_00B14F = Color(0xFF00B14F);
+const COLOR_5C5C5C = Color(0xFF5C5C5C);
+const COLOR_F5F6FA = Color(0xFFF5F6FA);
+
+///
+
+const COLOR_ORANGE_MINI_GAME = Color(0xFF02005F);
+const COLOR_ORANGE_MINI_GAME_LIGHT = Color(0xFFFFAF11);
+const COLOR_ORANGE_MINI_GAME_DARK = Color(0xFFF88916);
+const COLOR_PURPLE_LIGHT = Color(0xFF803F9B);
+const COLOR_TITLE_BUTTON_REFERRAL = Color(0xFF2C0F3B);
