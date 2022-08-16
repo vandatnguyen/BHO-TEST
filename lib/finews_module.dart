@@ -1,5 +1,6 @@
 import 'package:finews_module/routes/app_pages.dart';
 import 'package:get/get.dart';
+import 'pages/home/main_provider.dart';
 import 'routes/app_routes.dart';
 
 
@@ -19,6 +20,7 @@ class FiNewsModule {
         }
       }
     // }
+    Get.put<MainFiNewsProvider>(MainFiNewsProvider());
   }
 }
 void openFiNewsApp() {

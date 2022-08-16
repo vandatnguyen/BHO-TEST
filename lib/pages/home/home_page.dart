@@ -1,5 +1,7 @@
+import 'package:finews_module/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 
@@ -154,7 +156,12 @@ class MessageItem implements ListItem {
 
   @override
   Widget buildSubtitle(BuildContext context) {
-    return const NewsItem();
+    return GestureDetector(
+      child:  const NewsItem(),
+      onTap: () {
+        Get.toNamed(AppRoutes.newsDetail);
+      },
+    );
   }
 
   @override

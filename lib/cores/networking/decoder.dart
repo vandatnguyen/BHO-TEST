@@ -25,7 +25,7 @@ class BaseDecoder<T> {
   T get modelDTO => decoded();
 
   T decoded() {
-    try {
+    try { 
       if (result.data != null) {
         return decoder(result.data) as T;
       } else {
