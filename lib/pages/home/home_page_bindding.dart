@@ -1,4 +1,5 @@
-import 'package:finews_module/pages/home/controller/home_page_controller.dart';
+import 'package:finews_module/cores/services/news_api_service.dart';
+import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:get/get.dart';
 // import 'package:trading_module/data/repos/home_trading_repo_imp.dart';
 // import 'package:trading_module/data/repos/withdraw_repos_impl.dart';
@@ -14,6 +15,10 @@ class HomePageBinding extends Bindings {
   void dependencies() {
     // Get.lazyPut(() => OpenWithdrawUseCase(WithdrawRepoImpl(WithdrawServiceImpl())));
     // Get.lazyPut(() => HomeTradingUseCase(HomeTradingRepoImpl(HomeTradingServiceImpl(),LocalStorageServiceImpl())));
-     Get.lazyPut(() => HomePageController());
+    Get.put<NewsService>(NewsServiceImpl());
+    Get.lazyPut(() => HomePageController(), tag: "0");
+    Get.lazyPut(() => HomePageController(), tag: "1");
+    Get.lazyPut(() => HomePageController(), tag: "2");
+    Get.lazyPut(() => HomePageController(), tag: "3");
   }
 }

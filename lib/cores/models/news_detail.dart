@@ -54,7 +54,7 @@ class NewsDetailModel {
       NewsDetailModel.fromJson(data as Map<String, dynamic>);
 
   factory NewsDetailModel.fromJson(dynamic json) =>
-      _$NewDetailModelFromJson(json as Map<String, dynamic>);
+      _$NewsDetailModelFromJson(json as Map<String, dynamic>);
 
-  Map<String, dynamic> toJson() => _$NewDetailModelToJson(this);
+  Map<String, dynamic> toJson() => _$NewsDetailModelToJson(this);
 }

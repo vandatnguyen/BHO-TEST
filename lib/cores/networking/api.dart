@@ -45,9 +45,9 @@ class Api extends GetConnect {
       request.headers["Trading-Ver"] = mainProvider.appTradingVersion;
       request.headers["Device-ID"] = mainProvider.deviceId;
       request.headers['Authorization'] = mainProvider.accessToken ?? ""; 
-      if (kDebugMode) {
+      // if (kDebugMode) {
         log(request.headers.toString(), name: request.url.path);
-      }
+      // }
       return request;
     });
     super.onInit();
@@ -256,7 +256,8 @@ class Api extends GetConnect {
   }
 
   _requestOk(Method method, String endpoint, dynamic params, dynamic response) {
-    if (kDebugMode) {
+    // if (kDebugMode) {
+    if (true) {
       final fullUrl = baseUrl + endpoint;
       log("$method: $fullUrl Params: $params", name: "API");
       try {
