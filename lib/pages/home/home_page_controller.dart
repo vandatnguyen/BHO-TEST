@@ -2,37 +2,65 @@ import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/cores/states/base_controller.dart';
 import 'package:finews_module/data/entities/article_list_response.dart';
+import 'package:finews_module/data/entities/website.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_notifier.dart';
 
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-class HomePageController extends BaseController
-    with
-        StateMixin<List<ArticleWrapper>> {
 
+class HomePageController extends BaseController
+    with StateMixin<List<ArticleWrapper>> {
   RefreshController refreshController = RefreshController();
   List<ArticleWrapper> listArticle = <ArticleWrapper>[];
+  List<Website> listWebsite = <Website>[];
+
   @override
   void onInit() {
-    print("jgjhjhjhjhj onInit");
     super.onInit();
-    getArticleV2();
-    getArticleHots();
-    getArticleHotsV2();
+    getWebsite();
   }
 
   Future onRefresh() async {
-    await getArticleV2();
-    await getArticleHots();
-    await getArticleHotsV2();
+    getWebsite();
     refreshController.refreshCompleted();
   }
 
+  Future getWebsite() async {
+    var response = await Get.find<NewsService>().getWebsite();
+    listWebsite = response.websites;
+    // final prefs = await SharedPreferences.getInstance();
+    await getArticleV2();
+    await getArticleHots();
+    await getArticleHotsV2();
+  }
+
+  String? getTopicName(int id) {
+    for (var value in listWebsite) {
+      for (var t in value.topic) {
+        if (t.id == id) {
+          return t.name;
+        }
+      }
+    }
+    return null;
+  }
+
+  String? getSourceName(int id) {
+    for (var t in listWebsite) {
+      if (t.id == id) {
+        return t.name;
+      }
+    }
+    return null;
+  }
+
   Future getArticleV2() async {
-    var listArticle = await Get.find<NewsService>().getArticleV2(topic: "31");
+    var listArticle = await Get.find<NewsService>().getArticleV2(topic: 31.toString());
     print("jgjhjhjhjhj ${listArticle.articles.length}");
     for (var value in listArticle.articles) {
       var wrapper = ArticleWrapper();
+      value.topicName = getTopicName(value.topic);
+      value.sourceName = getSourceName(value.source);
       wrapper.model = value;
       this.listArticle.add(wrapper);
     }
@@ -46,39 +74,44 @@ class HomePageController extends BaseController
     //   print("jgjhjhjhjhj ${value.title}");
     // };
     // this.listArticle = listArticle.articles;
-    if (listArticle.articles != null && listArticle.articles.length > 0){
-      var wrapper = ArticleWrapper();
-      wrapper.type = 1;
-      wrapper.model = listArticle.articles[0];
-      this.listArticle.insert(0, wrapper);
-      change(this.listArticle, status: RxStatus.success());
+    if (this.listArticle.isNotEmpty) {
+      if (this.listArticle[0].type == 1) {
+        this.listArticle.removeAt(0);
+      }
     }
+    var wrapper = ArticleWrapper();
+    wrapper.type = 1;
+    var detail = listArticle.articles[0];
+    detail.sourceName = getSourceName(detail.source);
+    detail.topicName = getTopicName(detail.topic);
+    wrapper.model = detail;
+    this.listArticle.insert(0, wrapper);
+    change(this.listArticle, status: RxStatus.success());
   }
 
   Future getArticleHotsV2() async {
-    var listArticle = await Get.find<NewsService>().getArticleHotsV2(topic: "31");
-    // print("jgjhjhjhjhj ${listArticle.articles.length}");
-    // for (var value in listArticle.articles) {
-    //   print("jgjhjhjhjhj ${value.title}");
-    // };
-    // this.listArticle = listArticle.articles;
-    var wrapper = ArticleWrapper();
-    wrapper.type = 2;
-    wrapper.listNewsDetailModel = listArticle.articles;
-    for (var value in this.listArticle) {
-      if (value.type == 2){
-        this.listArticle.remove(value);
-        this.listArticle.insert(3, wrapper);
-        change(this.listArticle, status: RxStatus.success());
-        return;
+    var listArticle =
+        await Get.find<NewsService>().getArticleHotsV2(topic: "31");
+
+    if (this.listArticle.length > 2) {
+      var wrapper = ArticleWrapper();
+      wrapper.type = 2;
+      wrapper.listNewsDetailModel = listArticle.articles;
+      for (var value in this.listArticle) {
+        if (value.type == 2) {
+          this.listArticle.remove(value);
+          this.listArticle.insert(3, wrapper);
+          change(this.listArticle, status: RxStatus.success());
+          return;
+        }
       }
+      this.listArticle.insert(3, wrapper);
+      change(this.listArticle, status: RxStatus.success());
     }
-    this.listArticle.insert(3, wrapper);
-    change(this.listArticle, status: RxStatus.success());
   }
 }
 
-class ArticleWrapper{
+class ArticleWrapper {
   int type = 0;
   late List<NewsDetailModel> listNewsDetailModel;
   late NewsDetailModel model;

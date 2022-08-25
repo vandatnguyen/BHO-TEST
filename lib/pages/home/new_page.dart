@@ -10,10 +10,10 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NewsPage extends GetView<HomePageController> {
-  const NewsPage({Key? key, required this.onNext, required this.categoryId}) : super(key: key);
+  const NewsPage({Key? key, required this.onNext, required this.categoryId})
+      : super(key: key);
   final VoidCallback onNext;
   final String categoryId;
-
 
   @override
   String? get tag => categoryId;
@@ -21,33 +21,34 @@ class NewsPage extends GetView<HomePageController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx((state) => CustomRefresher(
-      controller: controller.refreshController,
-      onRefresh: controller.onRefresh,
-      child: ListView.builder(
-        // Let the ListView know how many items it needs to build.
-        itemCount: state!.length,
-        // Provide a builder function. This is where the magic happens.
-        // Convert each item into a widget based on the type of item it is.
-        itemBuilder: (context, index) {
-          if (state[index].type == 1){
-            return HeadingItem(state[0].model).buildTitle(context);
-            // return Obx(() => HeadingItem(state[0]).buildTitle(context));
-          }
-          if (state[index].type == 2){
-            return HorizontalListViewItem(state[index].listNewsDetailModel).buildHorizontalListView(context);
-          }
-          final item = state[index];
-          // if (index == 3) {
-          //   return item.buildHorizontalListView(context);
-          // }
-          // return ListTile(
-          //   title: item.buildTitle(context),
-          //   subtitle: item.buildSubtitle(context),
-          // );
-          return MessageItem(item.model).buildSubtitle(context);
-        },
-      ),
-    ));
+          controller: controller.refreshController,
+          onRefresh: controller.onRefresh,
+          child: ListView.builder(
+            // Let the ListView know how many items it needs to build.
+            itemCount: state!.length,
+            // Provide a builder function. This is where the magic happens.
+            // Convert each item into a widget based on the type of item it is.
+            itemBuilder: (context, index) {
+              if (state[index].type == 1) {
+                return HeadingItem(state[0].model).buildTitle(context);
+                // return Obx(() => HeadingItem(state[0]).buildTitle(context));
+              }
+              if (state[index].type == 2) {
+                return HorizontalListViewItem(state[index].listNewsDetailModel)
+                    .buildHorizontalListView(context);
+              }
+              final item = state[index];
+              // if (index == 3) {
+              //   return item.buildHorizontalListView(context);
+              // }
+              // return ListTile(
+              //   title: item.buildTitle(context),
+              //   subtitle: item.buildSubtitle(context),
+              // );
+              return MessageItem(item.model).buildSubtitle(context);
+            },
+          ),
+        ));
   }
 }
 
@@ -95,7 +96,7 @@ class MessageItem implements ListItem {
   @override
   Widget buildSubtitle(BuildContext context) {
     return GestureDetector(
-      child:  NewsItem(newsDetail: newsDetail),
+      child: NewsItem(newsDetail: newsDetail),
       onTap: () {
         Get.toNamed(AppRoutes.newsDetail);
       },
@@ -109,6 +110,7 @@ class MessageItem implements ListItem {
 
 class HorizontalListViewItem implements ListItem {
   final List<NewsDetailModel> listNewsDetailModel;
+
   HorizontalListViewItem(this.listNewsDetailModel);
 
   HorizontalListView() {}
@@ -127,6 +129,7 @@ class HorizontalListViewItem implements ListItem {
 
 class NewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
+
   const NewsItem({Key? key, required this.newsDetail}) : super(key: key);
 
   @override
@@ -140,19 +143,50 @@ class NewsItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              color: Colors.black12,
-              padding: const EdgeInsets.all(8),
-              child: const Text(
-                "BĐS",
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.black87,
+          Row(
+            children: [
+              newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: HexColor.fromHex('#58BD7D'),
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    newsDetail.symbols != null && newsDetail.symbols!.length > 0
+                        ? newsDetail.symbols![0]
+                        : "Nguồn",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ) : SizedBox.shrink(),
+              newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
+              Container(
+                  margin: const EdgeInsets.only(
+                top: 0,
+                right: 8,
+                bottom: 0,
+              )) : SizedBox.shrink(),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: Colors.black12,
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    newsDetail.topicName!,
+                    // newsDetail.tags != null && newsDetail.tags!.length > 0
+                    //     ? newsDetail.tags![0]
+                    //     : "Tin tức",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
           Container(
             margin: const EdgeInsets.only(
@@ -193,9 +227,9 @@ class NewsItem extends StatelessWidget {
             children: [
               Expanded(
                 child: Row(
-                  children: const [
+                  children: [
                     Text(
-                      "CafeF",
+                      newsDetail.sourceName!,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
@@ -210,7 +244,7 @@ class NewsItem extends StatelessWidget {
                       ),
                     ),
                     TextWithIcon(
-                      text: Text("23"),
+                      text: Text("0"),
                       icon: Icon(
                         Icons.chat,
                         size: 12,
@@ -232,10 +266,9 @@ class NewsItem extends StatelessWidget {
   }
 }
 
-
 class HotNewsItem extends StatelessWidget {
-
   final NewsDetailModel newsDetail;
+
   const HotNewsItem({Key? key, required this.newsDetail}) : super(key: key);
 
   // const NewsItem({Key? key, required this.newsDetail}) : super(key: key);
@@ -281,7 +314,7 @@ class HotNewsItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "CafeF",
+                      newsDetail.sourceName!,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -322,6 +355,7 @@ class HotNewsItem extends StatelessWidget {
 
 class SubNewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
+
   const SubNewsItem(this.newsDetail, {Key? key}) : super(key: key);
 
   @override
@@ -421,11 +455,7 @@ Widget _horizontalListView(List<NewsDetailModel> listNewsDetailModel) {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.only(
-                  left: 14,
-                  top: 14,
-                  right: 14,
-                  bottom: 4
-              ),
+                  left: 14, top: 14, right: 14, bottom: 4),
               child: Row(
                 children: [
                   Image.asset('assets/images/icon_stock.png',

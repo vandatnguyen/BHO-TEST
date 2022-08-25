@@ -33,22 +33,29 @@ class NewsDetailModel {
   @JsonKey(name: "tags")
   final List<String>? tags;
 
+  @JsonKey(name: "symbols")
+  final List<String>? symbols;
+
   @JsonKey(name: "webUrl")
   final String? webUrl;
 
+  String? topicName = "";
+  String? sourceName = "";
+
+
   NewsDetailModel(
-    this.id,
-    this.origin,
-    this.title,
-    this.desc,
-    this.content,
-    this.thumb,
-    this.source,
-    this.topic,
-    this.docbao24h,
-    this.tags,
-    this.webUrl,
-  );
+      this.id,
+      this.origin,
+      this.title,
+      this.desc,
+      this.content,
+      this.thumb,
+      this.source,
+      this.topic,
+      this.docbao24h,
+      this.tags,
+      this.symbols,
+      this.webUrl);
 
   static NewsDetailModel fromResult(dynamic data) =>
       NewsDetailModel.fromJson(data as Map<String, dynamic>);
