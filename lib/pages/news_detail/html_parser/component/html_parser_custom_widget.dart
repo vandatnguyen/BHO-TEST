@@ -9,9 +9,11 @@ class HtmlParserCustomWidget extends HtmlParserWidgetBase {
 
   @override
   Widget build(BuildContext context) {
-    return Html(
-      data: element.content,
-      shrinkWrap: false,
+    return ClipRect(
+      child: Html(
+        data: element.content,
+        shrinkWrap: false,
+      ),
     );
   }
 }

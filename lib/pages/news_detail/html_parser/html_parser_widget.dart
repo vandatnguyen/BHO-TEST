@@ -18,7 +18,7 @@ extension HtmlWidgetBuilderExtension on HtmlParserElement {
       case HtmlParserElementType.image:
         return HtmlParserImageWidget(element: this);
       case HtmlParserElementType.breakline:
-        return  Container(
+        return Container(
           height: 20,
         );
       default:
@@ -64,11 +64,11 @@ extension HtmlWidgetBuilderExtension on HtmlParserElement {
     return const EdgeInsets.only(top: 10);
   }
 
-  double? getWidth() {
-    return null;
+  double? getWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width - 20;
   }
 
-  double? getHeight() {
+  double? getHeight(BuildContext context) {
     return null;
   }
 }

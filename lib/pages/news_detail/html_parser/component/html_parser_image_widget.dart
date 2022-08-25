@@ -12,10 +12,12 @@ class HtmlParserImageWidget extends HtmlParserWidgetBase {
     return Padding(
       padding: element.getPadding(),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: CachedNetworkImage( imageUrl:  element.content["src"],
-      fit: BoxFit.cover,
-          width: element.getWidth(), height: element.getHeight())),
+          borderRadius: BorderRadius.circular(10),
+          child: SizedBox(
+              width: element.getWidth(context),
+              height: element.getHeight(context),
+              child: CachedNetworkImage(
+                  imageUrl: element.content["src"], fit: BoxFit.cover))),
     );
   }
 }
