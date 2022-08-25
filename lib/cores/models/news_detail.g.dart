@@ -19,6 +19,10 @@ NewsDetailModel _$NewsDetailModelFromJson(Map<String, dynamic> json) =>
       json['docbao24h'] as String?,
       (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
       json['webUrl'] as String?,
+      (json['stock_info'] as List<dynamic>?)
+          ?.map((e) => StockInfoModel.fromJson(e))
+          .toList(),
+      json['pubdate'] as int?,
     );
 
 Map<String, dynamic> _$NewsDetailModelToJson(NewsDetailModel instance) =>
@@ -34,4 +38,6 @@ Map<String, dynamic> _$NewsDetailModelToJson(NewsDetailModel instance) =>
       'docbao24h': instance.docbao24h,
       'tags': instance.tags,
       'webUrl': instance.webUrl,
+      'stock_info': instance.stockInfo,
+      'pubdate': instance.pubdate,
     };

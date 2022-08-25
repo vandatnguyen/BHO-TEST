@@ -10,10 +10,10 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NewsPage extends GetView<HomePageController> {
-  const NewsPage({Key? key, required this.onNext, required this.categoryId}) : super(key: key);
+  const NewsPage({Key? key, required this.onNext, required this.categoryId})
+      : super(key: key);
   final VoidCallback onNext;
   final String categoryId;
-
 
   @override
   String? get tag => categoryId;
@@ -21,33 +21,34 @@ class NewsPage extends GetView<HomePageController> {
   @override
   Widget build(BuildContext context) {
     return controller.obx((state) => CustomRefresher(
-      controller: controller.refreshController,
-      onRefresh: controller.onRefresh,
-      child: ListView.builder(
-        // Let the ListView know how many items it needs to build.
-        itemCount: state!.length,
-        // Provide a builder function. This is where the magic happens.
-        // Convert each item into a widget based on the type of item it is.
-        itemBuilder: (context, index) {
-          if (state[index].type == 1){
-            return HeadingItem(state[0].model).buildTitle(context);
-            // return Obx(() => HeadingItem(state[0]).buildTitle(context));
-          }
-          if (state[index].type == 2){
-            return HorizontalListViewItem(state[index].listNewsDetailModel).buildHorizontalListView(context);
-          }
-          final item = state[index];
-          // if (index == 3) {
-          //   return item.buildHorizontalListView(context);
-          // }
-          // return ListTile(
-          //   title: item.buildTitle(context),
-          //   subtitle: item.buildSubtitle(context),
-          // );
-          return MessageItem(item.model).buildSubtitle(context);
-        },
-      ),
-    ));
+          controller: controller.refreshController,
+          onRefresh: controller.onRefresh,
+          child: ListView.builder(
+            // Let the ListView know how many items it needs to build.
+            itemCount: state!.length,
+            // Provide a builder function. This is where the magic happens.
+            // Convert each item into a widget based on the type of item it is.
+            itemBuilder: (context, index) {
+              if (state[index].type == 1) {
+                return HeadingItem(state[0].model).buildTitle(context);
+                // return Obx(() => HeadingItem(state[0]).buildTitle(context));
+              }
+              if (state[index].type == 2) {
+                return HorizontalListViewItem(state[index].listNewsDetailModel)
+                    .buildHorizontalListView(context);
+              }
+              final item = state[index];
+              // if (index == 3) {
+              //   return item.buildHorizontalListView(context);
+              // }
+              // return ListTile(
+              //   title: item.buildTitle(context),
+              //   subtitle: item.buildSubtitle(context),
+              // );
+              return MessageItem(item.model).buildSubtitle(context);
+            },
+          ),
+        ));
   }
 }
 
@@ -95,9 +96,10 @@ class MessageItem implements ListItem {
   @override
   Widget buildSubtitle(BuildContext context) {
     return GestureDetector(
-      child:  NewsItem(newsDetail: newsDetail),
+      child: NewsItem(newsDetail: newsDetail),
       onTap: () {
-        Get.toNamed(AppRoutes.newsDetail);
+        Get.toNamed(AppRoutes.newsDetail,
+            arguments: {"news": newsDetail, "title": ""});
       },
     );
   }
@@ -127,15 +129,18 @@ class HorizontalListViewItem implements ListItem {
 
 class NewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
-  const NewsItem({Key? key, required this.newsDetail}) : super(key: key);
+  final double horizontalPadding;
+  const NewsItem(
+      {Key? key, required this.newsDetail, this.horizontalPadding = 12})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: AlignmentDirectional.centerStart,
-      padding: const EdgeInsets.symmetric(
+      padding: EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: 12,
+        horizontal: horizontalPadding,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,9 +237,7 @@ class NewsItem extends StatelessWidget {
   }
 }
 
-
 class HotNewsItem extends StatelessWidget {
-
   final NewsDetailModel newsDetail;
   const HotNewsItem({Key? key, required this.newsDetail}) : super(key: key);
 
@@ -421,11 +424,7 @@ Widget _horizontalListView(List<NewsDetailModel> listNewsDetailModel) {
           children: <Widget>[
             Container(
               padding: const EdgeInsets.only(
-                  left: 14,
-                  top: 14,
-                  right: 14,
-                  bottom: 4
-              ),
+                  left: 14, top: 14, right: 14, bottom: 4),
               child: Row(
                 children: [
                   Image.asset('assets/images/icon_stock.png',

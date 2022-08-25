@@ -1,4 +1,6 @@
+import 'package:finews_module/cores/models/stock_info.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:intl/intl.dart';
 part 'news_detail.g.dart';
 
 @JsonSerializable()
@@ -36,19 +38,28 @@ class NewsDetailModel {
   @JsonKey(name: "webUrl")
   final String? webUrl;
 
+  @JsonKey(name: "stock_info")
+  final List<StockInfoModel>? stockInfo;
+
+  @JsonKey(name: "pubdate")
+  final int? pubdate;
+
+  //Set-ExecutionPolicy Unrestricted
+
   NewsDetailModel(
-    this.id,
-    this.origin,
-    this.title,
-    this.desc,
-    this.content,
-    this.thumb,
-    this.source,
-    this.topic,
-    this.docbao24h,
-    this.tags,
-    this.webUrl,
-  );
+      this.id,
+      this.origin,
+      this.title,
+      this.desc,
+      this.content,
+      this.thumb,
+      this.source,
+      this.topic,
+      this.docbao24h,
+      this.tags,
+      this.webUrl,
+      this.stockInfo,
+      this.pubdate);
 
   static NewsDetailModel fromResult(dynamic data) =>
       NewsDetailModel.fromJson(data as Map<String, dynamic>);
@@ -57,4 +68,29 @@ class NewsDetailModel {
       _$NewsDetailModelFromJson(json as Map<String, dynamic>);
 
   Map<String, dynamic> toJson() => _$NewsDetailModelToJson(this);
+}
+
+extension DateExtension on NewsDetailModel {
+  DateTime get createdDateTime {
+    if (pubdate == null) {
+      return DateTime.now();
+    }
+    return DateTime.fromMillisecondsSinceEpoch(pubdate!);
+  }
+
+  String formatDisplayDate() {
+    final current = DateTime.now();
+    final diff = current.difference(createdDateTime);
+    var outputFormat = DateFormat('HH:mmm dd/MM/yyyy');
+
+    return outputFormat.format(current);
+  }
+
+  String formatDisplayTime() {
+    final current = DateTime.now();
+    final diff = current.difference(createdDateTime);
+    var outputFormat = DateFormat('HH:mmm');
+
+    return outputFormat.format(current);
+  }
 }

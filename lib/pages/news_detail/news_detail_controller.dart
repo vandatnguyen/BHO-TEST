@@ -8,33 +8,60 @@ import '../../cores/states/base_controller.dart';
 import 'html_parser/html_parser.dart';
 import 'html_parser/html_parser_shared.dart';
 
-class NewsDetailController extends BaseController with GetSingleTickerProviderStateMixin {
+class NewsDetailController extends BaseController
+    with GetSingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> offsetAnimation;
   late Animation<Offset> offsetBottomAnimation;
   final ScrollController scrollController = ScrollController();
   RxList<HtmlParserElement> elements = <HtmlParserElement>[].obs;
+  RxList<NewsDetailModel> relativeNews = <NewsDetailModel>[].obs;
 
   double _pixels = 0;
   int _timestamp = 0;
   var isHideToolbar = false;
 
   NewsDetailModel? model;
-
-  Future<void> loadContent() async { 
-    var detail = await Get.find<NewsService>().getArticleInfo(id: "56:29:eb8d15cc7b99ee8793c6156c7cb85835");
-    var html = Get.find<HtmlParser>();
-    model = detail;
-    html.parserHtml(detail.content ?? "");
-    elements.clear(); 
-    elements.addAll(html.elements);
+  String? id;
+  NewsDetailController({this.model, this.id, required this.pageTitle}) {
+    id ??= model?.id;
   }
 
-  String get pageTitle => "Title";
+  Future<void> loadContent() async {
+    try {
+      String content = "";
+      if (model != null) {
+        id = model?.id;
+      }
+      if (model != null && (model?.content ?? "").isNotEmpty) {
+        content = model?.content ?? "";
+      } else {
+        var detail = await Get.find<NewsService>().getArticleInfo(id: id ?? "");
+        model = detail;
+        content = model?.content ?? "";
+      }
+      var html = Get.find<HtmlParser>();
+      html.parserHtml(content);
+      elements.clear();
+      elements.addAll(html.elements);
+      loadRecomend();
+    } catch (e) {
+      Get.showSnackbar(const GetSnackBar(
+          title: "Không tải được thông tin bài viết",
+          message: "Vui lòng thử lại sau"));
+    }
+  }
+
+  Future<void> loadRecomend() async {
+    var relative =
+        await Get.find<NewsService>().getArticleRelative(id: id ?? "");
+    relativeNews.addAll(relative.articles);
+  }
+
+  final String pageTitle;
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
 
     _controller = AnimationController(
@@ -43,7 +70,7 @@ class NewsDetailController extends BaseController with GetSingleTickerProviderSt
     );
     offsetAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: Offset(0, -1),
+      end: const Offset(0, -1),
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.decelerate,
@@ -51,7 +78,7 @@ class NewsDetailController extends BaseController with GetSingleTickerProviderSt
 
     offsetBottomAnimation = Tween<Offset>(
       begin: Offset.zero,
-      end: Offset(0, 1),
+      end: const Offset(0, 1),
     ).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.decelerate,
@@ -60,12 +87,12 @@ class NewsDetailController extends BaseController with GetSingleTickerProviderSt
     scrollController.addListener(() {
       var offset = scrollController.offset;
       int timestamp = DateTime.now().millisecondsSinceEpoch;
-      if (this._pixels != null && offset > 60) {
+      if (offset > 60) {
         final double velocity = (offset - _pixels) / (timestamp - _timestamp);
 
         if (velocity > 1 && !isHideToolbar) {
           _controller.forward();
-          isHideToolbar = true; 
+          isHideToolbar = true;
         } else if (velocity < 0 && isHideToolbar) {
           _controller.reverse();
           isHideToolbar = false;
@@ -74,10 +101,10 @@ class NewsDetailController extends BaseController with GetSingleTickerProviderSt
       _pixels = offset;
       _timestamp = timestamp;
     });
-
   }
+
   @override
-  void onReady() { 
+  void onReady() {
     super.onReady();
     loadContent();
   }
@@ -88,5 +115,4 @@ class NewsDetailController extends BaseController with GetSingleTickerProviderSt
     _controller.dispose();
     super.onClose();
   }
-
 }

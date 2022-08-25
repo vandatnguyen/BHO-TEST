@@ -6,10 +6,9 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_notifier.dart';
 
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-class HomePageController extends BaseController
-    with
-        StateMixin<List<ArticleWrapper>> {
 
+class HomePageController extends BaseController
+    with StateMixin<List<ArticleWrapper>> {
   RefreshController refreshController = RefreshController();
   List<ArticleWrapper> listArticle = <ArticleWrapper>[];
   @override
@@ -46,7 +45,7 @@ class HomePageController extends BaseController
     //   print("jgjhjhjhjhj ${value.title}");
     // };
     // this.listArticle = listArticle.articles;
-    if (listArticle.articles != null && listArticle.articles.length > 0){
+    if (listArticle.articles != null && listArticle.articles.length > 0) {
       var wrapper = ArticleWrapper();
       wrapper.type = 1;
       wrapper.model = listArticle.articles[0];
@@ -56,7 +55,8 @@ class HomePageController extends BaseController
   }
 
   Future getArticleHotsV2() async {
-    var listArticle = await Get.find<NewsService>().getArticleHotsV2(topic: "31");
+    var listArticle =
+        await Get.find<NewsService>().getArticleHotsV2(topic: "31");
     // print("jgjhjhjhjhj ${listArticle.articles.length}");
     // for (var value in listArticle.articles) {
     //   print("jgjhjhjhjhj ${value.title}");
@@ -66,7 +66,7 @@ class HomePageController extends BaseController
     wrapper.type = 2;
     wrapper.listNewsDetailModel = listArticle.articles;
     for (var value in this.listArticle) {
-      if (value.type == 2){
+      if (value.type == 2) {
         this.listArticle.remove(value);
         this.listArticle.insert(3, wrapper);
         change(this.listArticle, status: RxStatus.success());
@@ -78,7 +78,7 @@ class HomePageController extends BaseController
   }
 }
 
-class ArticleWrapper{
+class ArticleWrapper {
   int type = 0;
   late List<NewsDetailModel> listNewsDetailModel;
   late NewsDetailModel model;
