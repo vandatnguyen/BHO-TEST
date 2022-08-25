@@ -1,14 +1,18 @@
 import 'package:finews_module/cores/models/stock_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewsDetailStock extends StatelessWidget {
   final StockInfoModel model;
 
   const NewsDetailStock({Key? key, required this.model}) : super(key: key);
-  String get price => (model.priceCurrent ?? 0.0).toString();
-  String get grow => (model.percentChange ?? 0.0).toString();
-  String get total => (model.volume ?? 0.0).toString();
+  String get price => (model.priceCurrent ?? 0).toCurrency();
+  String get grow =>
+      (model.priceChange ?? 0).toCurrency() +
+      "/" +
+      (model.percentChange ?? 0).toPercentCurrency();
+  String get total => (model.volume ?? 0.0).toCurrency();
 
   @override
   Widget build(BuildContext context) {
@@ -110,5 +114,23 @@ class NewsDetailStock extends StatelessWidget {
             ),
           ),
         ));
+  }
+}
+
+extension DoubleCurrency on double {
+  String toPercentCurrency() {
+    if (this == 0) {
+      return "0%";
+    }
+    var formatter = NumberFormat('+#.##;-#.##');
+    return formatter.format(this) + "%";
+  }
+
+  String toCurrency() {
+    if (this == 0) {
+      return "0.0";
+    }
+    var formatter = NumberFormat('#.##');
+    return formatter.format(this);
   }
 }
