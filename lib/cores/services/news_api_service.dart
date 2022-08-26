@@ -1,5 +1,6 @@
 import 'package:finews_module/cores/resources/data_state.dart';
 import 'package:finews_module/data/entities/article_list_response.dart';
+import 'package:finews_module/data/entities/website_response.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../configs/constants.dart';
@@ -9,9 +10,9 @@ import 'api_services.dart';
 
 abstract class NewsService extends ApiServices {
   NewsService() : super();
-
-  Future<NewsDetailModel> getArticleInfo({required String id});
-
+ 
+   Future<NewsDetailModel> getArticleInfo({required String id});
+   Future<WebsiteResponse> getWebsite();
   Future<ArticleListResponse> getArticleV2({required String topic});
   Future<ArticleListResponse> getArticleHots({required String topic});
   Future<ArticleListResponse> getArticleHotsV2({required String topic});
@@ -41,12 +42,24 @@ class NewsServiceImpl extends NewsService {
         endPoint: "/v1.0/articles/relative",
         timeOut: AppConstants.TIME_OUT,
       ),
-      decoder: ArticleListResponse.fromJson,
+      decoder: ArticleListResponse.fromJson.decoded();
+  }
+ @override
+  Future<WebsiteResponse> getWebsite() async {
+    return BaseDecoder(
+      await api.getData(
+        params: {
+          "db24h":  "OBUG63LPORSWC3J2"
+        },
+        endPoint:  "/v1.0/website",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: WebsiteResponse.fromJson,
     ).decoded();
   }
 
   @override
-  Future<ArticleListResponse> getArticleV2({required String topic}) async {
+  Future<ArticleListResponse> getArticleV2({required String topic }) async {
     return BaseDecoder(
       await api.getData(
         params: {

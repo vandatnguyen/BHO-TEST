@@ -35,6 +35,9 @@ class NewsDetailModel {
   @JsonKey(name: "tags")
   final List<String>? tags;
 
+  @JsonKey(name: "symbols")
+  final List<String>? symbols;
+
   @JsonKey(name: "webUrl")
   final String? webUrl;
 
@@ -44,7 +47,8 @@ class NewsDetailModel {
   @JsonKey(name: "pubdate")
   final int? pubdate;
 
-  //Set-ExecutionPolicy Unrestricted
+  String? topicName = "";
+  String? sourceName = "";
 
   NewsDetailModel(
       this.id,
@@ -57,7 +61,9 @@ class NewsDetailModel {
       this.topic,
       this.docbao24h,
       this.tags,
-      this.webUrl,
+      
+      this.symbols,
+      this.webUrl
       this.stockInfo,
       this.pubdate);
 

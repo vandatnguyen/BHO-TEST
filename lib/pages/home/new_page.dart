@@ -98,8 +98,7 @@ class MessageItem implements ListItem {
     return GestureDetector(
       child: NewsItem(newsDetail: newsDetail),
       onTap: () {
-        Get.toNamed(AppRoutes.newsDetail,
-            arguments: {"news": newsDetail, "title": ""});
+        Get.toNamed(AppRoutes.newsDetail);
       },
     );
   }
@@ -111,6 +110,7 @@ class MessageItem implements ListItem {
 
 class HorizontalListViewItem implements ListItem {
   final List<NewsDetailModel> listNewsDetailModel;
+
   HorizontalListViewItem(this.listNewsDetailModel);
 
   HorizontalListView() {}
@@ -129,35 +129,64 @@ class HorizontalListViewItem implements ListItem {
 
 class NewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
-  final double horizontalPadding;
-  const NewsItem(
-      {Key? key, required this.newsDetail, this.horizontalPadding = 12})
-      : super(key: key);
+
+  const NewsItem({Key? key, required this.newsDetail}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       alignment: AlignmentDirectional.centerStart,
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 12,
-        horizontal: horizontalPadding,
+        horizontal: 12,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              color: Colors.black12,
-              padding: const EdgeInsets.all(8),
-              child: const Text(
-                "BĐS",
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.black87,
+          Row(
+            children: [
+              newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: HexColor.fromHex('#58BD7D'),
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    newsDetail.symbols != null && newsDetail.symbols!.length > 0
+                        ? newsDetail.symbols![0]
+                        : "Nguồn",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ) : SizedBox.shrink(),
+              newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
+              Container(
+                  margin: const EdgeInsets.only(
+                top: 0,
+                right: 8,
+                bottom: 0,
+              )) : SizedBox.shrink(),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  color: Colors.black12,
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    newsDetail.topicName!,
+                    // newsDetail.tags != null && newsDetail.tags!.length > 0
+                    //     ? newsDetail.tags![0]
+                    //     : "Tin tức",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.black87,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
           Container(
             margin: const EdgeInsets.only(
@@ -198,9 +227,9 @@ class NewsItem extends StatelessWidget {
             children: [
               Expanded(
                 child: Row(
-                  children: const [
+                  children: [
                     Text(
-                      "CafeF",
+                      newsDetail.sourceName!,
                       style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
@@ -215,7 +244,7 @@ class NewsItem extends StatelessWidget {
                       ),
                     ),
                     TextWithIcon(
-                      text: Text("23"),
+                      text: Text("0"),
                       icon: Icon(
                         Icons.chat,
                         size: 12,
@@ -239,6 +268,7 @@ class NewsItem extends StatelessWidget {
 
 class HotNewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
+
   const HotNewsItem({Key? key, required this.newsDetail}) : super(key: key);
 
   // const NewsItem({Key? key, required this.newsDetail}) : super(key: key);
@@ -284,7 +314,7 @@ class HotNewsItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "CafeF",
+                      newsDetail.sourceName!,
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
@@ -325,6 +355,7 @@ class HotNewsItem extends StatelessWidget {
 
 class SubNewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
+
   const SubNewsItem(this.newsDetail, {Key? key}) : super(key: key);
 
   @override
