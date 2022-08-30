@@ -175,10 +175,10 @@ class NewsItem extends StatelessWidget {
                   color: Colors.black12,
                   padding: EdgeInsets.all(8),
                   child: Text(
-                    //newsDetail.topicName!,
-                    newsDetail.tags != null && newsDetail.tags!.length > 0
-                        ? newsDetail.tags![0]
-                        : "Tin tức",
+                    newsDetail.topicName!,
+                    // newsDetail.tags != null && newsDetail.tags!.length > 0
+                    //     ? newsDetail.tags![0]
+                    //     : "Tin tức",
                     style: TextStyle(
                       fontSize: 13,
                       color: Colors.black87,

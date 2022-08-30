@@ -24,7 +24,7 @@ class HomeApplicationFlow extends StatefulWidget {
 
 class _HomeApplicationFlowState extends State<HomeApplicationFlow>
     with SingleTickerProviderStateMixin {
-  late final _tabController = TabController(length: 5, vsync: this);
+  late final _tabController = TabController(length: 4, vsync: this);
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +65,9 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
               color: HexColor.fromHex('#58BD7D')),
           controller: _tabController,
           tabs: const <Widget>[
-            Tab(
-              text: 'Box news',
-            ),
+            // Tab(
+            //   text: 'Box news',
+            // ),
             Tab(
               text: 'Tất cả',
             ),
@@ -86,7 +86,7 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
       body: TabBarView(
         controller: _tabController,
         children: [
-          const BoxNews(),
+          // const BoxNews(),
           NewsPage(
             onNext: () => _tabController.index = 1,
             categoryId: "0",

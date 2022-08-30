@@ -38,7 +38,7 @@ class HomePageController extends BaseController
         }
       }
     }
-    return null;
+    return "";
   }
 
   String? getSourceName(int id) {
@@ -47,7 +47,7 @@ class HomePageController extends BaseController
         return t.name;
       }
     }
-    return null;
+    return "";
   }
 
   Future getArticleV2() async {

@@ -1,4 +1,5 @@
 import 'package:finews_module/routes/app_pages.dart';
+import 'package:finews_module/shared_widgets/news_box/news_box_controller.dart';
 import 'package:get/get.dart';
 
 import 'cores/services/news_api_service.dart';
@@ -21,9 +22,11 @@ class FiNewsModule {
     Get.put<MainFiNewsProvider>(MainFiNewsProvider());
     Get.put<HtmlParser>(HtmlParser());
     Get.put<NewsService>(NewsServiceImpl());
+    Get.put<NewsBoxController>(NewsBoxController());
+  }
+
+  static void openFiNewsApp() {
+    Get.toNamed(AppRoutes.homeParent);
   }
 }
 
-void openFiNewsApp() {
-  Get.toNamed(AppRoutes.homeParent);
-}
