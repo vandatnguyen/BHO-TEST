@@ -1,11 +1,11 @@
-import 'package:finews_module/cores/services/news_api_service.dart';
-import 'package:finews_module/pages/home/home_page.dart';
-import 'package:finews_module/pages/home/new_page.dart';
-import 'package:finews_module/routes/app_routes.dart';
-import 'package:finews_module/shared_widgets/news_box/news_box_controller.dart';
 import 'package:finews_module/theme/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../pages/home/home_page.dart';
+import '../../routes/app_routes.dart';
+import 'components/news_box_item.dart';
+import 'news_box_controller.dart';
 
 class BoxNews extends GetView<NewsBoxController> {
   const BoxNews({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class BoxNews extends GetView<NewsBoxController> {
     return controller.obx(
       (listNews) {
         return Container(
-          decoration: BoxDecoration(color: Colors.white),
+          decoration: const BoxDecoration(color: Colors.white),
           child: ListView(
             children: [
               Container(
@@ -64,23 +64,18 @@ class BoxNews extends GetView<NewsBoxController> {
                     )
                   : Column(
                       children: [
-                        ...listNews.take(3).toList().map((item) => NewsItem(
+                        ...listNews.take(3).toList().map((item) => BoxNewsItem(
                               newsDetail: item,
                             )),
-                        TextButton(
-                          onPressed: () {
-                            //todo: to news screen
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.pushNamed(context, "write your route");
+                            Get.toNamed(AppRoutes.homeParent);
                           },
-                          child: GestureDetector(
-                            onTap: () {
-                              // Navigator.pushNamed(context, "write your route");
-                              Get.toNamed(AppRoutes.homeParent);
-                            },
-                            onLongPress: () {
-                              // open dialog OR navigate OR do what you want
-                            },
-                            child: new Text("Xem thêm"),
-                          ),
+                          onLongPress: () {
+                            // open dialog OR navigate OR do what you want
+                          },
+                          child: const Text("Xem thêm"),
                         ),
                       ],
                     ),

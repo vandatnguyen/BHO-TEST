@@ -26,7 +26,8 @@ NewsDetailModel _$NewsDetailModelFromJson(Map<String, dynamic> json) =>
           .toList(),
     )
       ..topicName = json['topicName'] as String?
-      ..sourceName = json['sourceName'] as String?;
+      ..sourceName = json['sourceName'] as String?
+      ..sourceIconUrl = json['sourceIconUrl'] as String?;
 
 Map<String, dynamic> _$NewsDetailModelToJson(NewsDetailModel instance) =>
     <String, dynamic>{
@@ -46,4 +47,5 @@ Map<String, dynamic> _$NewsDetailModelToJson(NewsDetailModel instance) =>
       'pubdate': instance.pubdate,
       'topicName': instance.topicName,
       'sourceName': instance.sourceName,
+      'sourceIconUrl': instance.sourceIconUrl,
     };

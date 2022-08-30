@@ -10,10 +10,12 @@ Website _$WebsiteFromJson(Map<String, dynamic> json) => Website(
       json['id'] as int,
       json['name'] as String,
       (json['topic'] as List<dynamic>).map((e) => Topic.fromJson(e)).toList(),
+      json['icon_url'] as String,
     );
 
 Map<String, dynamic> _$WebsiteToJson(Website instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'topic': instance.topic,
+      'icon_url': instance.iconUrl,
     };

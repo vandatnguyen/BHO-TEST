@@ -29,9 +29,9 @@ class NewsBoxController extends GetxController
       listWebsite = response.websites;
       var res = await newsService.getArticleV2(topic: tag);
       for (var value in res.articles) {
-        // var wrapper = ArticleWrapper();
         value.topicName = getTopicName(value.topic);
         value.sourceName = getSourceName(value.source);
+        value.sourceIconUrl = getSourceIconUrl(value.source);
       }
       change(res.articles, status: RxStatus.success());
     } catch (e) {
@@ -55,6 +55,15 @@ class NewsBoxController extends GetxController
     for (var t in listWebsite) {
       if (t.id == id) {
         return t.name;
+      }
+    }
+    return "";
+  }
+
+  String? getSourceIconUrl(int id) {
+    for (var t in listWebsite) {
+      if (t.id == id) {
+        return t.iconUrl;
       }
     }
     return "";

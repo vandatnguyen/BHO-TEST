@@ -50,6 +50,7 @@ class NewsDetailModel {
 
   String? topicName = "";
   String? sourceName = "";
+  String? sourceIconUrl = "";
 
   NewsDetailModel(
     this.id,

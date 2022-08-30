@@ -5,10 +5,8 @@ import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/shared_widgets/CustomRefresher.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart' as time_ago;
 
 class NewsPage extends GetView<HomePageController> {
   const NewsPage({Key? key, required this.onNext, required this.categoryId})
@@ -26,27 +24,16 @@ class NewsPage extends GetView<HomePageController> {
           controller: controller.refreshController,
           onRefresh: controller.onRefresh,
           child: ListView.builder(
-            // Let the ListView know how many items it needs to build.
             itemCount: state!.length,
-            // Provide a builder function. This is where the magic happens.
-            // Convert each item into a widget based on the type of item it is.
             itemBuilder: (context, index) {
               if (state[index].type == 1) {
                 return HeadingItem(state[0].model).buildTitle(context);
-                // return Obx(() => HeadingItem(state[0]).buildTitle(context));
               }
               if (state[index].type == 2) {
                 return HorizontalListViewItem(state[index].listNewsDetailModel)
                     .buildHorizontalListView(context);
               }
               final item = state[index];
-              // if (index == 3) {
-              //   return item.buildHorizontalListView(context);
-              // }
-              // return ListTile(
-              //   title: item.buildTitle(context),
-              //   subtitle: item.buildSubtitle(context),
-              // );
               return MessageItem(item.model).buildSubtitle(context);
             },
           ),
@@ -86,8 +73,6 @@ class HeadingItem implements ListItem {
 }
 
 class MessageItem implements ListItem {
-  // final String sender;
-  // final String body;
   final NewsDetailModel newsDetail;
 
   MessageItem(this.newsDetail);
@@ -141,8 +126,7 @@ class NewsItem extends StatelessWidget {
         Get.toNamed(AppRoutes.newsDetail,
             arguments: {"news": newsDetail, "title": newsDetail.topicName});
       },
-      child:
-      Container(
+      child: Container(
         alignment: AlignmentDirectional.centerStart,
         padding: const EdgeInsets.symmetric(
           vertical: 12,
@@ -153,41 +137,44 @@ class NewsItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    color: HexColor.fromHex('#58BD7D'),
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      newsDetail.symbols != null && newsDetail.symbols!.length > 0
-                          ? newsDetail.symbols![0]
-                          : "Nguồn",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ) : SizedBox.shrink(),
-                newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
-                Container(
-                    margin: const EdgeInsets.only(
-                      top: 0,
-                      right: 8,
-                      bottom: 0,
-                    )) : SizedBox.shrink(),
+                newsDetail.symbols != null && newsDetail.symbols!.length > 0
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          color: HexColor.fromHex('#58BD7D'),
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            newsDetail.symbols != null &&
+                                    newsDetail.symbols!.length > 0
+                                ? newsDetail.symbols![0]
+                                : "Nguồn",
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                newsDetail.symbols != null && newsDetail.symbols!.length > 0
+                    ? Container(
+                        margin: const EdgeInsets.only(
+                        top: 0,
+                        right: 8,
+                        bottom: 0,
+                      ))
+                    : const SizedBox.shrink(),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
                     color: Colors.black12,
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: Text(
                       newsDetail.topicName!,
                       // newsDetail.tags != null && newsDetail.tags!.length > 0
                       //     ? newsDetail.tags![0]
                       //     : "Tin tức",
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 13,
                         color: Colors.black87,
                       ),
@@ -207,12 +194,12 @@ class NewsItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         right: 16,
                       ),
                       child: Text(
                         newsDetail.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 16,
                             color: Colors.black,
                             fontWeight: FontWeight.bold),
@@ -238,15 +225,17 @@ class NewsItem extends StatelessWidget {
                     children: [
                       Text(
                         newsDetail.sourceName ?? "",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Colors.black87,
                             fontSize: 13),
                       ),
                       TextWithIcon(
                         // text: Text(''),
-                        text: Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(newsDetail.pubdate!))),
-                        icon: Icon(
+                        text: Text(time_ago.format(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                newsDetail.pubdate!))),
+                        icon: const Icon(
                           Icons.access_time,
                           size: 12,
                           color: Colors.black45,
@@ -325,19 +314,19 @@ class HotNewsItem extends StatelessWidget {
                   children: [
                     Text(
                       newsDetail.sourceName!,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                         fontSize: 13,
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 8,
                       ),
                       child: Text(
                         newsDetail.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
@@ -345,8 +334,9 @@ class HotNewsItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      timeago.format(DateTime.fromMillisecondsSinceEpoch(newsDetail.pubdate!)),
-                      style: TextStyle(
+                      time_ago.format(DateTime.fromMillisecondsSinceEpoch(
+                          newsDetail.pubdate!)),
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -424,12 +414,12 @@ class SubNewsItem extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                         vertical: 8,
                       ),
                       child: Text(
                         newsDetail.title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
@@ -437,8 +427,11 @@ class SubNewsItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      newsDetail.topicName! + " " + timeago.format(DateTime.fromMillisecondsSinceEpoch(newsDetail.pubdate!)),
-                      style: TextStyle(
+                      newsDetail.topicName! +
+                          " " +
+                          time_ago.format(DateTime.fromMillisecondsSinceEpoch(
+                              newsDetail.pubdate!)),
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -473,7 +466,7 @@ Widget _horizontalListView(List<NewsDetailModel> listNewsDetailModel) {
                   const VerticalDivider(
                     width: 4,
                   ),
-                  Text(
+                  const Text(
                     "CHỨNG KHOÁN",
                     style: TextStyle(
                       color: Colors.black,

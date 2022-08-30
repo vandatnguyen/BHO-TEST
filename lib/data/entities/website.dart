@@ -16,7 +16,10 @@ class Website {
   @JsonKey(name: "topic")
   final List<Topic> topic;
 
-  Website(this.id, this.name, this.topic);
+  @JsonKey(name: "icon_url")
+  final String iconUrl;
+
+  Website(this.id, this.name, this.topic, this.iconUrl);
 
 
   static Website fromResult(dynamic data) =>
