@@ -1,10 +1,7 @@
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/cores/states/base_controller.dart';
-import 'package:finews_module/data/entities/article_list_response.dart';
 import 'package:finews_module/data/entities/website.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_notifier.dart';
-
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -28,7 +25,6 @@ class HomePageController extends BaseController
   Future getWebsite() async {
     var response = await Get.find<NewsService>().getWebsite();
     listWebsite = response.websites;
-    // final prefs = await SharedPreferences.getInstance();
     await getArticleV2();
     await getArticleHots();
     await getArticleHotsV2();
@@ -55,8 +51,8 @@ class HomePageController extends BaseController
   }
 
   Future getArticleV2() async {
-    var listArticle = await Get.find<NewsService>().getArticleV2(topic: 31.toString());
-    print("jgjhjhjhjhj ${listArticle.articles.length}");
+    var listArticle =
+        await Get.find<NewsService>().getArticleV2(topic: 31.toString());
     for (var value in listArticle.articles) {
       var wrapper = ArticleWrapper();
       value.topicName = getTopicName(value.topic);
@@ -69,11 +65,6 @@ class HomePageController extends BaseController
 
   Future getArticleHots() async {
     var listArticle = await Get.find<NewsService>().getArticleHots(topic: "31");
-    // print("jgjhjhjhjhj ${listArticle.articles.length}");
-    // for (var value in listArticle.articles) {
-    //   print("jgjhjhjhjhj ${value.title}");
-    // };
-    // this.listArticle = listArticle.articles;
     if (this.listArticle.isNotEmpty) {
       if (this.listArticle[0].type == 1) {
         this.listArticle.removeAt(0);
