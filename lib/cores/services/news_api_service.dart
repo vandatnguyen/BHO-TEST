@@ -42,7 +42,8 @@ class NewsServiceImpl extends NewsService {
         endPoint: "/v1.0/articles/relative",
         timeOut: AppConstants.TIME_OUT,
       ),
-      decoder: ArticleListResponse.fromJson.decoded();
+      decoder: ArticleListResponse.fromJson,
+    ).decoded();
   }
  @override
   Future<WebsiteResponse> getWebsite() async {

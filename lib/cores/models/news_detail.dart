@@ -61,11 +61,25 @@ class NewsDetailModel {
       this.topic,
       this.docbao24h,
       this.tags,
-      
       this.symbols,
-      this.webUrl
+      this.webUrl,
       this.stockInfo,
-      this.pubdate);
+      this.pubdate); // NewsDetailModel(
+  //     this.id,
+  //     this.origin,
+  //     this.title,
+  //     this.desc,
+  //     this.content,
+  //     this.thumb,
+  //     this.source,
+  //     this.topic,
+  //     this.docbao24h,
+  //     this.tags,
+  //
+  //     this.symbols,
+  //     this.webUrl
+  //     this.stockInfo,
+  //     this.pubdate);
 
   static NewsDetailModel fromResult(dynamic data) =>
       NewsDetailModel.fromJson(data as Map<String, dynamic>);

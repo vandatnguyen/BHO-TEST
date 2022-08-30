@@ -7,7 +7,7 @@ class NewsDetailStock extends StatelessWidget {
   final StockInfoModel model;
 
   const NewsDetailStock({Key? key, required this.model}) : super(key: key);
-  String get price => (model.priceCurrent ?? 0).toCurrency();
+  String get price => (model.priceCurrent).toCurrency();
   String get grow =>
       (model.priceChange ?? 0).toCurrency() +
       "/" +

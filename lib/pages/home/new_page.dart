@@ -155,7 +155,7 @@ class NewsItem extends StatelessWidget {
                     newsDetail.symbols != null && newsDetail.symbols!.length > 0
                         ? newsDetail.symbols![0]
                         : "Nguồn",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 13,
                       color: Colors.white,
                     ),
@@ -179,7 +179,7 @@ class NewsItem extends StatelessWidget {
                     // newsDetail.tags != null && newsDetail.tags!.length > 0
                     //     ? newsDetail.tags![0]
                     //     : "Tin tức",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 13,
                       color: Colors.black87,
                     ),
@@ -199,12 +199,12 @@ class NewsItem extends StatelessWidget {
               children: [
                 Flexible(
                   child: Padding(
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                       right: 16,
                     ),
                     child: Text(
                       newsDetail.title,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 16,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
@@ -230,7 +230,7 @@ class NewsItem extends StatelessWidget {
                   children: [
                     Text(
                       newsDetail.sourceName!,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.black87,
                           fontSize: 13),
@@ -243,14 +243,14 @@ class NewsItem extends StatelessWidget {
                         color: Colors.black45,
                       ),
                     ),
-                    TextWithIcon(
-                      text: Text("0"),
-                      icon: Icon(
-                        Icons.chat,
-                        size: 12,
-                        color: Colors.black45,
-                      ),
-                    ),
+                    // TextWithIcon(
+                    //   text: Text("0"),
+                    //   icon: Icon(
+                    //     Icons.chat,
+                    //     size: 12,
+                    //     color: Colors.black45,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

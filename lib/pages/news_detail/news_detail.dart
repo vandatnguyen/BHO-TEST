@@ -73,7 +73,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                         preventDuplicates: false);
                                   },
                                   child: NewsItem(
-                                      horizontalPadding: 0,
+                                      // horizontalPadding: 0,
                                       newsDetail:
                                           controller.relativeNews[index]),
                                 )))
