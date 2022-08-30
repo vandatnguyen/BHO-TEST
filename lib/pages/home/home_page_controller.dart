@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/cores/states/base_controller.dart';
 import 'package:finews_module/data/entities/website.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:get_storage/get_storage.dart';
 
 class HomePageController extends BaseController
     with StateMixin<List<ArticleWrapper>> {
@@ -11,7 +14,7 @@ class HomePageController extends BaseController
   List<ArticleWrapper> listArticle = <ArticleWrapper>[];
   List<Website> listWebsite = <Website>[];
   String categoryId = "666666";
-
+  final box = GetStorage();
 
   @override
   void onInit() {
@@ -27,6 +30,7 @@ class HomePageController extends BaseController
   Future getWebsite() async {
     var response = await Get.find<NewsService>().getWebsite();
     listWebsite = response.websites;
+    box.write('websites', jsonEncode(listWebsite.map((payment) => payment.toJson()).toList()));
     await getArticleV2();
     if (categoryId == "666666"){
       await getArticleHots();
@@ -92,6 +96,13 @@ class HomePageController extends BaseController
       var wrapper = ArticleWrapper();
       wrapper.type = 2;
       wrapper.listNewsDetailModel = listArticle.articles;
+      for (var value in listArticle.articles) {
+        var wrapper = ArticleWrapper();
+        value.topicName = getTopicName(value.topic);
+        value.sourceName = getSourceName(value.source);
+        wrapper.model = value;
+        this.listArticle.add(wrapper);
+      }
       for (var value in this.listArticle) {
         if (value.type == 2) {
           this.listArticle.remove(value);

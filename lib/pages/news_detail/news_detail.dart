@@ -42,7 +42,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                   children: <Widget>[
                         NewsDetailHeader(
                             title: controller.model?.title ?? "",
-                            sourceName: "Cafef",
+                            sourceName: controller.model!.sourceName ?? "",
                             date: controller.model?.formatDisplayDate() ?? ""),
                         if (controller.model?.stockInfo != null &&
                             (controller.model?.stockInfo?.length ?? 0) > 0)

@@ -35,31 +35,29 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(
-              Icons.search,
-              color: Colors.black38,
-            ),
-            onPressed: () {
-              // do something
-            },
-          )
-        ],
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: const Icon(
+        //       Icons.search,
+        //       color: Colors.black38,
+        //     ),
+        //     onPressed: () {
+        //       // do something
+        //     },
+        //   )
+        // ],
         backgroundColor: Colors.white,
         // title: Image.asset('assets/images/FiNews.png',
         //     package: 'finews_module', width: 90, height: 16),
-        title: Text('Tin tức',
-            style: TextStyle(color: Colors.black)
-        ),
-        titleSpacing: 0,
+        title: Text('Tin tức', style: TextStyle(color: Colors.black)),
+        // titleSpacing: 0,
         // leadingWidth: 8,
         centerTitle: false,
         bottom: TabBar(
           isScrollable: true,
           padding: const EdgeInsets.symmetric(
-            vertical: 12,
-            horizontal: 12,
+            // vertical: 12,
+            horizontal: 8,
           ),
           labelColor: Colors.white,
           labelStyle:
@@ -68,6 +66,7 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
               const TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal),
           unselectedLabelColor: Colors.black,
           indicator: BoxDecoration(
+              border: Border.all(color: Colors.white, width: 4),
               borderRadius: BorderRadius.circular(10), // Creates border
               color: HexColor.fromHex('#58BD7D')),
           controller: _tabController,

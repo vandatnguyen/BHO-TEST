@@ -139,7 +139,7 @@ class NewsItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.toNamed(AppRoutes.newsDetail,
-            arguments: {"news": newsDetail, "title": ""});
+            arguments: {"news": newsDetail, "title": newsDetail.topicName});
       },
       child:
       Container(
@@ -205,7 +205,7 @@ class NewsItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Flexible(
+                  Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(
                         right: 16,
@@ -263,10 +263,10 @@ class NewsItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Icon(
-                  Icons.more_horiz_outlined,
-                  size: 16,
-                )
+                // const Icon(
+                //   Icons.more_horiz_outlined,
+                //   size: 16,
+                // )
               ],
             )
           ],
@@ -345,7 +345,7 @@ class HotNewsItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "26/07/2022 11:16",
+                      timeago.format(DateTime.fromMillisecondsSinceEpoch(newsDetail.pubdate!)),
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
@@ -437,7 +437,7 @@ class SubNewsItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Vietstock 33 phút trước",
+                      newsDetail.topicName! + " " + timeago.format(DateTime.fromMillisecondsSinceEpoch(newsDetail.pubdate!)),
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 12,

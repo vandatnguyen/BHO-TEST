@@ -88,7 +88,7 @@ extension DateExtension on NewsDetailModel {
   String formatDisplayDate() {
     final current = DateTime.now();
     final diff = current.difference(createdDateTime);
-    var outputFormat = DateFormat('HH:mmm dd/MM/yyyy');
+    var outputFormat = DateFormat('HH:mm dd/MM/yyyy');
 
     return outputFormat.format(current);
   }
