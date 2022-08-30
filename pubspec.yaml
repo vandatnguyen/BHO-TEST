@@ -56,7 +56,7 @@ dependencies:
   #      url: https://github.com/zstart6490/candlesticks2
   #      ref: develop
   firebase_core: 1.18.0
-
+  timeago: ^3.3.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

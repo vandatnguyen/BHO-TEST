@@ -1,6 +1,7 @@
 import 'package:finews_module/cores/models/stock_info.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:intl/intl.dart';
+import 'package:json_annotation/json_annotation.dart';
+
 part 'news_detail.g.dart';
 
 @JsonSerializable()
@@ -51,35 +52,21 @@ class NewsDetailModel {
   String? sourceName = "";
 
   NewsDetailModel(
-      this.id,
-      this.origin,
-      this.title,
-      this.desc,
-      this.content,
-      this.thumb,
-      this.source,
-      this.topic,
-      this.docbao24h,
-      this.tags,
-      this.symbols,
-      this.webUrl,
-      this.stockInfo,
-      this.pubdate); // NewsDetailModel(
-  //     this.id,
-  //     this.origin,
-  //     this.title,
-  //     this.desc,
-  //     this.content,
-  //     this.thumb,
-  //     this.source,
-  //     this.topic,
-  //     this.docbao24h,
-  //     this.tags,
-  //
-  //     this.symbols,
-  //     this.webUrl
-  //     this.stockInfo,
-  //     this.pubdate);
+    this.id,
+    this.origin,
+    this.title,
+    this.desc,
+    this.content,
+    this.thumb,
+    this.source,
+    this.topic,
+    this.docbao24h,
+    this.tags,
+    this.symbols,
+    this.webUrl,
+    this.pubdate,
+    this.stockInfo,
+  );
 
   static NewsDetailModel fromResult(dynamic data) =>
       NewsDetailModel.fromJson(data as Map<String, dynamic>);

@@ -44,7 +44,7 @@ class NewsDetailController extends BaseController
       html.parserHtml(content);
       elements.clear();
       elements.addAll(html.elements);
-      loadRecomend();
+      loadRecommend();
     } catch (e) {
       Get.showSnackbar(const GetSnackBar(
           title: "Không tải được thông tin bài viết",
@@ -52,7 +52,7 @@ class NewsDetailController extends BaseController
     }
   }
 
-  Future<void> loadRecomend() async {
+  Future<void> loadRecommend() async {
     var relative =
         await Get.find<NewsService>().getArticleRelative(id: id ?? "");
     relativeNews.addAll(relative.articles);
