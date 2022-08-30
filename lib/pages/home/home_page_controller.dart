@@ -10,6 +10,8 @@ class HomePageController extends BaseController
   RefreshController refreshController = RefreshController();
   List<ArticleWrapper> listArticle = <ArticleWrapper>[];
   List<Website> listWebsite = <Website>[];
+  String categoryId = "666666";
+
 
   @override
   void onInit() {
@@ -26,8 +28,10 @@ class HomePageController extends BaseController
     var response = await Get.find<NewsService>().getWebsite();
     listWebsite = response.websites;
     await getArticleV2();
-    await getArticleHots();
-    await getArticleHotsV2();
+    if (categoryId == "666666"){
+      await getArticleHots();
+      await getArticleHotsV2();
+    }
   }
 
   String? getTopicName(int id) {
@@ -52,7 +56,7 @@ class HomePageController extends BaseController
 
   Future getArticleV2() async {
     var listArticle =
-        await Get.find<NewsService>().getArticleV2(topic: 31.toString());
+        await Get.find<NewsService>().getArticleV2(topic: this.categoryId);
     for (var value in listArticle.articles) {
       var wrapper = ArticleWrapper();
       value.topicName = getTopicName(value.topic);

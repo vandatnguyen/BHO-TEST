@@ -31,6 +31,10 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(
@@ -43,10 +47,13 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
           )
         ],
         backgroundColor: Colors.white,
-        title: Image.asset('assets/images/FiNews.png',
-            package: 'finews_module', width: 90, height: 16),
+        // title: Image.asset('assets/images/FiNews.png',
+        //     package: 'finews_module', width: 90, height: 16),
+        title: Text('Tin tức',
+            style: TextStyle(color: Colors.black)
+        ),
         titleSpacing: 0,
-        leadingWidth: 8,
+        // leadingWidth: 8,
         centerTitle: false,
         bottom: TabBar(
           isScrollable: true,
@@ -78,7 +85,7 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
               text: 'Bất động sản',
             ),
             Tab(
-              text: 'Doanh nghiệp',
+              text: 'Tài chính',
             ),
           ],
         ),
@@ -89,11 +96,11 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
           // const BoxNews(),
           NewsPage(
             onNext: () => _tabController.index = 1,
-            categoryId: "0",
+            categoryId: "666666",
           ),
-          NewsPage(onNext: () => _tabController.index = 2, categoryId: "1"),
-          NewsPage(onNext: () => _tabController.index = 3, categoryId: "2"),
-          NewsPage(onNext: () => _tabController.index = 4, categoryId: "3"),
+          NewsPage(onNext: () => _tabController.index = 2, categoryId: "31"),
+          NewsPage(onNext: () => _tabController.index = 3, categoryId: "34"),
+          NewsPage(onNext: () => _tabController.index = 4, categoryId: "30"),
         ],
       ),
     );

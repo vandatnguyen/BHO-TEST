@@ -7,10 +7,10 @@ class HomePageBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<NewsService>(NewsServiceImpl());
-    Get.lazyPut(() => HomePageController(), tag: "0");
-    Get.lazyPut(() => HomePageController(), tag: "1");
-    Get.lazyPut(() => HomePageController(), tag: "2");
-    Get.lazyPut(() => HomePageController(), tag: "3");
+    Get.lazyPut(() => HomePageController(), tag: "666666");
+    Get.lazyPut(() => HomePageController(), tag: "31");
+    Get.lazyPut(() => HomePageController(), tag: "34");
+    Get.lazyPut(() => HomePageController(), tag: "30");
     Get.lazyPut(() => NewsBoxController());
   }
 }

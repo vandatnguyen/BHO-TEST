@@ -50,7 +50,7 @@ class BoxNews extends GetView<NewsBoxController> {
                     color: HexColor.fromHex('#F5F6FA')),
                 controller: controller.tabController,
                 onTap: (index) {
-                  controller.setTag(controller.tabs[index]);
+                  controller.setTag(controller.tabsId[index]);
                 },
                 tabs: controller.tabs
                     .map((e) => Tab(

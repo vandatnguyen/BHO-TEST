@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class NewsPage extends GetView<HomePageController> {
   const NewsPage({Key? key, required this.onNext, required this.categoryId})
@@ -20,6 +21,7 @@ class NewsPage extends GetView<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.categoryId = categoryId;
     return controller.obx((state) => CustomRefresher(
           controller: controller.refreshController,
           onRefresh: controller.onRefresh,
@@ -134,133 +136,141 @@ class NewsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: AlignmentDirectional.centerStart,
-      padding: const EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: 12,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  color: HexColor.fromHex('#58BD7D'),
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    newsDetail.symbols != null && newsDetail.symbols!.length > 0
-                        ? newsDetail.symbols![0]
-                        : "Nguồn",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ) : SizedBox.shrink(),
-              newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
-              Container(
-                  margin: const EdgeInsets.only(
-                top: 0,
-                right: 8,
-                bottom: 0,
-              )) : SizedBox.shrink(),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  color: Colors.black12,
-                  padding: EdgeInsets.all(8),
-                  child: Text(
-                    newsDetail.topicName!,
-                    // newsDetail.tags != null && newsDetail.tags!.length > 0
-                    //     ? newsDetail.tags![0]
-                    //     : "Tin tức",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.black87,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            margin: const EdgeInsets.only(
-              top: 8,
-              bottom: 12,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
+    return GestureDetector(
+      onTap: () {
+        Get.toNamed(AppRoutes.newsDetail,
+            arguments: {"news": newsDetail, "title": ""});
+      },
+      child:
+      Container(
+        alignment: AlignmentDirectional.centerStart,
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 12,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Flexible(
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      right: 16,
-                    ),
+                newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    color: HexColor.fromHex('#58BD7D'),
+                    padding: const EdgeInsets.all(8),
                     child: Text(
-                      newsDetail.title,
+                      newsDetail.symbols != null && newsDetail.symbols!.length > 0
+                          ? newsDetail.symbols![0]
+                          : "Nguồn",
                       style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 13,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
+                ) : SizedBox.shrink(),
+                newsDetail.symbols != null && newsDetail.symbols!.length > 0 ?
+                Container(
+                    margin: const EdgeInsets.only(
+                      top: 0,
+                      right: 8,
+                      bottom: 0,
+                    )) : SizedBox.shrink(),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    newsDetail.thumb,
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    color: Colors.black12,
+                    padding: EdgeInsets.all(8),
+                    child: Text(
+                      newsDetail.topicName!,
+                      // newsDetail.tags != null && newsDetail.tags!.length > 0
+                      //     ? newsDetail.tags![0]
+                      //     : "Tin tức",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.black87,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Text(
-                      newsDetail.sourceName ?? "",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                          fontSize: 13),
-                    ),
-                    TextWithIcon(
-                      text: Text("14h trước"),
-                      icon: Icon(
-                        Icons.access_time,
-                        size: 12,
-                        color: Colors.black45,
-                      ),
-                    ),
-                    TextWithIcon(
-                      text: Text("0"),
-                      icon: Icon(
-                        Icons.chat,
-                        size: 12,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ],
-                ),
+            Container(
+              margin: const EdgeInsets.only(
+                top: 8,
+                bottom: 12,
               ),
-              const Icon(
-                Icons.more_horiz_outlined,
-                size: 16,
-              )
-            ],
-          )
-        ],
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        right: 16,
+                      ),
+                      child: Text(
+                        newsDetail.title,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      newsDetail.thumb,
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Text(
+                        newsDetail.sourceName ?? "",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                            fontSize: 13),
+                      ),
+                      TextWithIcon(
+                        // text: Text(''),
+                        text: Text(timeago.format(DateTime.fromMillisecondsSinceEpoch(newsDetail.pubdate!))),
+                        icon: Icon(
+                          Icons.access_time,
+                          size: 12,
+                          color: Colors.black45,
+                        ),
+                      ),
+                      // TextWithIcon(
+                      //   text: Text("0"),
+                      //   icon: Icon(
+                      //     Icons.chat,
+                      //     size: 12,
+                      //     color: Colors.black45,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                ),
+                const Icon(
+                  Icons.more_horiz_outlined,
+                  size: 16,
+                )
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -80,7 +80,7 @@ class NewsServiceImpl extends NewsService {
     return BaseDecoder(
       await api.getData(
         params: {
-          "topic": "31",
+          "topic": topic,
           "source": "666666",
           "length": "20",
           "db24h": "OBUG63LPORSWC3J2"

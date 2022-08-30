@@ -13,13 +13,14 @@ class NewsBoxController extends GetxController
   late TabController tabController;
 
   final tabs = ['Tất cả', 'Chứng khoán', 'Bất động sản', 'Doanh nghiệp'];
+  final tabsId = ['666666', '31', '34', '30'];
   List<Website> listWebsite = <Website>[];
 
   @override
   void onInit() {
     super.onInit();
     tabController = TabController(vsync: this, length: tabs.length);
-    setTag(tabs[0]);
+    setTag("666666");
   }
 
   void setTag(String tag) async {
