@@ -114,15 +114,18 @@ class BoxNewsItem extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                               const SizedBox(width: 8),
-                              Text(
-                                newsDetail.sourceName ?? "",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black87,
-                                  fontSize: 13,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                          Expanded(
+                            child:
+                            Text(
+                              newsDetail.sourceName ?? "",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black87,
+                                fontSize: 13,
+                                overflow: TextOverflow.ellipsis,
                               ),
+                            ),
+                          ),
                             ],
                           ),
                         ),

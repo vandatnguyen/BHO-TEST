@@ -83,7 +83,12 @@ class MessageItem implements ListItem {
   @override
   Widget buildSubtitle(BuildContext context) {
     return GestureDetector(
-      child: NewsItem(newsDetail: newsDetail),
+      child: Column(
+        children: <Widget>[
+          NewsItem(newsDetail: newsDetail),
+          const Divider(), //                           <-- Divider
+        ],
+      ),
       onTap: () {
         Get.toNamed(AppRoutes.newsDetail);
       },

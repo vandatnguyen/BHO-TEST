@@ -75,8 +75,15 @@ class BoxNews extends GetView<NewsBoxController> {
                           onLongPress: () {
                             // open dialog OR navigate OR do what you want
                           },
-                          child: const Text("Xem thêm"),
+                          child:
+                          Container(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 12,
+                              ),child: const Text("Xem thêm",
+                              style: TextStyle(color: Colors.lightBlue)),),
                         ),
+                        const Divider(),
                       ],
                     ),
             ],
