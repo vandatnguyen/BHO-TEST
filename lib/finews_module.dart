@@ -16,7 +16,7 @@ class FiNewsModule {
   }
 
   static void initNewsRouteAndBinding() {
-    for (final value in AppPages.tradingRoutes) {
+    for (final value in AppPages.newsRoutes) {
       if (!Get.routeTree.routes.contains(value)) {
         Get.addPage(value);
       }

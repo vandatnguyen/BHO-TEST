@@ -1,4 +1,5 @@
 abstract class AppRoutes {
   static const homeParent = '/home';
-  static const newsDetail = '/detail';
+  static const homeParent2 = '/newsHome';
+  static const newsDetail = '/newsDetail';
 }

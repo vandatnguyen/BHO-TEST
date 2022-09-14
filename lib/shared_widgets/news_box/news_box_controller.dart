@@ -25,6 +25,7 @@ class NewsBoxController extends GetxController
 
   void setTag(String tag) async {
     try {
+      change([], status: RxStatus.loading());
       var response = await Get.find<NewsService>().getWebsite();
       listWebsite = response.websites;
       var res = await newsService.getArticleV2(topic: tag);

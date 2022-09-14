@@ -10,10 +10,10 @@ import 'app_routes.dart';
 class AppPages {
   static const initRoute = AppRoutes.homeParent;
 
-  static final tradingRoutes = [
+  static final newsRoutes = [
     GetPage(
-      name: AppRoutes.homeParent,
-      page: () => HomePageView(),
+      name: AppRoutes.homeParent2,
+      page: () => const HomePageView(),
       binding: HomePageBinding(),
     ),
     GetPage(

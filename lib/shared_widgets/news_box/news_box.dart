@@ -17,11 +17,14 @@ class BoxNews extends GetView<NewsBoxController> {
         return Container(
           decoration: const BoxDecoration(color: Colors.white),
           child: ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
             children: [
               Container(
                 margin: const EdgeInsets.only(top: 16, left: 16),
                 child: const Text(
-                  "Tin tức",
+                  "Tin tức tài chính",
                   style: TextStyle(
                     color: COLOR_333333,
                     fontSize: 18,
@@ -58,7 +61,7 @@ class BoxNews extends GetView<NewsBoxController> {
                         ))
                     .toList(),
               ),
-              listNews == null
+              listNews == null || listNews.isEmpty
                   ? const Center(
                       child: Text("Không có dữ liệu"),
                     )
@@ -67,22 +70,35 @@ class BoxNews extends GetView<NewsBoxController> {
                         ...listNews.take(3).toList().map((item) => BoxNewsItem(
                               newsDetail: item,
                             )),
+                        // InkWell(
+                        //   onTap: () => {Get.toNamed(AppRoutes.homeParent)},
+                        //   child: Text(
+                        //     "Xem thêm"
+                        //   ),
+                        // ),
                         GestureDetector(
                           onTap: () {
+                            print('onTaponTap:');
                             // Navigator.pushNamed(context, "write your route");
-                            Get.toNamed(AppRoutes.homeParent);
+                            Get.toNamed(AppRoutes.homeParent2);
                           },
                           onLongPress: () {
                             // open dialog OR navigate OR do what you want
                           },
-                          child: const Text("Xem thêm"),
+                          child:
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 12,
+                            ),child: const Text("Xem thêm",
+                              style: TextStyle(color: Colors.lightBlue)),),
                         ),
                       ],
                     ),
             ],
           ),
         );
-      },
+      },onLoading: Text('Đang tải dữ liệu')
     );
   }
 }
