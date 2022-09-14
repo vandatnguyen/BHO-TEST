@@ -1,3 +1,4 @@
+import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/routes/app_pages.dart';
 import 'package:finews_module/shared_widgets/news_box/news_box_controller.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,6 @@ class FiNewsModule {
     Get.put<HtmlParser>(HtmlParser());
     Get.put<NewsService>(NewsServiceImpl());
     Get.put<NewsBoxController>(NewsBoxController());
-
     timeago.setLocaleMessages('en', MyCustomMessages());
   }
 
@@ -42,7 +42,7 @@ class MyCustomMessages implements LookupMessages {
   @override String prefixFromNow() => '';
   @override String suffixAgo() => '';
   @override String suffixFromNow() => '';
-  @override String lessThanOneMinute(int seconds) => 'now';
+  @override String lessThanOneMinute(int seconds) => 'vừa xong';
   @override String aboutAMinute(int minutes) => '${minutes} phút trước';
   @override String minutes(int minutes) => '${minutes} phút trước';
   @override String aboutAnHour(int minutes) => '${minutes} phút trước';
