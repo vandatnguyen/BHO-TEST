@@ -9,7 +9,10 @@ class ArticleListResponse {
   @JsonKey(name: "articles")
   final List<NewsDetailModel> articles;
 
-  ArticleListResponse({required this.articles});
+  @JsonKey(name: "last")
+  final double last;
+
+  ArticleListResponse({required this.articles, required this.last});
 
 
   static ArticleListResponse fromResult(dynamic data) =>

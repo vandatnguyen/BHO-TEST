@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/pages/home/component/TextWithIcon.dart';
 import 'package:finews_module/pages/home/home_page.dart';
 import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/shared_widgets/CustomRefresher.dart';
+import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as time_ago;
@@ -20,24 +23,53 @@ class NewsPage extends GetView<HomePageController> {
   @override
   Widget build(BuildContext context) {
     controller.categoryId = categoryId;
-    return controller.obx((state) => CustomRefresher(
-          controller: controller.refreshController,
-          onRefresh: controller.onRefresh,
-          child: ListView.builder(
-            itemCount: state!.length,
-            itemBuilder: (context, index) {
-              if (state[index].type == 1) {
-                return HeadingItem(state[0].model).buildTitle(context);
-              }
-              if (state[index].type == 2) {
-                return HorizontalListViewItem(state[index].listNewsDetailModel)
-                    .buildHorizontalListView(context);
-              }
-              final item = state[index];
-              return MessageItem(item.model).buildSubtitle(context);
-            },
-          ),
-        ));
+    return controller.obx(
+      (state) => CustomRefresher(
+        controller: controller.refreshController,
+        onRefresh: controller.onRefresh,
+        onLoading: controller.onLoadMore,
+        child: ListView.builder(
+          itemCount: state!.length,
+          itemBuilder: (context, index) {
+            if (state[index].type == 1) {
+              return HeadingItem(state[0].model).buildTitle(context);
+            }
+            if (state[index].type == 2) {
+              return HorizontalListViewItem(state[index].listNewsDetailModel)
+                  .buildHorizontalListView(context);
+            }
+            final item = state[index];
+            return MessageItem(item.model).buildSubtitle(context);
+          },
+        ),
+      ),
+      onLoading: ListNoDataBackground(
+        padding: PAD_SYM_H40,
+        pngPath: "assets/images/ic_no_data.png",
+        title: "",
+        desc: "",
+        btnTitle: "Thử lại",
+        showIconButton: true,
+        isLoading: true,
+        onPressed: () => controller.onRefresh(),
+      ),
+      onError: (error) => ListNoDataBackground(
+        padding: PAD_SYM_H40,
+        showIconButton: true,
+        btnTitle: "Thử lại",
+        pngPath: "assets/images/ic_no_data.png",
+        desc: "Đã có lỗi xảy ra, vui lòng thử lại",
+        onPressed: () => controller.onRefresh(),
+      ),
+      onEmpty: ListNoDataBackground(
+        padding: PAD_SYM_H40,
+        showIconButton: true,
+        btnTitle: "Thử lại",
+        pngPath: "assets/images/ic_no_data.png",
+        desc: "Đã có lỗi xảy ra, vui lòng thử lại",
+        onPressed: () => controller.onRefresh(),
+      ),
+    );
   }
 }
 
@@ -213,12 +245,23 @@ class NewsItem extends StatelessWidget {
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      newsDetail.thumb,
-                      width: 60,
+                    child: CachedNetworkImage(
                       height: 60,
+                      width: 60,
                       fit: BoxFit.cover,
+                      imageUrl: newsDetail.thumb,
+                      placeholder: (context, url) => Transform.scale(
+                        scale: 0.5,
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
+                    // Image.network(
+                    //   newsDetail.thumb,
+                    //   width: 60,
+                    //   height: 60,
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                 ],
               ),
@@ -290,9 +333,16 @@ class HotNewsItem extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.network(
-                newsDetail.thumb,
+              CachedNetworkImage(
+                // height: 22,
+                // width: 22,
                 fit: BoxFit.cover,
+                imageUrl: newsDetail.thumb,
+                placeholder: (context, url) => Transform.scale(
+                  scale: 0.5,
+                  child: CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -317,13 +367,33 @@ class HotNewsItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      newsDetail.sourceName!,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 13,
-                      ),
+                    Row(
+                      children: [
+                        Text(
+                          newsDetail.sourceName!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Image.asset(
+                          "assets/images/dot.png",
+                          package: "finews_module",
+                          width: 4,
+                          height: 4,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          newsDetail.topicName!,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.normal,
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -377,9 +447,16 @@ class SubNewsItem extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.network(
-                newsDetail.thumb,
+              CachedNetworkImage(
+                // height: 22,
+                // width: 22,
                 fit: BoxFit.cover,
+                imageUrl: newsDetail.thumb,
+                placeholder: (context, url) => Transform.scale(
+                  scale: 0.5,
+                  child: const CircularProgressIndicator(),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -404,20 +481,25 @@ class SubNewsItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        color: HexColor.fromHex('#58BD7D'),
-                        padding: const EdgeInsets.all(8),
-                        child: const Text(
-                          "ANV",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                    newsDetail.symbols != null && newsDetail.symbols!.length > 0
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Container(
+                              color: HexColor.fromHex('#58BD7D'),
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                newsDetail.symbols != null &&
+                                        newsDetail.symbols!.length > 0
+                                    ? newsDetail.symbols![0]
+                                    : "Nguồn",
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink(),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
@@ -431,16 +513,34 @@ class SubNewsItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Text(
-                      newsDetail.topicName! +
-                          " " +
+                    Row(
+                      children: [
+                        Text(
+                          newsDetail.topicName!,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Image.asset(
+                          "assets/images/dot.png",
+                          package: "finews_module",
+                          width: 4,
+                          height: 4,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
                           time_ago.format(DateTime.fromMillisecondsSinceEpoch(
                               newsDetail.pubdate!)),
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                      ),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
