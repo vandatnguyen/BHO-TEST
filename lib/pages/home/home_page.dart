@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:finews_module/data/entities/website.dart';
 import 'package:finews_module/pages/home/new_page.dart';
 import 'package:finews_module/shared_widgets/news_box/news_box.dart';
+import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'home_page_controller.dart';
 
@@ -24,10 +29,43 @@ class HomeApplicationFlow extends StatefulWidget {
 
 class _HomeApplicationFlowState extends State<HomeApplicationFlow>
     with SingleTickerProviderStateMixin {
-  late final _tabController = TabController(length: 4, vsync: this);
+  late TabController _tabController;
+  final tabs = ["Tất cả"];
+  final tabsId = ["666666"];
+  List<Website> listWebsite = <Website>[];
+  final box = GetStorage();
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(() => HomePageController(), tag: "666666");
+    try {
+      var websiteStringCached = box.read('websites');
+      if (websiteStringCached != null){
+        listWebsite = (jsonDecode(websiteStringCached) as List).map((website) => Website.fromJson(website)).toList();
+      }
+    } catch (e) {
+      print(e);
+    }
+    try {
+      if (listWebsite.isNotEmpty){
+        tabs.clear();
+        tabsId.clear();
+        listWebsite.forEach((element) {
+          if (element.id == 666666){
+            element.topic.forEach((topic) {
+              tabs.add(topic.name);
+              tabsId.add(topic.id.toString());
+              Get.lazyPut(() => HomePageController(), tag: topic.id.toString());
+            });
+          }
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+    _tabController = TabController(length: tabs.length, vsync: this);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -70,55 +108,19 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
               borderRadius: BorderRadius.circular(10), // Creates border
               color: HexColor.fromHex('#58BD7D')),
           controller: _tabController,
-          tabs: const <Widget>[
-            // Tab(
-            //   text: 'Box news',
-            // ),
-            Tab(
-              text: 'Tất cả',
-            ),
-            Tab(
-              text: 'Chứng khoán',
-            ),
-            Tab(
-              text: 'Bất động sản',
-            ),
-            Tab(
-              text: 'Tài chính',
-            ),
-          ],
+          tabs: tabs.map((e) => Tab(
+            text: e,
+          )).toList(),
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          // const BoxNews(),
-          NewsPage(
-            onNext: () => _tabController.index = 1,
-            categoryId: "666666",
-          ),
-          NewsPage(onNext: () => _tabController.index = 2, categoryId: "31"),
-          NewsPage(onNext: () => _tabController.index = 3, categoryId: "34"),
-          NewsPage(onNext: () => _tabController.index = 4, categoryId: "30"),
-        ],
+        children:
+          tabsId.map((e) => NewsPage(
+            onNext: () => _tabController.index = index++,
+            categoryId: e,
+          )).toList(),
       ),
     );
   }
-}
-
-extension HexColor on Color {
-  /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
-  static Color fromHex(String hexString) {
-    final buffer = StringBuffer();
-    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
-    buffer.write(hexString.replaceFirst('#', ''));
-    return Color(int.parse(buffer.toString(), radix: 16));
-  }
-
-  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
-  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
-      '${alpha.toRadixString(16).padLeft(2, '0')}'
-      '${red.toRadixString(16).padLeft(2, '0')}'
-      '${green.toRadixString(16).padLeft(2, '0')}'
-      '${blue.toRadixString(16).padLeft(2, '0')}';
 }

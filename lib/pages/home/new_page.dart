@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/pages/home/component/TextWithIcon.dart';
-import 'package:finews_module/pages/home/home_page.dart';
 import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/shared_widgets/CustomRefresher.dart';
 import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
+import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as time_ago;
@@ -58,7 +58,7 @@ class NewsPage extends GetView<HomePageController> {
         showIconButton: true,
         btnTitle: "Thử lại",
         pngPath: "assets/images/ic_no_data.png",
-        desc: "Đã có lỗi xảy ra, vui lòng thử lại",
+        desc: "Có lỗi xảy ra, vui lòng thử lại",
         onPressed: () => controller.onRefresh(),
       ),
       onEmpty: ListNoDataBackground(
@@ -66,7 +66,7 @@ class NewsPage extends GetView<HomePageController> {
         showIconButton: true,
         btnTitle: "Thử lại",
         pngPath: "assets/images/ic_no_data.png",
-        desc: "Đã có lỗi xảy ra, vui lòng thử lại",
+        desc: "Có lỗi xảy ra, vui lòng thử lại",
         onPressed: () => controller.onRefresh(),
       ),
     );
@@ -93,7 +93,12 @@ class HeadingItem implements ListItem {
 
   @override
   Widget buildTitle(BuildContext context) {
-    return HotNewsItem(newsDetail: newsDetail);
+    return GestureDetector(
+        onTap: () {
+          Get.toNamed(AppRoutes.newsDetail,
+              arguments: {"news": newsDetail, "title": newsDetail.topicName});
+        },
+        child: HotNewsItem(newsDetail: newsDetail));
   }
 
   @override
@@ -122,7 +127,8 @@ class MessageItem implements ListItem {
         ],
       ),
       onTap: () {
-        Get.toNamed(AppRoutes.newsDetail);
+        Get.toNamed(AppRoutes.newsDetail,
+            arguments: {"news": newsDetail, "title": newsDetail.topicName});
       },
     );
   }
@@ -153,8 +159,9 @@ class HorizontalListViewItem implements ListItem {
 
 class NewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
+  final bool noPadding;
 
-  const NewsItem({Key? key, required this.newsDetail}) : super(key: key);
+  const NewsItem({Key? key, required this.newsDetail, this.noPadding = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -165,9 +172,9 @@ class NewsItem extends StatelessWidget {
       },
       child: Container(
         alignment: AlignmentDirectional.centerStart,
-        padding: const EdgeInsets.symmetric(
+        padding: EdgeInsets.symmetric(
           vertical: 12,
-          horizontal: 12,
+          horizontal: !noPadding ? 12 : 0,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -588,7 +595,14 @@ Widget _horizontalListView(List<NewsDetailModel> listNewsDetailModel) {
                 scrollDirection: Axis.horizontal,
                 itemCount: listNewsDetailModel.length,
                 itemBuilder: (context, index) {
-                  return SubNewsItem(listNewsDetailModel[index]);
+                  return GestureDetector(
+                    child: SubNewsItem(listNewsDetailModel[index]),
+                    onTap: () {
+                      Get.toNamed(AppRoutes.newsDetail,
+                          arguments: {"news": listNewsDetailModel[index], "title": listNewsDetailModel[index].topicName});
+                    },
+                  );
+                  // return SubNewsItem(listNewsDetailModel[index]);
                 },
               ),
             ),

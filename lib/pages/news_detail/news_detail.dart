@@ -72,9 +72,11 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                         },
                                         preventDuplicates: false);
                                   },
-                                  child: NewsItem(
+                                  child:Column(
+                                    children: <Widget>[NewsItem(
                                       newsDetail:
-                                          controller.relativeNews[index]),
+                                      controller.relativeNews[index], noPadding: true,),const Divider()])
+
                                 )))
                       ],
                 )),
@@ -97,12 +99,12 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                     builder: (builder) => NewsDetailSetting());
               },
             )),
-        Container(
-          alignment: Alignment.bottomCenter,
-          child: SlideTransition(
-              position: controller.offsetBottomAnimation,
-              child: const NewsDetailFixedFooter()),
-        )
+        // Container(
+        //   alignment: Alignment.bottomCenter,
+        //   child: SlideTransition(
+        //       position: controller.offsetBottomAnimation,
+        //       child: const NewsDetailFixedFooter()),
+        // )
       ]),
     );
   }

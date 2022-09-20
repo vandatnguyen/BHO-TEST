@@ -57,33 +57,33 @@ class NewsDetailFixedHeader extends StatelessWidget {
                             fontSize: 20,
                             color: foregroundColor),
                       )),
-                      InkWell(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: ImageIcon( const AssetImage("assets/images/ic_font_setting.png", package:  'finews_module'), color: foregroundColor)
-                              //Icon(Icons.text_decrease, color: foregroundColor),
-                        ),
-                        onTap: () {
-                          if (onSetting != null) {
-                            onSetting!();
-                          }
-                        },
-                      ),
-                     const SizedBox(width: 10,),
-                      InkWell(
-                        child: SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: ImageIcon( const AssetImage("assets/images/ic_bookmark.png", package:  'finews_module'), color: foregroundColor)
-                             // Icon(Icons.bookmark_add, color: foregroundColor),
-                        ),
-                        onTap: () {
-                          if (onBookmark != null) {
-                            onBookmark!();
-                          }
-                        },
-                      )
+                     //  InkWell(
+                     //    child: SizedBox(
+                     //      width: 30,
+                     //      height: 30,
+                     //      child: ImageIcon( const AssetImage("assets/images/ic_font_setting.png", package:  'finews_module'), color: foregroundColor)
+                     //          //Icon(Icons.text_decrease, color: foregroundColor),
+                     //    ),
+                     //    onTap: () {
+                     //      if (onSetting != null) {
+                     //        onSetting!();
+                     //      }
+                     //    },
+                     //  ),
+                     // const SizedBox(width: 10,),
+                     //  InkWell(
+                     //    child: SizedBox(
+                     //      width: 30,
+                     //      height: 30,
+                     //      child: ImageIcon( const AssetImage("assets/images/ic_bookmark.png", package:  'finews_module'), color: foregroundColor)
+                     //         // Icon(Icons.bookmark_add, color: foregroundColor),
+                     //    ),
+                     //    onTap: () {
+                     //      if (onBookmark != null) {
+                     //        onBookmark!();
+                     //      }
+                     //    },
+                     //  )
                     ],
                   ),
                 )),

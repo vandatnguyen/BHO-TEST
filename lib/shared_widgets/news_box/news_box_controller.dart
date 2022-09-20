@@ -13,11 +13,13 @@ class NewsBoxController extends GetxController
 
   final newsService = Get.find<NewsService>();
 
-  late TabController tabController;
+  late TabController tabController = TabController(vsync: this, length: 0);
 
-  final tabs = ['Tất cả', 'Chứng khoán', 'Bất động sản', 'Doanh nghiệp'];
-  final tabsId = ['666666', '31', '34', '30'];
+  final tabs = ['Tất cả'];
+  final tabsId = ['666666'];
   List<Website> listWebsite = <Website>[];
+  RxList<String> tabsRx = RxList();
+  RxList<String> tabsRx2 = RxList();
 
   String currentTag = "666666";
   final box = GetStorage();
@@ -25,8 +27,6 @@ class NewsBoxController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(vsync: this, length: tabs.length);
-    setTag("666666");
     try {
       var websiteStringCached = box.read('websites');
       if (websiteStringCached != null){
@@ -35,19 +35,50 @@ class NewsBoxController extends GetxController
     } catch (e) {
       print(e);
     }
+    // tabController = TabController(vsync: this, length: 1);
+    // tabsRx.value = tabs;
+    initWebsite();
+  }
+
+  void initWebsite() async {
+    change([], status: RxStatus.loading());
+    try {
+      var response = await Get.find<NewsService>().getWebsite();
+      listWebsite = response.websites;
+      tabs.clear();
+      tabsId.clear();
+      listWebsite.forEach((element) {
+            if (element.id == 666666){
+              element.topic.forEach((topic) {
+                tabs.add(topic.name);
+                tabsId.add(topic.id.toString());
+              });
+            }
+          });
+      box.write('websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
+      // listWebsiteRx.addAll();
+      tabController = TabController(vsync: this, length: tabs.length);
+      tabsRx.value = tabs;
+      tabsRx2.value = tabs;
+      setTag(tabsId[0]);
+    } catch (e) {
+      print(e);
+      change([], status: RxStatus.empty());
+    }
   }
 
   void onRefresh() {
-    setTag(currentTag);
+    if (listWebsite == null || listWebsite.isEmpty){
+      initWebsite();
+    }else {
+      setTag(currentTag);
+    }
   }
 
   void setTag(String tag) async {
     try {
       currentTag = tag;
       change([], status: RxStatus.loading());
-      var response = await Get.find<NewsService>().getWebsite();
-      listWebsite = response.websites;
-      box.write('websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
       var res = await newsService.getArticleV2(topic: tag,last: -1);
       for (var value in res.articles) {
         value.topicName = getTopicName(value.topic);

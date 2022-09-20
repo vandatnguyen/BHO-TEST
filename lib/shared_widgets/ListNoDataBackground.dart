@@ -1,4 +1,5 @@
 import 'package:finews_module/configs/constants.dart';
+import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class ListNoDataBackground extends StatelessWidget {
@@ -82,10 +83,10 @@ class ListNoDataBackground extends StatelessWidget {
             },
             child: Container(
               padding: const EdgeInsets.only(
-                  left: 20, top: 10, right: 20, bottom: 10),
+                  left: 54, top: 12, right: 54, bottom: 12),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-                color: const Color(0xFF27AE60),
+                borderRadius: BorderRadius.circular(1000),
+                color: HexColor.fromHex('#58BD7D'),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -113,6 +114,7 @@ class ListNoDataBackground extends StatelessWidget {
               ),
             ),
           ),
+        SIZED_BOX_H12,
       ],
     );
   }
