@@ -16,7 +16,7 @@ class DevConfig implements BaseConfig {
   @override
   EnvironmentConfiguration get environment => EnvironmentConfiguration.develop;
   @override
-  String get host => "dev-api.r14express.vn"; 
+  String get host => "api.r14express.vn";
   @override
   String get protocol => "https://"; 
   @override 
@@ -30,7 +30,7 @@ class StagingConfig implements BaseConfig {
    @override
   EnvironmentConfiguration get environment => EnvironmentConfiguration.develop;
   @override
-  String get host => "dev-api.r14express.vn"; 
+  String get host => "api.r14express.vn";
   @override
   String get protocol => "https://"; 
   @override 
@@ -44,7 +44,7 @@ class ProdConfig implements BaseConfig {
    @override
   EnvironmentConfiguration get environment => EnvironmentConfiguration.develop;
   @override
-  String get host => "dev-api.r14express.vn"; 
+  String get host => "api.r14express.vn";
   @override
   String get protocol => "https://"; 
   @override 
