@@ -1,4 +1,5 @@
 import 'package:finews_module/configs/constants.dart';
+import 'package:finews_module/finews_module.dart';
 import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
 import 'package:finews_module/theme/app_color.dart';
 import 'package:finews_module/utils/extensions.dart';
@@ -15,6 +16,7 @@ class BoxNews extends GetView<NewsBoxController> {
 
   @override
   Widget build(BuildContext context) {
+    FiNewsModule.initNewsRouteAndBinding();
     return Container(
       decoration: const BoxDecoration(color: Colors.white),
       child: ListView(
@@ -51,7 +53,8 @@ class BoxNews extends GetView<NewsBoxController> {
               ),
               unselectedLabelColor: COLOR_858585,
               indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100), // Creates border
+                  borderRadius: BorderRadius.circular(100),
+                  // Creates border
                   color: HexColor.fromHex('#F5F6FA')),
               controller: controller.tabController,
               onTap: (index) {
@@ -116,32 +119,30 @@ class BoxNews extends GetView<NewsBoxController> {
               onPressed: () => controller.onRefresh(),
             ),
           ),
-            Obx(
-            () =>
-            GestureDetector(
-              onTap: () {
-                print('onTaponTap:');
-                // Navigator.pushNamed(context, "write your route");
-                Get.toNamed(AppRoutes.homeParent2);
-              },
-              onLongPress: () {
-                // open dialog OR navigate OR do what you want
-              },
-              child: Container(
-                alignment: Alignment.center,
-                // width: double.infinity,
-                // color: Colors.lightBlue,
-                padding: const EdgeInsets.symmetric(
-                  vertical: 12,
-                  horizontal: 12,
+          Obx(() => GestureDetector(
+                onTap: () {
+                  print('onTaponTap:');
+                  Get.toNamed(AppRoutes.homeParent2,
+                      arguments: {"idSelected": controller.currentTag});
+                },
+                onLongPress: () {
+                  // open dialog OR navigate OR do what you want
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  // width: double.infinity,
+                  // color: Colors.lightBlue,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12,
+                    horizontal: 12,
+                  ),
+                  child: controller.tabsRx2.isNotEmpty
+                      ? Text("Xem thêm",
+                          style: TextStyle(
+                              color: HexColor.fromHex("#2F80ED"), fontSize: 14))
+                      : const SizedBox.shrink(),
                 ),
-                child: controller.tabsRx2.isNotEmpty
-                    ? Text("Xem thêm",
-                        style: TextStyle(
-                            color: HexColor.fromHex("#2F80ED"), fontSize: 14))
-                    : const SizedBox.shrink(),
-              ),
-            )),
+              )),
         ],
       ),
     );

@@ -36,27 +36,38 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
   final box = GetStorage();
   int index = 0;
 
+  String idSelected = "666666";
+
   @override
   Widget build(BuildContext context) {
+    idSelected = Get.arguments["idSelected"] as String;
     Get.lazyPut(() => HomePageController(), tag: "666666");
     try {
       var websiteStringCached = box.read('websites');
-      if (websiteStringCached != null){
-        listWebsite = (jsonDecode(websiteStringCached) as List).map((website) => Website.fromJson(website)).toList();
+      if (websiteStringCached != null) {
+        listWebsite = (jsonDecode(websiteStringCached) as List)
+            .map((website) => Website.fromJson(website))
+            .toList();
       }
     } catch (e) {
       print(e);
     }
+    int index = 0;
+    int i = 0;
     try {
-      if (listWebsite.isNotEmpty){
+      if (listWebsite.isNotEmpty) {
         tabs.clear();
         tabsId.clear();
         listWebsite.forEach((element) {
-          if (element.id == 666666){
+          if (element.id == 666666) {
             element.topic.forEach((topic) {
               tabs.add(topic.name);
               tabsId.add(topic.id.toString());
               Get.lazyPut(() => HomePageController(), tag: topic.id.toString());
+              if (idSelected == topic.id.toString()) {
+                index = i;
+              }
+              i++;
             });
           }
         });
@@ -64,7 +75,8 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
     } catch (e) {
       print(e);
     }
-    _tabController = TabController(length: tabs.length, vsync: this);
+    _tabController =
+        TabController(length: tabs.length, vsync: this, initialIndex: index);
 
     return Scaffold(
       appBar: AppBar(
@@ -108,18 +120,21 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
               borderRadius: BorderRadius.circular(10), // Creates border
               color: HexColor.fromHex('#58BD7D')),
           controller: _tabController,
-          tabs: tabs.map((e) => Tab(
-            text: e,
-          )).toList(),
+          tabs: tabs
+              .map((e) => Tab(
+                    text: e,
+                  ))
+              .toList(),
         ),
       ),
       body: TabBarView(
         controller: _tabController,
-        children:
-          tabsId.map((e) => NewsPage(
-            onNext: () => _tabController.index = index++,
-            categoryId: e,
-          )).toList(),
+        children: tabsId
+            .map((e) => NewsPage(
+                  onNext: () => _tabController.index = index++,
+                  categoryId: e,
+                ))
+            .toList(),
       ),
     );
   }

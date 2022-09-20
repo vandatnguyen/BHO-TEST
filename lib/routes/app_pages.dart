@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'app_routes.dart';
 
 class AppPages {
-  static const initRoute = AppRoutes.homeParent;
 
   static final newsRoutes = [
     GetPage(

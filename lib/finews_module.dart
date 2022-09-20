@@ -11,10 +11,10 @@ import 'routes/app_routes.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class FiNewsModule {
-  static Future openNewsModule() async {
-    initNewsRouteAndBinding();
-    openFiNewsApp();
-  }
+  // static Future openNewsModule() async {
+  //   initNewsRouteAndBinding();
+  //   openFiNewsApp();
+  // }
 
   static void initNewsRouteAndBinding() {
     for (final value in AppPages.newsRoutes) {
@@ -30,9 +30,9 @@ class FiNewsModule {
   }
 
 
-  static void openFiNewsApp() {
-    Get.toNamed(AppRoutes.homeParent);
-  }
+  // static void openFiNewsApp() {
+  //   Get.toNamed(AppRoutes.homeParent);
+  // }
 }
 
 

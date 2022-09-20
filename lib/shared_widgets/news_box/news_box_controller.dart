@@ -10,7 +10,6 @@ import '../../cores/services/news_api_service.dart';
 
 class NewsBoxController extends GetxController
     with StateMixin<List<NewsDetailModel>>, GetTickerProviderStateMixin {
-
   final newsService = Get.find<NewsService>();
 
   late TabController tabController = TabController(vsync: this, length: 0);
@@ -23,15 +22,18 @@ class NewsBoxController extends GetxController
 
   String currentTag = "666666";
   final box = GetStorage();
+  Map<String, List<NewsDetailModel>> cachedData = {};
 
   @override
   void onInit() {
     super.onInit();
     try {
       var websiteStringCached = box.read('websites');
-      if (websiteStringCached != null){
-            listWebsite = (jsonDecode(websiteStringCached) as List).map((website) => Website.fromJson(website)).toList();
-          }
+      if (websiteStringCached != null) {
+        listWebsite = (jsonDecode(websiteStringCached) as List)
+            .map((website) => Website.fromJson(website))
+            .toList();
+      }
     } catch (e) {
       print(e);
     }
@@ -48,14 +50,15 @@ class NewsBoxController extends GetxController
       tabs.clear();
       tabsId.clear();
       listWebsite.forEach((element) {
-            if (element.id == 666666){
-              element.topic.forEach((topic) {
-                tabs.add(topic.name);
-                tabsId.add(topic.id.toString());
-              });
-            }
+        if (element.id == 666666) {
+          element.topic.forEach((topic) {
+            tabs.add(topic.name);
+            tabsId.add(topic.id.toString());
           });
-      box.write('websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
+        }
+      });
+      box.write(
+          'websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
       // listWebsiteRx.addAll();
       tabController = TabController(vsync: this, length: tabs.length);
       tabsRx.value = tabs;
@@ -68,9 +71,9 @@ class NewsBoxController extends GetxController
   }
 
   void onRefresh() {
-    if (listWebsite == null || listWebsite.isEmpty){
+    if (listWebsite == null || listWebsite.isEmpty) {
       initWebsite();
-    }else {
+    } else {
       setTag(currentTag);
     }
   }
@@ -78,14 +81,19 @@ class NewsBoxController extends GetxController
   void setTag(String tag) async {
     try {
       currentTag = tag;
-      change([], status: RxStatus.loading());
-      var res = await newsService.getArticleV2(topic: tag,last: -1);
-      for (var value in res.articles) {
-        value.topicName = getTopicName(value.topic);
-        value.sourceName = getSourceName(value.source);
-        value.sourceIconUrl = getSourceIconUrl(value.source);
+      if (cachedData[currentTag] == null || cachedData[currentTag]!.isEmpty) {
+        change([], status: RxStatus.loading());
+        var res = await newsService.getArticleV2(topic: tag, last: -1);
+        for (var value in res.articles) {
+          value.topicName = getTopicName(value.topic);
+          value.sourceName = getSourceName(value.source);
+          value.sourceIconUrl = getSourceIconUrl(value.source);
+        }
+        cachedData.putIfAbsent(currentTag, () => res.articles);
+        change(res.articles, status: RxStatus.success());
+      } else {
+        change(cachedData[currentTag], status: RxStatus.success());
       }
-      change(res.articles, status: RxStatus.success());
     } catch (e) {
       debugPrint(e.toString());
       change([], status: RxStatus.empty());
