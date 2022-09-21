@@ -11,6 +11,7 @@ import 'component/NewsDetailFooter.dart';
 import 'component/NewsDetailHeader.dart';
 import 'component/NewsDetailStock.dart';
 import 'component/NewsDetailTopRelated.dart';
+import 'component/news_detail_error_widget.dart';
 import 'settings/NewsDetailSetting.dart';
 import '../../cores/models/news_detail.dart';
 
@@ -31,6 +32,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.white,elevation: 0,),
       body: Stack(children: [
         Scaffold(
           body: SingleChildScrollView(
@@ -47,7 +49,15 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                         if (controller.model?.stockInfo != null &&
                             (controller.model?.stockInfo?.length ?? 0) > 0)
                           NewsDetailStock(
-                              model: controller.model!.stockInfo!.first)
+                              model: controller.model!.stockInfo!.first),
+                        Obx(() => (controller.error.value != null)
+                            ? NewsDetailErrorWidget(
+                                onTap: () {
+                                  controller.loadContent();
+                                },
+                                error: controller.error.value!,
+                              )
+                            : const SizedBox())
                       ] +
                       controller.elements.value
                           .map((e) => e.buildWidget(context))
@@ -63,21 +73,22 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: controller.relativeNews.length,
                             itemBuilder: (context, index) => GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(AppRoutes.newsDetail,
-                                        arguments: {
-                                          "news":
-                                              controller.relativeNews[index],
-                                          "title": ""
-                                        },
-                                        preventDuplicates: false);
-                                  },
-                                  child:Column(
-                                    children: <Widget>[NewsItem(
-                                      newsDetail:
-                                      controller.relativeNews[index], noPadding: true,),const Divider()])
-
-                                )))
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.newsDetail,
+                                      arguments: {
+                                        "news": controller.relativeNews[index],
+                                        "title": ""
+                                      },
+                                      preventDuplicates: false);
+                                },
+                                child: Column(children: <Widget>[
+                                   NewsItem(
+                                        newsDetail:
+                                            controller.relativeNews[index],
+                                        noPadding: true,
+                                      ),
+                                  const Divider()
+                                ]))))
                       ],
                 )),
           ),
