@@ -31,18 +31,20 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(toolbarHeight: 0, backgroundColor: Colors.white,elevation: 0,),
+    return Scaffold( 
       body: Stack(children: [
         Scaffold(
-          body: SingleChildScrollView(
+          
+          body: Padding( 
             padding:
-                const EdgeInsets.only(top: 0, bottom: 100, left: 16, right: 16),
+                const EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),
+            child: Obx(()=>CustomScrollView(
+          /*  padding:
+                const EdgeInsets.only(top: 0, bottom: 100, left: 16, right: 16),*/
             controller: controller.scrollController,
-            child: Obx(() => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                        NewsDetailHeader(
+            slivers: [
+              SliverList(delegate: SliverChildListDelegate.fixed([
+                NewsDetailHeader(
                             title: controller.model?.title ?? "",
                             sourceName: controller.model!.sourceName ?? "",
                             date: controller.model?.formatDisplayDate() ?? ""),
@@ -58,21 +60,23 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                 error: controller.error.value!,
                               )
                             : const SizedBox())
-                      ] +
-                      controller.elements.value
-                          .map((e) => e.buildWidget(context))
-                          .toList() +
-                      [
-                        NewsDetailFooter(
+              ])),
+              SliverList(delegate: SliverChildBuilderDelegate(
+                
+                (context, index) {
+                  return controller.elements.elementAt(index).buildWidget(context);
+                },
+                childCount: controller.elements.length
+              )),
+              SliverToBoxAdapter(child: NewsDetailFooter(
                           originSrc: controller.model?.webUrl ?? "",
                           tags: controller.model?.tags ?? [],
-                        ),
-                        /*NewsDetailTopRelated()*/
-                        Obx(() => ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: controller.relativeNews.length,
-                            itemBuilder: (context, index) => GestureDetector(
+                        ),),
+
+               SliverList(delegate: SliverChildBuilderDelegate(
+                
+                (context, index) {
+                  return GestureDetector(
                                 onTap: () {
                                   Get.toNamed(AppRoutes.newsDetail,
                                       arguments: {
@@ -88,11 +92,13 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                         noPadding: true,
                                       ),
                                   const Divider()
-                                ]))))
-                      ],
-                )),
-          ),
-        ),
+                                ]));
+                },
+                childCount: controller.relativeNews.value.length
+              ))
+            ]
+          )),
+        )),
         SlideTransition(
             position: controller.offsetAnimation,
             child: NewsDetailFixedHeader(
