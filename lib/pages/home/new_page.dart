@@ -165,12 +165,13 @@ class NewsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Get.toNamed(AppRoutes.newsDetail,
-            arguments: {"news": newsDetail, "title": newsDetail.topicName});
-      },
-      child: Container(
+    return
+      // GestureDetector(
+      // onTap: () {
+      //   Get.toNamed(AppRoutes.newsDetail,
+      //       arguments: {"news": newsDetail, "title": newsDetail.topicName});
+      // },child:
+      Container(
         alignment: AlignmentDirectional.centerStart,
         padding: EdgeInsets.symmetric(
           vertical: 12,
@@ -315,8 +316,8 @@ class NewsItem extends StatelessWidget {
             )
           ],
         ),
-      ),
-    );
+      );
+    // );
   }
 }
 

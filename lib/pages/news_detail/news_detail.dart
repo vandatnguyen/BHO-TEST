@@ -16,6 +16,7 @@ import '../../cores/models/news_detail.dart';
 
 class NewsDetailPageView extends GetView<NewsDetailController> {
   const NewsDetailPageView({Key? key}) : super(key: key);
+
   @override
   String? get tag {
     if (Get.arguments != null && Get.arguments["news"] is NewsDetailModel) {
@@ -63,21 +64,22 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: controller.relativeNews.length,
                             itemBuilder: (context, index) => GestureDetector(
-                                  onTap: () {
-                                    Get.toNamed(AppRoutes.newsDetail,
-                                        arguments: {
-                                          "news":
-                                              controller.relativeNews[index],
-                                          "title": ""
-                                        },
-                                        preventDuplicates: false);
-                                  },
-                                  child:Column(
-                                    children: <Widget>[NewsItem(
-                                      newsDetail:
-                                      controller.relativeNews[index], noPadding: true,),const Divider()])
-
-                                )))
+                                onTap: () {
+                                  print("ontap");
+                                  Get.toNamed(AppRoutes.newsDetail,
+                                      arguments: {
+                                        "news": controller.relativeNews[index],
+                                        "title": ""
+                                      },
+                                      preventDuplicates: false);
+                                },
+                                child: Column(children: <Widget>[
+                                  NewsItem(
+                                    newsDetail: controller.relativeNews[index],
+                                    noPadding: true,
+                                  ),
+                                  const Divider()
+                                ]))))
                       ],
                 )),
           ),
