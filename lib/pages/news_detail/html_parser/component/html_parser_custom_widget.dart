@@ -1,10 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:finews_module/configs/constants.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
+import 'package:finews_module/pages/news_detail/html_parser/component/flutter_custom_html_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import '../html_parser_shared.dart';
 import '../html_parser_widget.dart';
 import 'html_custom_render_widget.dart';
@@ -25,7 +21,7 @@ class HtmlParserCustomWidget extends HtmlParserWidgetBase {
          customRenders: {
           iframeCustomMatcher() :  iframeCustomRender(),
           networkSourceMatcher(): networkImageCustomRender(),
-          tableMatcher(): tableRender(), 
+          tableMatcher(): tableCustomRender(),
           svgTagMatcher(): svgTagRender(),
           svgDataUriMatcher(): svgDataImageRender(),
           svgAssetUriMatcher(): svgAssetImageRender(),
