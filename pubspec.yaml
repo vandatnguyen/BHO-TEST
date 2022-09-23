@@ -56,8 +56,8 @@ dependencies:
   #    git:
   #      url: https://github.com/zstart6490/candlesticks2
   #      ref: develop
-  firebase_core: 1.18.0
-  firebase_analytics: 9.1.10
+  firebase_core: ^1.22.0
+  firebase_analytics: ^9.3.4
   timeago: ^3.3.0
   flutter_html_all: ^3.0.0-alpha.5
 
