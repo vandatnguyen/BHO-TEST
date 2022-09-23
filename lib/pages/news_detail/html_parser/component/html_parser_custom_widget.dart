@@ -25,8 +25,7 @@ class HtmlParserCustomWidget extends HtmlParserWidgetBase {
          customRenders: {
           iframeCustomMatcher() :  iframeCustomRender(),
           networkSourceMatcher(): networkImageCustomRender(),
-          tableMatcher(): tableRender(),
-          iframeMatcher(): CustomIframeRender(),
+          tableMatcher(): tableRender(), 
           svgTagMatcher(): svgTagRender(),
           svgDataUriMatcher(): svgDataImageRender(),
           svgAssetUriMatcher(): svgAssetImageRender(),
