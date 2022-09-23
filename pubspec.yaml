@@ -57,6 +57,7 @@ dependencies:
   #      ref: develop
   firebase_core: 1.18.0
   timeago: ^3.3.0
+  flutter_html_all: ^3.0.0-alpha.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
