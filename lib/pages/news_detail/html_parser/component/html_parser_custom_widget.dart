@@ -32,7 +32,8 @@ class HtmlParserCustomWidget extends HtmlParserWidgetBase {
           svgNetworkSourceMatcher(): svgNetworkImageRender(),
           videoMatcher(): videoRender(),
           audioMatcher(): audioRender(),  
-        }, 
+        },
+
         style: {
           "img": Style( 
             width: MediaQuery.of(context).size.width,

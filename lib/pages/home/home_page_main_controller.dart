@@ -12,7 +12,7 @@ import 'package:get_storage/get_storage.dart';
 import 'home_page_controller.dart';
 
 class HomePageMainController extends BaseController
-    with GetSingleTickerProviderStateMixin{
+    with GetSingleTickerProviderStateMixin {
   List<Website> listWebsite = <Website>[];
   String categoryId = "666666";
   final box = GetStorage();
@@ -60,5 +60,11 @@ class HomePageMainController extends BaseController
     }
     tabController =
         TabController(length: tabs.length, vsync: this, initialIndex: index);
+  }
+
+  @override
+  void onClose() {
+    tabController.dispose();
+    super.onClose();
   }
 }
