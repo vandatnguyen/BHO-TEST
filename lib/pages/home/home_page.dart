@@ -16,68 +16,30 @@ class HomePageView extends GetView<HomePageController> {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeApplicationFlow();
+
+    return HomeApplicationFlow(controller);
   }
 }
 
 class HomeApplicationFlow extends StatefulWidget {
-  const HomeApplicationFlow({Key? key}) : super(key: key);
+  HomePageController controller;
+  HomeApplicationFlow(this.controller, {Key? key}) : super(key: key);
 
   @override
-  _HomeApplicationFlowState createState() => _HomeApplicationFlowState();
+  _HomeApplicationFlowState createState() => _HomeApplicationFlowState(controller);
 }
 
-class _HomeApplicationFlowState extends State<HomeApplicationFlow>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  final tabs = ["Tất cả"];
-  final tabsId = ["666666"];
-  List<Website> listWebsite = <Website>[];
-  final box = GetStorage();
-  int index = 0;
+class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
+  HomePageController controller;
+  _HomeApplicationFlowState(this.controller);
 
-  String idSelected = "666666";
+  // List<Website> listWebsite = <Website>[];
+  // final box = GetStorage();
+  // int index = 0;
+
 
   @override
   Widget build(BuildContext context) {
-    idSelected = Get.arguments["idSelected"] as String;
-    Get.lazyPut(() => HomePageController(), tag: "666666");
-    try {
-      var websiteStringCached = box.read('websites');
-      if (websiteStringCached != null) {
-        listWebsite = (jsonDecode(websiteStringCached) as List)
-            .map((website) => Website.fromJson(website))
-            .toList();
-      }
-    } catch (e) {
-      print(e);
-    }
-    int index = 0;
-    int i = 0;
-    try {
-      if (listWebsite.isNotEmpty) {
-        tabs.clear();
-        tabsId.clear();
-        listWebsite.forEach((element) {
-          if (element.id == 666666) {
-            element.topic.forEach((topic) {
-              tabs.add(topic.name);
-              tabsId.add(topic.id.toString());
-              Get.lazyPut(() => HomePageController(), tag: topic.id.toString());
-              if (idSelected == topic.id.toString()) {
-                index = i;
-              }
-              i++;
-            });
-          }
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-    _tabController =
-        TabController(length: tabs.length, vsync: this, initialIndex: index);
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -119,8 +81,8 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
               border: Border.all(color: Colors.white, width: 4),
               borderRadius: BorderRadius.circular(10), // Creates border
               color: HexColor.fromHex('#58BD7D')),
-          controller: _tabController,
-          tabs: tabs
+          controller: controller.tabController,
+          tabs: controller.tabs
               .map((e) => Tab(
                     text: e,
                   ))
@@ -128,10 +90,10 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow>
         ),
       ),
       body: TabBarView(
-        controller: _tabController,
-        children: tabsId
+        controller: controller.tabController,
+        children: controller.tabsId
             .map((e) => NewsPage(
-                  onNext: () => _tabController.index = index++,
+                  onNext: () => controller.tabController.index = controller.tabController.index++,
                   categoryId: e,
                 ))
             .toList(),

@@ -76,44 +76,45 @@ class ListNoDataBackground extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
         SIZED_BOX_H12,
-        if (btnTitle != null)
-          GestureDetector(
-            onTap: () {
-              onPressed!();
-            },
-            child: Container(
-              padding: const EdgeInsets.only(
-                  left: 54, top: 12, right: 54, bottom: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(1000),
-                color: HexColor.fromHex('#58BD7D'),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  if (showIconButton)
-                    // Row(
-                    //   mainAxisSize: MainAxisSize.min,
-                    //   children: <Widget>[
-                    //     Image.asset("assets/images/png/ic_add.png",
-                    //         package: "finews_module"),
-                    //     SIZED_BOX_W12,
-                    //   ],
-                    // ),
-                    Text(
-                      btnTitle ?? "",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        // fontFamily: 'iCielHelveticaNowText',
-                        fontWeight: FontWeight.w700,
-                        decoration: TextDecoration.none,
-                      ),
-                    )
-                ],
-              ),
+        GestureDetector(
+          onTap: () {
+            onPressed!();
+          },
+          child: Container(
+            padding:
+                const EdgeInsets.only(left: 54, top: 12, right: 54, bottom: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(1000),
+              color: (btnTitle != null)
+                  ? HexColor.fromHex('#58BD7D')
+                  : Colors.transparent,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                if (showIconButton)
+                  // Row(
+                  //   mainAxisSize: MainAxisSize.min,
+                  //   children: <Widget>[
+                  //     Image.asset("assets/images/png/ic_add.png",
+                  //         package: "finews_module"),
+                  //     SIZED_BOX_W12,
+                  //   ],
+                  // ),
+                  Text(
+                    btnTitle ?? "",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      // fontFamily: 'iCielHelveticaNowText',
+                      fontWeight: FontWeight.w700,
+                      decoration: TextDecoration.none,
+                    ),
+                  )
+              ],
             ),
           ),
+        ),
         SIZED_BOX_H12,
       ],
     );

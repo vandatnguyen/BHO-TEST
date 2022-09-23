@@ -29,7 +29,7 @@ class NewsDetailController extends BaseController
 
   NewsDetailModel? model;
   String? id;
-
+  Rx<String?> error = Rx<String?>(null); 
   List<Website> listWebsite = <Website>[];
 
   NewsDetailController({this.model, this.id, required this.pageTitle}) {
@@ -53,16 +53,19 @@ class NewsDetailController extends BaseController
         EventManager().fire(EventTrackingReadingNews(model: detail));
         timeRead = DateTime.now().millisecondsSinceEpoch;
       }
+      print(content);
       var html = Get.find<HtmlParser>();
-      html.parserHtml(content);
+      await html.parserHtml(content);
       elements.clear();
       elements.addAll(html.elements);
       loadRecommend();
     } catch (e) {
-      Get.showSnackbar(const GetSnackBar(
+    /*  Get.showSnackbar(const GetSnackBar(
           title: "Không tải được thông tin bài viết",
-          message: "Vui lòng thử lại sau"));
-    }
+          message: "Vui lòng thử lại sau"));*/
+
+          error.value = "Đã có lỗi xảy ra, vui lòng thử lại";
+    } 
   }
 
   Future<void> loadRecommend() async {
@@ -158,12 +161,12 @@ class NewsDetailController extends BaseController
     scrollController.dispose();
     _controller.dispose();
     if (model != null) {
-      var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
-      diff = (diff / 1000) as int;
-      EventManager().fire(EventTrackingReadingNewsEnd(
-        model: model!,
-        time: diff,
-      ));
+      // var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
+      // diff = (diff / 1000) as int;
+      // EventManager().fire(EventTrackingReadingNewsEnd(
+      //   model: model!,
+      //   time: diff,
+      // ));
     }
     super.onClose();
   }

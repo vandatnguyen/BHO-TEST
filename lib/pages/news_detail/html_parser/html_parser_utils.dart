@@ -1,3 +1,5 @@
+ 
+import 'html_parser_extension.dart';
 import 'html_parser_helper.dart';
 
 class HtmlParserUtils {
@@ -52,6 +54,7 @@ class HtmlParserUtils {
     "h5",
     "ol",
     "h6",
+    "figure",
     "group",
     "video",
     "img",
@@ -103,14 +106,37 @@ class HtmlParserUtils {
     if (node is Element) {
       return false;
     }
-    return node.children.length == 0;
+    return node.children.isEmpty;
   }
 
   bool isCustomRenderNode(Node node) {
+
+    var element = node.asOrNull<Element>(); 
+    var className = element?.classes.map((e) => e).toList();
+    if (element == null && node.parent != null) {
+      className = node.parent?.classes.map((e) => e).toList();
+    }
+    if ( (className?.indexOf("coinr4-display-for-mobile") ?? -1) >= 0 ) {
+      return true;
+    }
     return false;
   }
 
+
+  bool isRemoveComponent (Node node) {
+   var element = node.asOrNull<Element>(); 
+    var className = element?.classes.map((e) => e).toList();
+    if (element == null && node.parent != null) {
+      className = node.parent?.classes.map((e) => e).toList();
+    }
+    if ( (className?.indexOf("coinr4-display-for-mobile") ?? -1) < 0 && (className?.indexOf("coinr4-display-for-web") ?? -1) >= 0  ) {
+      return true;
+    }
+    return false; 
+}
+
+
   bool isSupportTag(String tag) {
-    return isBlockTag(tag) || isTextTag(tag);
+    return isBlockTag(tag) || isTextTag(tag) || isHyperLinkTag(tag);
   }
 }

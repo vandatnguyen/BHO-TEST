@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+
 import 'html_parser_utils.dart';
 import 'html_parser_extension.dart';
 import 'html_parser_shared.dart';
@@ -21,6 +23,16 @@ class HtmlParser {
 
   HtmlParser() {}
 
+void printWrapped(String text) {
+  final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+  pattern.allMatches(text).forEach((match) => print(match.group(0)));
+}
+  String normalHtml(String html){
+    String normal = html.replaceAll("\n","")
+    .replaceAll(RegExp(r"\s{2,}")," ")
+    .replaceAll(RegExp(r"\t{2,}")," "); 
+    return normal;
+  }
   Future<List<HtmlParserElement>> parserHtml(String content) async {
     if (isWorking != null) {
       await isWorking;
@@ -30,8 +42,9 @@ class HtmlParser {
     isWorking = completer.future;
     _elements.clear();
     elements.clear();
-    //String content = await loadTestText();
-    final DOMParser = HtmlParserHelper("<div>$content</div>");
+    
+   // String content = await loadTestText();
+    final DOMParser = HtmlParserHelper("<div>${normalHtml(content)}</div>");
     parseContentElement(DOMParser.children.first);
     elements = mergeHtmlTag(_elements); 
     completer.complete();
@@ -58,9 +71,12 @@ class HtmlParser {
         mergeStyle(parentStyle, HtmlParserUtils().tagToStyle(tagName));
     //print("-> $newStyle $parentStyle");
 
-    if (!HtmlParserUtils().isSupportTag(tagName)) {
+    if (HtmlParserUtils().isRemoveComponent(node)) {
+      return ;
+    }
+    else if (!HtmlParserUtils().isSupportTag(tagName) || HtmlParserUtils().isCustomRenderNode(node)  ) {
       final parseNode = parseCustomNode(node);
-      print("custom node");
+     // print("custom node");
       addElement(parseNode);
       return;
     } else if (HtmlParserUtils().isTextTag(tagName)) {
@@ -81,12 +97,12 @@ class HtmlParser {
       addElement(parseNode);
     } else if (HtmlParserUtils().isHyperLinkTag(tagName)) {
       final parseNode = parseTextNode(node, parentStyle: parentStyle);
-      var nodeContent = parseNode.content;
-      parseNode.tagName = resultTagName;
+      var nodeContent = parseNode.content; 
       if (nodeContent != null && (nodeContent as String).isNotEmpty == true) {
         parseNode.attachmentLink = node.attributes["href"];
         addElement(parseNode);
-      }
+      } 
+      return ;
     } else if (HtmlParserUtils().isVideoTag(tagName)) {
       final parseNode = parseVideoNode(node);
       addElement(parseNode);

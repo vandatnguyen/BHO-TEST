@@ -24,13 +24,8 @@ class NewsDetailFixedHeader extends StatelessWidget {
   Widget build(Object context) {
     return ClipRect(
       child: Container(
-          color: backgroundColor.withOpacity(0.98),
-          child: BackdropFilter(
-            filter: ui.ImageFilter.blur(
-              sigmaX: 4.0,
-              sigmaY: 4.0,
-            ),
-            child: SafeArea(
+          color: backgroundColor.withOpacity(1),
+          child:  SafeArea(
                 bottom: false,
                 child: Padding(
                   padding:
@@ -87,7 +82,7 @@ class NewsDetailFixedHeader extends StatelessWidget {
                     ],
                   ),
                 )),
-          )),
+          ),
     );
   }
 }

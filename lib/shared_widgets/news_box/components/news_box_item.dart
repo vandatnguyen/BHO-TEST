@@ -15,7 +15,7 @@ class BoxNewsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Get.toNamed(AppRoutes.newsDetail,
             arguments: {"news": newsDetail, "title": newsDetail.topicName});
@@ -70,7 +70,7 @@ class BoxNewsItem extends StatelessWidget {
                             child: Text(
                               newsDetail.topicName!,
                               style: TextStyle(
-                                  color: HexColor.fromHex("#858689"),
+                                  color: HexColor.fromHex("#8A8A8A"),
                                   fontSize: 13),
                             ),
                           ),
