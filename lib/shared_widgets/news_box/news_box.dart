@@ -97,7 +97,7 @@ class BoxNews extends GetView<NewsBoxController> {
               pngPath: "assets/images/ic_no_data.png",
               title: "",
               desc: "",
-              btnTitle: "Thử lại",
+              btnTitle: "",
               showIconButton: true,
               isLoading: true,
               onPressed: () => controller.onRefresh(),

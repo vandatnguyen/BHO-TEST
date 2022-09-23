@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/data/entities/website.dart';
+import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.dart';
@@ -23,6 +24,7 @@ class NewsDetailController extends BaseController
 
   double _pixels = 0;
   int _timestamp = 0;
+  int timeRead = 0;
   var isHideToolbar = false;
 
   NewsDetailModel? model;
@@ -48,6 +50,8 @@ class NewsDetailController extends BaseController
         detail.sourceName = getSourceName(detail.source);
         model = detail;
         content = model?.content ?? "";
+        EventManager().fire(EventTrackingReadingNews(model: detail));
+        timeRead = DateTime.now().millisecondsSinceEpoch;
       }
       var html = Get.find<HtmlParser>();
       html.parserHtml(content);
@@ -70,7 +74,6 @@ class NewsDetailController extends BaseController
     }
     relativeNews.addAll(relative.articles);
   }
-
 
   String? getTopicName(int id) {
     for (var value in listWebsite) {
@@ -100,8 +103,10 @@ class NewsDetailController extends BaseController
   void onInit() {
     super.onInit();
     var websiteStringCached = box.read('websites');
-    if (websiteStringCached != null){
-      listWebsite = (jsonDecode(websiteStringCached) as List).map((website) => Website.fromJson(website)).toList();
+    if (websiteStringCached != null) {
+      listWebsite = (jsonDecode(websiteStringCached) as List)
+          .map((website) => Website.fromJson(website))
+          .toList();
     }
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -152,6 +157,14 @@ class NewsDetailController extends BaseController
   void onClose() {
     scrollController.dispose();
     _controller.dispose();
+    if (model != null) {
+      var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
+      diff = (diff / 1000) as int;
+      EventManager().fire(EventTrackingReadingNewsEnd(
+        model: model!,
+        time: diff,
+      ));
+    }
     super.onClose();
   }
 }
