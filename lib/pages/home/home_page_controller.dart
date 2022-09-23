@@ -203,11 +203,11 @@ class HomePageController extends BaseController
     }
   }
 
-  @override
-  void onClose() {
-    tabController.dispose();
-    super.onClose();
-  }
+  // @override
+  // void onClose() {
+  //   tabController.dispose();
+  //   super.onClose();
+  // }
 }
 
 class ArticleWrapper {

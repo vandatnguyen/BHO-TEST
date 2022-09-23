@@ -3,10 +3,13 @@ import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:finews_module/shared_widgets/news_box/news_box_controller.dart';
 import 'package:get/get.dart';
 
+import 'home_page_main_controller.dart';
+
 class HomePageBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<NewsService>(NewsServiceImpl());
+    Get.lazyPut(() => HomePageMainController());
     Get.lazyPut(() => NewsBoxController());
   }
 }

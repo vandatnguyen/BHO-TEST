@@ -10,19 +10,19 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'home_page_controller.dart';
+import 'home_page_main_controller.dart';
 
-class HomePageView extends GetView<HomePageController> {
+class HomePageView extends GetView<HomePageMainController> {
   const HomePageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return HomeApplicationFlow(controller);
   }
 }
 
 class HomeApplicationFlow extends StatefulWidget {
-  HomePageController controller;
+  HomePageMainController controller;
   HomeApplicationFlow(this.controller, {Key? key}) : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class HomeApplicationFlow extends StatefulWidget {
 }
 
 class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
-  HomePageController controller;
+  HomePageMainController controller;
   _HomeApplicationFlowState(this.controller);
 
   // List<Website> listWebsite = <Website>[];

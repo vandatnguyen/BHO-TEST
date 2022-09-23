@@ -19,13 +19,13 @@ class FiNewsModule {
   // }
 
   static void initNewsRouteAndBinding() {
+    Get.lazyPut(() => HomePageController(), tag: "666666");
+    Get.lazyPut(() => HomePageController());
     for (final value in AppPages.newsRoutes) {
       if (!Get.routeTree.routes.contains(value)) {
         Get.addPage(value);
       }
     }
-    Get.lazyPut(() => HomePageController(), tag: "666666");
-    Get.lazyPut(() => HomePageController());
     Get.put<MainFiNewsProvider>(MainFiNewsProvider());
     Get.put<HtmlParser>(HtmlParser());
     Get.put<NewsService>(NewsServiceImpl());
