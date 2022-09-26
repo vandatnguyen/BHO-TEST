@@ -19,6 +19,7 @@ class FiNewsModule {
   // }
 
   static void initNewsRouteAndBinding() {
+    EventManager().initEventTracking();
     Get.lazyPut(() => HomePageController(), tag: "666666");
     Get.lazyPut(() => HomePageController());
     for (final value in AppPages.newsRoutes) {
@@ -31,7 +32,7 @@ class FiNewsModule {
     Get.put<NewsService>(NewsServiceImpl());
     Get.put<NewsBoxController>(NewsBoxController());
     timeago.setLocaleMessages('en', MyCustomMessages());
-    EventManager().initEventTracking();
+
   }
 
 

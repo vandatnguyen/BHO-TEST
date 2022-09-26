@@ -5,13 +5,12 @@ import 'package:finews_module/data/entities/website.dart';
 import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_ticket_provider_mixin.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../cores/models/news_detail.dart';
 import '../../cores/states/base_controller.dart';
 import 'html_parser/html_parser.dart';
 import 'html_parser/html_parser_shared.dart';
-import 'package:get_storage/get_storage.dart';
 
 class NewsDetailController extends BaseController
     with GetSingleTickerProviderStateMixin {
@@ -29,7 +28,7 @@ class NewsDetailController extends BaseController
 
   NewsDetailModel? model;
   String? id;
-  Rx<String?> error = Rx<String?>(null); 
+  Rx<String?> error = Rx<String?>(null);
   List<Website> listWebsite = <Website>[];
 
   NewsDetailController({this.model, this.id, required this.pageTitle}) {
@@ -60,12 +59,8 @@ class NewsDetailController extends BaseController
       elements.addAll(html.elements);
       loadRecommend();
     } catch (e) {
-    /*  Get.showSnackbar(const GetSnackBar(
-          title: "Không tải được thông tin bài viết",
-          message: "Vui lòng thử lại sau"));*/
-
-          error.value = "Đã có lỗi xảy ra, vui lòng thử lại";
-    } 
+      error.value = "Đã có lỗi xảy ra, vui lòng thử lại";
+    }
   }
 
   Future<void> loadRecommend() async {
@@ -136,16 +131,16 @@ class NewsDetailController extends BaseController
         var offset = scrollController.offset;
         int timestamp = DateTime.now().millisecondsSinceEpoch;
         if (offset > 60) {
-                final double velocity = (offset - _pixels) / (timestamp - _timestamp);
+          final double velocity = (offset - _pixels) / (timestamp - _timestamp);
 
-                if (velocity > 1 && !isHideToolbar) {
-                  _controller.forward();
-                  isHideToolbar = true;
-                } else if (velocity < 0 && isHideToolbar) {
-                  _controller.reverse();
-                  isHideToolbar = false;
-                }
-              }
+          if (velocity > 1 && !isHideToolbar) {
+            _controller.forward();
+            isHideToolbar = true;
+          } else if (velocity < 0 && isHideToolbar) {
+            _controller.reverse();
+            isHideToolbar = false;
+          }
+        }
         _pixels = offset;
         _timestamp = timestamp;
       } catch (e) {

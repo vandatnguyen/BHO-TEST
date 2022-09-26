@@ -13,7 +13,8 @@ abstract class NewsService extends ApiServices {
 
   Future<WebsiteResponse> getWebsite();
 
-  Future<ArticleListResponse> getArticleV2({required String topic,required double last});
+  Future<ArticleListResponse> getArticleV2(
+      {required String topic, required double last});
 
   Future<ArticleListResponse> getArticleHots({required String topic});
 
@@ -21,7 +22,9 @@ abstract class NewsService extends ApiServices {
 
   Future<ArticleListResponse> getArticleRelative({required String id});
 
-  Future<ArticleListResponse> getArticleWithTag(String tag);
+  Future<ArticleListResponse> getArticleWithTag(String tag, {double last});
+
+  Future<ArticleListResponse> getArticleStock(String stock, {double last});
 }
 
 class NewsServiceImpl extends NewsService {
@@ -52,14 +55,21 @@ class NewsServiceImpl extends NewsService {
   }
 
   @override
-  Future<ArticleListResponse> getArticleWithTag(String tag) async {
+  Future<ArticleListResponse> getArticleWithTag(
+    String tag, {
+    double last = -1,
+  }) async {
     return BaseDecoder(
-        await api.getData(
-          params: {"tag": tag, "db24h": "OBUG63LPORSWC3J2"},
-          endPoint: "/v1.0/articles/tag",
-          timeOut: AppConstants.TIME_OUT,
-        ),
-        decoder: ArticleListResponse.fromJson)
+            await api.getData(
+              params: {
+                "tag": tag,
+                "db24h": "OBUG63LPORSWC3J2",
+                "last": last > 0 ? last.toInt().toString() : ""
+              },
+              endPoint: "/v1.0/articles/tag",
+              timeOut: AppConstants.TIME_OUT,
+            ),
+            decoder: ArticleListResponse.fromJson)
         .decoded();
   }
 
@@ -76,15 +86,15 @@ class NewsServiceImpl extends NewsService {
   }
 
   @override
-  Future<ArticleListResponse> getArticleV2({required String topic,required double last}) async {
-
+  Future<ArticleListResponse> getArticleV2(
+      {required String topic, required double last}) async {
     var params = {
       "topic": topic,
       "source": "666666",
       "length": "20",
       "db24h": "OBUG63LPORSWC3J2"
     };
-    if (last > 0){
+    if (last > 0) {
       params = {
         "topic": topic,
         "source": "666666",
@@ -121,6 +131,25 @@ class NewsServiceImpl extends NewsService {
       await api.getData(
         params: {"length": "20", "db24h": "OBUG63LPORSWC3J2"},
         endPoint: "/v1.0/articles/hotsv2",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: ArticleListResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<ArticleListResponse> getArticleStock(
+    String stock, {
+    double last = -1,
+  }) async {
+    return BaseDecoder(
+      await api.getData(
+        params: {
+          "stock": stock,
+          "db24h": "OBUG63LPORSWC3J2",
+          "last": last > 0 ? last.toInt().toString() : "",
+        },
+        endPoint: "/v1.0/articles/stock",
         timeOut: AppConstants.TIME_OUT,
       ),
       decoder: ArticleListResponse.fromJson,

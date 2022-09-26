@@ -30,4 +30,8 @@ class AppColors {
   static const Color semiGrey = Color(0xFFbababa);
   static const Color violet = Color(0xD07038F8);
   static const Color neutral = Color(0xFFEBECED);
+
+
+  static const Color color_18191F = Color(0xFF18191F);
+
 }

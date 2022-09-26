@@ -1,19 +1,17 @@
 import 'package:finews_module/pages/home/new_page.dart';
-import 'package:finews_module/pages/news_detail/html_parser/html_parser.dart';
 import 'package:finews_module/pages/news_detail/html_parser/html_parser_widget.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../cores/models/news_detail.dart';
 import 'component/NewsDetailFixedHeader.dart';
-import 'component/NewsDetailFixedFooter.dart';
 import 'component/NewsDetailFooter.dart';
 import 'component/NewsDetailHeader.dart';
 import 'component/NewsDetailStock.dart';
-import 'component/NewsDetailTopRelated.dart';
 import 'component/news_detail_error_widget.dart';
 import 'settings/NewsDetailSetting.dart';
-import '../../cores/models/news_detail.dart';
 
 class NewsDetailPageView extends GetView<NewsDetailController> {
   const NewsDetailPageView({Key? key}) : super(key: key);
@@ -73,8 +71,10 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                         originSrc: controller.model?.url ?? "",
                         tags: controller.model?.tags ?? [],
                         onTapSource: () {
-                          Get.toNamed(AppRoutes.newsWebview,
-                              parameters: {"link": controller.model?.url ?? "", "title" : controller.model?.title??""});
+                          Get.toNamed(AppRoutes.newsWebview, parameters: {
+                            "link": controller.model?.url ?? "",
+                            "title": controller.model?.title ?? ""
+                          });
                         },
                       ),
                     ),
@@ -82,13 +82,15 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                         delegate: SliverChildBuilderDelegate((context, index) {
                       return InkWell(
                           onTap: () {
-                            Get.toNamed(AppRoutes.newsDetail,
-                                arguments: {
-                                  "news": controller.relativeNews[index],
-                                  "title":
-                                      controller.relativeNews[index].topicName
-                                },
-                                preventDuplicates: false);
+                            Get.toNamed(
+                              AppRoutes.newsDetail,
+                              arguments: {
+                                "news": controller.relativeNews[index],
+                                "title":
+                                    controller.relativeNews[index].topicName
+                              },
+                              preventDuplicates: false,
+                            );
                           },
                           child: Column(children: <Widget>[
                             NewsItem(

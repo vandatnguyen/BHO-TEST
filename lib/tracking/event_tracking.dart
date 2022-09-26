@@ -132,6 +132,10 @@ class EventManager {
       log("name:${event.name} params:${event.params.toString()}",
           name: "Event Tracking");
     }
-    firebaseAnalytics.logEvent(name: event.name, parameters: event.params);
+    try {
+      firebaseAnalytics.logEvent(name: event.name, parameters: event.params);
+    } catch (e) {
+
+    }
   }
 }

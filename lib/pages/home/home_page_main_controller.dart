@@ -13,7 +13,7 @@ import 'package:get_storage/get_storage.dart';
 import 'home_page_controller.dart';
 
 class HomePageMainController extends BaseController
-    with GetSingleTickerProviderStateMixin {
+    with GetTickerProviderStateMixin {
   List<Website> listWebsite = <Website>[];
   String categoryId = "666666";
   final box = GetStorage();

@@ -3,6 +3,7 @@ import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/pages/home/component/TextWithIcon.dart';
 import 'package:finews_module/pages/home/home_page_controller.dart';
+import 'package:finews_module/pages/list_news_route/list_news.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/shared_widgets/CustomRefresher.dart';
 import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
@@ -122,12 +123,17 @@ class MessageItem implements ListItem {
       child: Column(
         children: <Widget>[
           NewsItem(newsDetail: newsDetail),
-          const Divider(), //                           <-- Divider
+          const Divider(),
         ],
       ),
       onTap: () {
-        Get.toNamed(AppRoutes.newsDetail,
-            arguments: {"news": newsDetail, "title": newsDetail.topicName});
+        Get.toNamed(
+          AppRoutes.newsDetail,
+          arguments: {
+            "news": newsDetail,
+            "title": newsDetail.topicName,
+          },
+        );
       },
     );
   }
@@ -163,15 +169,39 @@ class NewsItem extends StatelessWidget {
   const NewsItem({Key? key, required this.newsDetail, this.noPadding = false})
       : super(key: key);
 
+  String? get tagName {
+    try {
+      var tags = newsDetail.tags;
+      if (tags == null) {
+        return null;
+      }
+      if (tags.isNotEmpty) {
+        return tags[0];
+      }
+    } catch (e) {
+      e.printError();
+    }
+    return null;
+  }
+
+  String? get stockName {
+    try {
+      var symbols = newsDetail.symbols;
+      if (symbols == null) {
+        return null;
+      }
+      if (symbols.isNotEmpty) {
+        return symbols[0];
+      }
+    } catch (e) {
+      e.printError();
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return
-        // GestureDetector(
-        // onTap: () {
-        //   Get.toNamed(AppRoutes.newsDetail,
-        //       arguments: {"news": newsDetail, "title": newsDetail.topicName});
-        // },child:
-        Container(
+    return Container(
       alignment: AlignmentDirectional.centerStart,
       padding: EdgeInsets.symmetric(
         vertical: 12,
@@ -182,26 +212,34 @@ class NewsItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              newsDetail.symbols != null && newsDetail.symbols!.length > 0
-                  ? ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        color: HexColor.fromHex('#58BD7D'),
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                          newsDetail.symbols != null &&
-                                  newsDetail.symbols!.length > 0
-                              ? newsDetail.symbols![0]
-                              : "Nguồn",
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: Colors.white,
+              stockName != null
+                  ? InkWell(
+                      onTap: () {
+                        Get.toNamed(
+                          AppRoutes.listNews,
+                          arguments: {
+                            "item": newsDetail,
+                            "type": ListNewsType.typeStock,
+                          },
+                        );
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          color: HexColor.fromHex('#58BD7D'),
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            stockName ?? "Nguồn",
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
                     )
                   : const SizedBox.shrink(),
-              newsDetail.symbols != null && newsDetail.symbols!.length > 0
+              stockName != null
                   ? Container(
                       margin: const EdgeInsets.only(
                       top: 0,
@@ -209,19 +247,27 @@ class NewsItem extends StatelessWidget {
                       bottom: 0,
                     ))
                   : const SizedBox.shrink(),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Container(
-                  color: HexColor.fromHex("#F2F4F7"),
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    newsDetail.topicName!,
-                    // newsDetail.tags != null && newsDetail.tags!.length > 0
-                    //     ? newsDetail.tags![0]
-                    //     : "Tin tức",
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: HexColor.fromHex("#8A8A8A"),
+              InkWell(
+                onTap: () {
+                  Get.toNamed(
+                    AppRoutes.listNews,
+                    arguments: {
+                      "item": newsDetail,
+                      "type": ListNewsType.typeTag
+                    },
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    color: HexColor.fromHex("#F2F4F7"),
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      newsDetail.topicName ?? "",
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: HexColor.fromHex("#8A8A8A"),
+                      ),
                     ),
                   ),
                 ),
@@ -260,16 +306,11 @@ class NewsItem extends StatelessWidget {
                     imageUrl: newsDetail.thumb,
                     placeholder: (context, url) => Transform.scale(
                       scale: 0.5,
-                      child: CircularProgressIndicator(),
+                      child: const CircularProgressIndicator(),
                     ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                   ),
-                  // Image.network(
-                  //   newsDetail.thumb,
-                  //   width: 60,
-                  //   height: 60,
-                  //   fit: BoxFit.cover,
-                  // ),
                 ),
               ],
             ),
@@ -287,7 +328,6 @@ class NewsItem extends StatelessWidget {
                           fontSize: 13),
                     ),
                     TextWithIcon(
-                      // text: Text(''),
                       text: Text(
                           time_ago.format(DateTime.fromMillisecondsSinceEpoch(
                               newsDetail.pubdate!)),
@@ -301,27 +341,14 @@ class NewsItem extends StatelessWidget {
                         color: Colors.black45,
                       ),
                     ),
-                    // TextWithIcon(
-                    //   text: Text("0"),
-                    //   icon: Icon(
-                    //     Icons.chat,
-                    //     size: 12,
-                    //     color: Colors.black45,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
-              // const Icon(
-              //   Icons.more_horiz_outlined,
-              //   size: 16,
-              // )
             ],
           )
         ],
       ),
     );
-    // );
   }
 }
 
@@ -352,9 +379,9 @@ class HotNewsItem extends StatelessWidget {
                 imageUrl: newsDetail.thumb,
                 placeholder: (context, url) => Transform.scale(
                   scale: 0.5,
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -468,7 +495,7 @@ class SubNewsItem extends StatelessWidget {
                   scale: 0.5,
                   child: const CircularProgressIndicator(),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -493,7 +520,7 @@ class SubNewsItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    newsDetail.symbols != null && newsDetail.symbols!.length > 0
+                    newsDetail.tags != null && newsDetail.tags!.isNotEmpty
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Container(
@@ -501,7 +528,7 @@ class SubNewsItem extends StatelessWidget {
                               padding: const EdgeInsets.all(8),
                               child: Text(
                                 newsDetail.symbols != null &&
-                                        newsDetail.symbols!.length > 0
+                                        newsDetail.symbols!.isNotEmpty
                                     ? newsDetail.symbols![0]
                                     : "Nguồn",
                                 style: const TextStyle(
