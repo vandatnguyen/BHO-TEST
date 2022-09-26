@@ -23,7 +23,7 @@ class BoxNews extends GetView<NewsBoxController> {
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        // shrinkWrap: true,
+        shrinkWrap: true,
         children: [
           Container(
             margin: const EdgeInsets.only(top: 16, left: 16),
