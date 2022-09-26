@@ -111,15 +111,15 @@ class EventManager {
   }
 
   Future<void> initEventTracking() async {
-    await Firebase.initializeApp(
-        name: '[DEFAULT]',
-        options: const FirebaseOptions(
-          apiKey: 'AIzaSyBNOe3Lv0Wx4pCwR_QFAAvoWNkPQ_uwtVo',
-          appId: '1:612267598137:android:1ce913d47ad4cb5d1908e8',
-          messagingSenderId: '',
-          projectId: 'r014-fi-news',
-          storageBucket: 'r014-fi-news.appspot.com',
-        ));
+    // await Firebase.initializeApp(
+    //     name: '[DEFAULT]',
+    //     options: const FirebaseOptions(
+    //       apiKey: 'AIzaSyBNOe3Lv0Wx4pCwR_QFAAvoWNkPQ_uwtVo',
+    //       appId: '1:612267598137:android:1ce913d47ad4cb5d1908e8',
+    //       messagingSenderId: '',
+    //       projectId: 'r014-fi-news',
+    //       storageBucket: 'r014-fi-news.appspot.com',
+    //     ));
     // FirebaseApp secondaryApp = Firebase.app('news_module');
     // firebaseAnalytics = FirebaseAnalytics.instanceFor(app: Firebase.app("news_module"));
     firebaseAnalytics = FirebaseAnalytics.instance;
