@@ -18,6 +18,7 @@ class Api extends GetConnect {
   final String backendUrl;
   String fullToken;
   final String userId;
+  final bool showLog = false;
 
   Api(
       {required this.backendUrl,
@@ -45,9 +46,9 @@ class Api extends GetConnect {
       request.headers["Trading-Ver"] = mainProvider.appTradingVersion;
       request.headers["Device-ID"] = mainProvider.deviceId;
       request.headers['Authorization'] = mainProvider.accessToken ?? ""; 
-      // if (kDebugMode) {
+      if (showLog) {
         log(request.headers.toString(), name: request.url.path);
-      // }
+      }
       return request;
     });
     super.onInit();
@@ -126,7 +127,9 @@ class Api extends GetConnect {
         res = await httpClient.post(endPoint).timeout(timeOut);
       } else {
         res = await httpClient.post(endPoint, body: params).timeout(timeOut);
-        log("body:\n${res.body}");
+        if (showLog){
+          log("body:\n${res.body}");
+        }
       }
 
       if (res.isOk) {
@@ -247,7 +250,7 @@ class Api extends GetConnect {
     String? bodyString,
     dynamic params,
   }) {
-    if (kDebugMode) {
+    if (showLog) {
       final fullUrl = baseUrl + endPoint;
       log("$method: $fullUrl Params: $params", name: "API");
       log("$status => $exception", name: "API");
@@ -259,12 +262,16 @@ class Api extends GetConnect {
     // if (kDebugMode) {
     if (true) {
       final fullUrl = baseUrl + endpoint;
-      log("$method: $fullUrl Params: $params", name: "API");
+      if (showLog){
+        log("$method: $fullUrl Params: $params", name: "API");
+      }
       try {
         const JsonDecoder decoder = JsonDecoder();
         const JsonEncoder encoder = JsonEncoder.withIndent('  ');
         final object = decoder.convert(response as String);
-        log("Response => ${encoder.convert(object)}", name: "API");
+        if (showLog){
+          log("Response => ${encoder.convert(object)}", name: "API");
+        }
       } catch (e) {
         log(response.toString(), name: "API");
       }

@@ -24,6 +24,8 @@ NewsDetailModel _$NewsDetailModelFromJson(Map<String, dynamic> json) =>
       (json['stock_info'] as List<dynamic>?)
           ?.map((e) => StockInfoModel.fromJson(e))
           .toList(),
+      json['url'] as String?,
+      json['sub_type_id'] as int?,
     )
       ..topicName = json['topicName'] as String?
       ..sourceName = json['sourceName'] as String?
@@ -43,6 +45,8 @@ Map<String, dynamic> _$NewsDetailModelToJson(NewsDetailModel instance) =>
       'tags': instance.tags,
       'symbols': instance.symbols,
       'webUrl': instance.webUrl,
+      'url': instance.url,
+      'sub_type_id': instance.sub_type_id,
       'stock_info': instance.stockInfo,
       'pubdate': instance.pubdate,
       'topicName': instance.topicName,

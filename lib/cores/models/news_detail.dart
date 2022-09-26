@@ -42,6 +42,12 @@ class NewsDetailModel {
   @JsonKey(name: "webUrl")
   final String? webUrl;
 
+  @JsonKey(name: "url")
+  final String? url;
+
+  @JsonKey(name: "sub_type_id")
+  final int? sub_type_id;
+
   @JsonKey(name: "stock_info")
   final List<StockInfoModel>? stockInfo;
 
@@ -67,6 +73,8 @@ class NewsDetailModel {
     this.webUrl,
     this.pubdate,
     this.stockInfo,
+    this.url,
+    this.sub_type_id,
   );
 
   static NewsDetailModel fromResult(dynamic data) =>

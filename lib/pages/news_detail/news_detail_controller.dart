@@ -132,21 +132,25 @@ class NewsDetailController extends BaseController
     ));
 
     scrollController.addListener(() {
-      var offset = scrollController.offset;
-      int timestamp = DateTime.now().millisecondsSinceEpoch;
-      if (offset > 60) {
-        final double velocity = (offset - _pixels) / (timestamp - _timestamp);
+      try {
+        var offset = scrollController.offset;
+        int timestamp = DateTime.now().millisecondsSinceEpoch;
+        if (offset > 60) {
+                final double velocity = (offset - _pixels) / (timestamp - _timestamp);
 
-        if (velocity > 1 && !isHideToolbar) {
-          _controller.forward();
-          isHideToolbar = true;
-        } else if (velocity < 0 && isHideToolbar) {
-          _controller.reverse();
-          isHideToolbar = false;
-        }
+                if (velocity > 1 && !isHideToolbar) {
+                  _controller.forward();
+                  isHideToolbar = true;
+                } else if (velocity < 0 && isHideToolbar) {
+                  _controller.reverse();
+                  isHideToolbar = false;
+                }
+              }
+        _pixels = offset;
+        _timestamp = timestamp;
+      } catch (e) {
+        // print(e);
       }
-      _pixels = offset;
-      _timestamp = timestamp;
     });
   }
 
@@ -161,12 +165,12 @@ class NewsDetailController extends BaseController
     scrollController.dispose();
     _controller.dispose();
     if (model != null) {
-      // var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
-      // diff = (diff / 1000) as int;
-      // EventManager().fire(EventTrackingReadingNewsEnd(
-      //   model: model!,
-      //   time: diff,
-      // ));
+      var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
+      diff = (diff / 1000).round();
+      EventManager().fire(EventTrackingReadingNewsEnd(
+        model: model!,
+        time: diff,
+      ));
     }
     super.onClose();
   }

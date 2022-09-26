@@ -10,10 +10,9 @@ const SHOW_EVENT_TRACKING_LOG = true;
 abstract class EventTracking {
   final String name;
   int? timeStamp;
+  Map<String, Object>? params;
 
   EventTracking({required this.name});
-
-  Map<String, Object> get params => _getParams();
 
   Map<String, Object> _getParams() {
     final Map<String, Object> p = {
@@ -27,7 +26,7 @@ abstract class EventTracking {
 
 class EventTrackingReadingNews extends EventTracking {
   EventTrackingReadingNews({required NewsDetailModel model})
-      : super(name: 'reading_news') {
+      : super(name: 'news_reading_start') {
     setData(model);
   }
 
@@ -39,12 +38,13 @@ class EventTrackingReadingNews extends EventTracking {
     p.putIfAbsent("sourceName", () => model.sourceName!);
     p.putIfAbsent("topic", () => model.topic.toString());
     p.putIfAbsent("topicName", () => model.topicName!);
+    params = p;
     return this;
   }
 }
 class EventTrackingReadingNewsEnd extends EventTracking {
   EventTrackingReadingNewsEnd({required NewsDetailModel model, required int time})
-      : super(name: 'reading_news_end') {
+      : super(name: 'news_reading_end') {
     setData(model, time);
   }
 
@@ -57,8 +57,46 @@ class EventTrackingReadingNewsEnd extends EventTracking {
     p.putIfAbsent("topic", () => model.topic);
     p.putIfAbsent("topicName", () => model.topicName!);
     p.putIfAbsent("timeRead", () => time);
+    params = p;
     return this;
   }
+}
+
+class EventTrackingWidgetAllClickMore extends EventTracking {
+  EventTrackingWidgetAllClickMore({required String topicId})
+      : super(name: 'news_widget_all_click_more') {
+    var p = _getParams();
+    p.putIfAbsent("topicId", () => topicId);
+    params = p;
+  }
+
+}
+
+class EventTrackingHomeClickTab extends EventTracking {
+  EventTrackingHomeClickTab({required String topicId})
+      : super(name: 'news_home_click_tab') {
+    var p = _getParams();
+    p.putIfAbsent("topicId", () => topicId);
+    params = p;
+  }
+}
+class EventTrackingHomeViewTab extends EventTracking {
+  EventTrackingHomeViewTab({required String topicId})
+      : super(name: 'news_home_view_tab') {
+    var p = _getParams();
+    p.putIfAbsent("topicId", () => topicId);
+    params = p;
+  }
+}
+
+class EventTrackingWidgetAllClickTab extends EventTracking {
+  EventTrackingWidgetAllClickTab({required String topicId})
+      : super(name: 'news_widget_all_click_tab') {
+    var p = _getParams();
+    p.putIfAbsent("topicId", () => topicId);
+    params = p;
+  }
+
 }
 
 class EventManager {
@@ -74,7 +112,7 @@ class EventManager {
 
   Future<void> initEventTracking() async {
     await Firebase.initializeApp(
-        name: 'news_module',
+        name: '[DEFAULT]',
         options: const FirebaseOptions(
           apiKey: 'AIzaSyBNOe3Lv0Wx4pCwR_QFAAvoWNkPQ_uwtVo',
           appId: '1:612267598137:android:1ce913d47ad4cb5d1908e8',
@@ -82,9 +120,9 @@ class EventManager {
           projectId: 'r014-fi-news',
           storageBucket: 'r014-fi-news.appspot.com',
         ));
-    FirebaseApp secondaryApp = Firebase.app('news_module');
+    // FirebaseApp secondaryApp = Firebase.app('news_module');
     // firebaseAnalytics = FirebaseAnalytics.instanceFor(app: Firebase.app("news_module"));
-    // firebaseAnalytics = FirebaseAnalytics.instance;
+    firebaseAnalytics = FirebaseAnalytics.instance;
   }
 
   void fire(EventTracking event) {
@@ -94,6 +132,6 @@ class EventManager {
       log("name:${event.name} params:${event.params.toString()}",
           name: "Event Tracking");
     }
-    // firebaseAnalytics.logEvent(name: event.name, parameters: event.params);
+    firebaseAnalytics.logEvent(name: event.name, parameters: event.params);
   }
 }

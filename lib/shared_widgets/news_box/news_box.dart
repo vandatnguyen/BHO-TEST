@@ -2,6 +2,7 @@ import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/finews_module.dart';
 import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
 import 'package:finews_module/theme/app_color.dart';
+import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -59,6 +60,7 @@ class BoxNews extends GetView<NewsBoxController> {
               controller: controller.tabController,
               onTap: (index) {
                 controller.setTag(controller.tabsId[index]);
+                EventManager().fire(EventTrackingWidgetAllClickTab(topicId: controller.tabsId[index]));
               },
               tabs: controller.tabsRx
                   .map((e) => Tab(
@@ -123,6 +125,7 @@ class BoxNews extends GetView<NewsBoxController> {
                   print('onTaponTap:');
                   Get.toNamed(AppRoutes.homeParent2,
                       arguments: {"idSelected": controller.currentTag});
+                  EventManager().fire(EventTrackingWidgetAllClickMore(topicId: controller.currentTag));
                 },
                 onLongPress: () {
                   // open dialog OR navigate OR do what you want

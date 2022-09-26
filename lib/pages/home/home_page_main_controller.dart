@@ -4,6 +4,7 @@ import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/cores/states/base_controller.dart';
 import 'package:finews_module/data/entities/website.dart';
+import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -60,6 +61,13 @@ class HomePageMainController extends BaseController
     }
     tabController =
         TabController(length: tabs.length, vsync: this, initialIndex: index);
+    EventManager().fire(EventTrackingHomeViewTab(topicId: tabsId[0]));
+    tabController.addListener(() {
+      if (tabController.indexIsChanging) {
+      }else{
+        EventManager().fire(EventTrackingHomeViewTab(topicId: tabsId[tabController.index]));
+      }
+    });
   }
 
   @override

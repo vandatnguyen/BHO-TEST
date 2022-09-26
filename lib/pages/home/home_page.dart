@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:finews_module/data/entities/website.dart';
 import 'package:finews_module/pages/home/new_page.dart';
+import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/shared_widgets/news_box/news_box.dart';
+import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -87,6 +89,9 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
                     text: e,
                   ))
               .toList(),
+          onTap: (index) {
+            EventManager().fire(EventTrackingHomeClickTab(topicId: controller.tabsId[index]));
+          },
         ),
       ),
       body: TabBarView(
@@ -97,6 +102,15 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
                   categoryId: e,
                 ))
             .toList(),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: HexColor.fromHex('#58BD7D'),
+        tooltip: 'Forum',
+        onPressed: () {
+          Get.toNamed(AppRoutes.newsWebview,
+              parameters: {"link": "https://phamviettu.discourse.group/", "title" : "Forum"});
+        },
+        child: const Icon(Icons.forum),
       ),
     );
   }
