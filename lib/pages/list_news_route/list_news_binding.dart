@@ -7,14 +7,18 @@ import '../../cores/models/news_detail.dart';
 class ListNewsBinding extends Bindings {
   @override
   void dependencies() {
-    final NewsDetailModel detail = Get.arguments["item"];
-    final ListNewsType type = Get.arguments["type"];
-
-    Get.lazyPut(
-      () => ListNewsController(
-        detail,
-        type,
-      ),
-    );
+    try {
+      final NewsDetailModel detail = Get.arguments["item"];
+      final ListNewsType type = Get.arguments["type"];
+      print("NewsDetailModel: " + detail.id);
+      Get.lazyPut(
+            () => ListNewsController(
+              detail,
+              type,
+            )
+          , tag: detail.id + type.name);
+    } catch (e) {
+      print(e);
+    }
   }
 }

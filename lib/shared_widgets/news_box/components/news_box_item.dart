@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/pages/home/component/TextWithIcon.dart';
 import 'package:finews_module/pages/home/home_page.dart';
+import 'package:finews_module/pages/list_news_route/list_news.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,21 @@ class BoxNewsItem extends StatelessWidget {
   final NewsDetailModel newsDetail;
 
   const BoxNewsItem({Key? key, required this.newsDetail}) : super(key: key);
+
+  String? get stockName {
+    try {
+      var symbols = newsDetail.symbols;
+      if (symbols == null) {
+        return null;
+      }
+      if (symbols.isNotEmpty) {
+        return symbols[0];
+      }
+    } catch (e) {
+      e.printError();
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,21 +49,30 @@ class BoxNewsItem extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        newsDetail.symbols != null &&
-                                newsDetail.symbols!.isNotEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(14),
-                                child: Container(
-                                  color: HexColor.fromHex('#58BD7D'),
-                                  padding: const EdgeInsets.all(8),
-                                  child: Text(
-                                    newsDetail.symbols != null &&
-                                            newsDetail.symbols!.isNotEmpty
-                                        ? newsDetail.symbols![0]
-                                        : "Nguồn",
-                                    style: const TextStyle(
-                                      fontSize: 13,
-                                      color: Colors.white,
+                        stockName != null && stockName!.isNotEmpty
+                            ? InkWell(
+                                onTap: () {
+                                  Get.toNamed(
+                                    AppRoutes.listNews,
+                                    arguments: {
+                                      "item": newsDetail,
+                                      "type": ListNewsType.typeStock,
+                                    },
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(14),
+                                  child: Container(
+                                    color: HexColor.fromHex('#58BD7D'),
+                                    padding: const EdgeInsets.all(8),
+                                    child: Text(
+                                      stockName != null && stockName!.isNotEmpty
+                                          ? stockName!
+                                          : "",
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -62,16 +87,27 @@ class BoxNewsItem extends StatelessWidget {
                                 bottom: 0,
                               ))
                             : const SizedBox.shrink(),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(43),
-                          child: Container(
-                            color: HexColor.fromHex("#F2F4F7"),
-                            padding: const EdgeInsets.all(8),
-                            child: Text(
-                              newsDetail.topicName!,
-                              style: TextStyle(
-                                  color: HexColor.fromHex("#8A8A8A"),
-                                  fontSize: 13),
+                        InkWell(
+                          onTap: () {
+                            Get.toNamed(
+                              AppRoutes.listNews,
+                              arguments: {
+                                "item": newsDetail,
+                                "type": ListNewsType.typeTag
+                              },
+                            );
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(43),
+                            child: Container(
+                              color: HexColor.fromHex("#F2F4F7"),
+                              padding: const EdgeInsets.all(8),
+                              child: Text(
+                                newsDetail.topicName!,
+                                style: TextStyle(
+                                    color: HexColor.fromHex("#8A8A8A"),
+                                    fontSize: 13),
+                              ),
                             ),
                           ),
                         ),
@@ -117,7 +153,8 @@ class BoxNewsItem extends StatelessWidget {
                                   scale: 0.5,
                                   child: CircularProgressIndicator(),
                                 ),
-                                errorWidget: (context, url, error) => Icon(Icons.error),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
                               ),
                               const SizedBox(width: 8),
                               Expanded(
@@ -158,26 +195,25 @@ class BoxNewsItem extends StatelessWidget {
               ),
             ),
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child:
-              CachedNetworkImage(
-                height: 117,
-                width: 117,
-                fit: BoxFit.cover,
-                imageUrl: newsDetail.thumb,
-                placeholder: (context, url) => Transform.scale(
-                  scale: 0.5,
-                  child: CircularProgressIndicator(),
+                borderRadius: BorderRadius.circular(12),
+                child: CachedNetworkImage(
+                  height: 117,
+                  width: 117,
+                  fit: BoxFit.cover,
+                  imageUrl: newsDetail.thumb,
+                  placeholder: (context, url) => Transform.scale(
+                    scale: 0.5,
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                )
+                // Image.network(
+                //   newsDetail.thumb,
+                //   width: 117,
+                //   height: 117,
+                //   fit: BoxFit.cover,
+                // ),
                 ),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              )
-              // Image.network(
-              //   newsDetail.thumb,
-              //   width: 117,
-              //   height: 117,
-              //   fit: BoxFit.cover,
-              // ),
-            ),
           ],
         ),
       ),

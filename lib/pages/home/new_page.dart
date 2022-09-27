@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart' as time_ago;
 
-class NewsPage extends GetView<HomePageController> {
+class NewsPage extends GetView<NewsHomePageController> {
   const NewsPage({Key? key, required this.onNext, required this.categoryId})
       : super(key: key);
   final VoidCallback onNext;
@@ -191,6 +191,7 @@ class NewsItem extends StatelessWidget {
         return null;
       }
       if (symbols.isNotEmpty) {
+        print(symbols[0]);
         return symbols[0];
       }
     } catch (e) {
@@ -212,7 +213,7 @@ class NewsItem extends StatelessWidget {
         children: [
           Row(
             children: [
-              stockName != null
+              newsDetail.symbols != null && newsDetail.symbols!.length > 0
                   ? InkWell(
                       onTap: () {
                         Get.toNamed(
@@ -249,6 +250,7 @@ class NewsItem extends StatelessWidget {
                   : const SizedBox.shrink(),
               InkWell(
                 onTap: () {
+                  print("newsDetail.topicName" + newsDetail.topicName!);
                   Get.toNamed(
                     AppRoutes.listNews,
                     arguments: {
@@ -257,20 +259,23 @@ class NewsItem extends StatelessWidget {
                     },
                   );
                 },
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    color: HexColor.fromHex("#F2F4F7"),
-                    padding: const EdgeInsets.all(8),
-                    child: Text(
-                      newsDetail.topicName ?? "",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: HexColor.fromHex("#8A8A8A"),
-                      ),
-                    ),
-                  ),
-                ),
+                child: newsDetail.topicName != null &&
+                        newsDetail.topicName!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          color: HexColor.fromHex("#F2F4F7"),
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            newsDetail.topicName ?? "",
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: HexColor.fromHex("#8A8A8A"),
+                            ),
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
               ),
             ],
           ),

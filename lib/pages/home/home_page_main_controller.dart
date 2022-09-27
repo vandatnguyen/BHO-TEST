@@ -47,7 +47,7 @@ class HomePageMainController extends BaseController
             element.topic.forEach((topic) {
               tabs.add(topic.name);
               tabsId.add(topic.id.toString());
-              Get.lazyPut(() => HomePageController(), tag: topic.id.toString());
+              Get.lazyPut(() => NewsHomePageController(), tag: topic.id.toString());
               if (idSelected == topic.id.toString()) {
                 index = i;
               }

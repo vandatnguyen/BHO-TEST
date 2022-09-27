@@ -42,8 +42,10 @@ class EventTrackingReadingNews extends EventTracking {
     return this;
   }
 }
+
 class EventTrackingReadingNewsEnd extends EventTracking {
-  EventTrackingReadingNewsEnd({required NewsDetailModel model, required int time})
+  EventTrackingReadingNewsEnd(
+      {required NewsDetailModel model, required int time})
       : super(name: 'news_reading_end') {
     setData(model, time);
   }
@@ -69,7 +71,6 @@ class EventTrackingWidgetAllClickMore extends EventTracking {
     p.putIfAbsent("topicId", () => topicId);
     params = p;
   }
-
 }
 
 class EventTrackingHomeClickTab extends EventTracking {
@@ -80,6 +81,7 @@ class EventTrackingHomeClickTab extends EventTracking {
     params = p;
   }
 }
+
 class EventTrackingHomeViewTab extends EventTracking {
   EventTrackingHomeViewTab({required String topicId})
       : super(name: 'news_home_view_tab') {
@@ -96,11 +98,10 @@ class EventTrackingWidgetAllClickTab extends EventTracking {
     p.putIfAbsent("topicId", () => topicId);
     params = p;
   }
-
 }
 
 class EventManager {
-  static late FirebaseAnalytics firebaseAnalytics;
+  static FirebaseAnalytics? firebaseAnalytics;
   late DateTime initTime;
 
   factory EventManager() => _instance ??= EventManager._();
@@ -122,7 +123,11 @@ class EventManager {
     //     ));
     // FirebaseApp secondaryApp = Firebase.app('news_module');
     // firebaseAnalytics = FirebaseAnalytics.instanceFor(app: Firebase.app("news_module"));
-    firebaseAnalytics = FirebaseAnalytics.instance;
+    try {
+      firebaseAnalytics = FirebaseAnalytics.instance;
+    } catch (e) {
+      print(e);
+    }
   }
 
   void fire(EventTracking event) {
@@ -132,10 +137,6 @@ class EventManager {
       log("name:${event.name} params:${event.params.toString()}",
           name: "Event Tracking");
     }
-    try {
-      firebaseAnalytics.logEvent(name: event.name, parameters: event.params);
-    } catch (e) {
-
-    }
+    firebaseAnalytics?.logEvent(name: event.name, parameters: event.params);
   }
 }

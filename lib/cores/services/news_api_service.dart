@@ -24,6 +24,8 @@ abstract class NewsService extends ApiServices {
 
   Future<ArticleListResponse> getArticleWithTag(String tag, {double last});
 
+  Future<ArticleListResponse> getArticleWithTopic(String articleId, {double last});
+
   Future<ArticleListResponse> getArticleStock(String stock, {double last});
 }
 
@@ -67,6 +69,25 @@ class NewsServiceImpl extends NewsService {
                 "last": last > 0 ? last.toInt().toString() : ""
               },
               endPoint: "/v1.0/articles/tag",
+              timeOut: AppConstants.TIME_OUT,
+            ),
+            decoder: ArticleListResponse.fromJson)
+        .decoded();
+  }
+
+  @override
+  Future<ArticleListResponse> getArticleWithTopic(
+    String articleId, {
+    double last = -1,
+  }) async {
+    return BaseDecoder(
+            await api.getData(
+              params: {
+                "articleId": articleId,
+                "db24h": "OBUG63LPORSWC3J2",
+                "last": last > 0 ? last.toInt().toString() : ""
+              },
+              endPoint: "/v1.0/articles/topic",
               timeOut: AppConstants.TIME_OUT,
             ),
             decoder: ArticleListResponse.fromJson)

@@ -16,11 +16,13 @@ class ListNewsController extends BaseController
     with StateMixin<List<NewsDetailModel>> {
   ListNewsController(this.detail, this.type);
 
+  List<Website> listWebsite = <Website>[];
   final NewsDetailModel detail;
   final ListNewsType type;
   RefreshController refreshController = RefreshController();
   var service = Get.find<NewsService>();
   var box = GetStorage();
+  bool _loadEnd = false;
 
   double last = -1;
 
@@ -30,8 +32,8 @@ class ListNewsController extends BaseController
     switch (type) {
       case ListNewsType.typeTag:
         {
-          var res = await service.getArticleWithTag(
-            detail.topicName ?? "",
+          var res = await service.getArticleWithTopic(
+            detail.id,
             last: last,
           );
           last = res.last;
@@ -58,43 +60,63 @@ class ListNewsController extends BaseController
   @override
   void onInit() {
     super.onInit();
+    print("get tag: "+ detail.id + type.name);
+    if (box.hasData('websites')) {
+      var websiteStringCached = box.read('websites');
+      if (websiteStringCached != null) {
+        listWebsite = (jsonDecode(websiteStringCached) as List)
+            .map((website) => Website.fromJson(website))
+            .toList();
+      }
+    }
     onRefresh();
   }
 
   Future onRefresh() async {
     last = -1;
-    onLoad();
+    onLoad(isLoadMore: false);
     refreshController.refreshCompleted();
   }
 
-  Future onLoad({isLoadMore = false}) async {
+  Future onLoad({isLoadMore = true}) async {
     try {
+      if (_loadEnd && isLoadMore){
+        return;
+      }
       var res = await getNewsList();
       if (!isLoadMore) {
         listNews.clear();
       }
+      if (res.isEmpty){
+        _loadEnd = true;
+      }else{
+        _loadEnd = false;
+      }
       for (var element in res) {
         element.topicName = getTopicName(element.topic);
+        element.sourceName = getSourceName(element.source);
       }
       listNews.addAll(res);
       debugPrint(listNews.toString());
       change(listNews, status: RxStatus.success());
     } catch (e) {
-      change(listNews, status: RxStatus.error());
+      if (isLoadMore){
+        final scaffold = ScaffoldMessenger.of(Get.context!);
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text('Có lỗi xảy ra, vui lòng kiểm tra kết nối mạng và thử lại'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }else {
+        change(listNews, status: RxStatus.error());
+      }
     } finally {
       refreshController.loadComplete();
     }
   }
 
   String? getTopicName(int id) {
-    if (box.hasData('websites')) {
-      var websiteStringCached = box.read('websites');
-      var listWebsite = [];
-      if (websiteStringCached != null) {
-        listWebsite = (jsonDecode(websiteStringCached) as List)
-            .map((website) => Website.fromJson(website))
-            .toList();
-      }
       for (var value in listWebsite) {
         for (var t in value.topic) {
           if (t.id == id) {
@@ -102,8 +124,22 @@ class ListNewsController extends BaseController
           }
         }
       }
-    }
     return null;
+  }
+
+  String? getSourceName(int id) {
+    for (var t in listWebsite) {
+      if (t.id == id) {
+        return t.name;
+      } else {
+        // for (var e in t.topic) {
+        //   if (e.id == id){
+        //     return e.name;
+        //   }
+        // }
+      }
+    }
+    return "123";
   }
 
   String? get title {

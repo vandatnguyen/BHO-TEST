@@ -20,8 +20,8 @@ class FiNewsModule {
 
   static void initNewsRouteAndBinding() {
     EventManager().initEventTracking();
-    Get.lazyPut(() => HomePageController(), tag: "666666");
-    Get.lazyPut(() => HomePageController());
+    Get.lazyPut(() => NewsHomePageController(), tag: "666666");
+    Get.lazyPut(() => NewsHomePageController());
     for (final value in AppPages.newsRoutes) {
       if (!Get.routeTree.routes.contains(value)) {
         Get.addPage(value);

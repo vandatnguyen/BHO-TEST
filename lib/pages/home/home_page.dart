@@ -110,7 +110,11 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
           Get.toNamed(AppRoutes.newsWebview,
               parameters: {"link": "https://phamviettu.discourse.group/", "title" : "Forum"});
         },
-        child: const Icon(Icons.forum),
+        child: const IconTheme(
+          data: IconThemeData(
+              color: Colors.white),
+          child: Icon(Icons.forum),
+        ),
       ),
     );
   }
