@@ -74,6 +74,7 @@ class ListNewsController extends BaseController
 
   Future onRefresh() async {
     last = -1;
+    change([], status: RxStatus.loading());
     onLoad(isLoadMore: false);
     refreshController.refreshCompleted();
   }
