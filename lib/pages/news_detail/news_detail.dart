@@ -31,8 +31,9 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(children: [
-        Scaffold(
+        Scaffold(backgroundColor: Colors.white,
             body: Padding(
           padding:
               const EdgeInsets.only(top: 0, bottom: 0, left: 16, right: 16),

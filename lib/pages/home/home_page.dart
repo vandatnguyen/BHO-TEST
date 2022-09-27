@@ -25,20 +25,22 @@ class HomePageView extends GetView<HomePageMainController> {
 
 class HomeApplicationFlow extends StatefulWidget {
   HomePageMainController controller;
+
   HomeApplicationFlow(this.controller, {Key? key}) : super(key: key);
 
   @override
-  _HomeApplicationFlowState createState() => _HomeApplicationFlowState(controller);
+  _HomeApplicationFlowState createState() =>
+      _HomeApplicationFlowState(controller);
 }
 
 class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
   HomePageMainController controller;
+
   _HomeApplicationFlowState(this.controller);
 
   // List<Website> listWebsite = <Website>[];
   // final box = GetStorage();
   // int index = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -90,29 +92,35 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
                   ))
               .toList(),
           onTap: (index) {
-            EventManager().fire(EventTrackingHomeClickTab(topicId: controller.tabsId[index]));
+            EventManager().fire(
+                EventTrackingHomeClickTab(topicId: controller.tabsId[index]));
           },
         ),
       ),
-      body: TabBarView(
-        controller: controller.tabController,
-        children: controller.tabsId
-            .map((e) => NewsPage(
-                  onNext: () => controller.tabController.index = controller.tabController.index++,
-                  categoryId: e,
-                ))
-            .toList(),
+      body: Container(
+        color: Colors.white,
+        child: TabBarView(
+          controller: controller.tabController,
+          children: controller.tabsId
+              .map((e) => NewsPage(
+                    onNext: () => controller.tabController.index =
+                        controller.tabController.index++,
+                    categoryId: e,
+                  ))
+              .toList(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: HexColor.fromHex('#58BD7D'),
         tooltip: 'Forum',
         onPressed: () {
-          Get.toNamed(AppRoutes.newsWebview,
-              parameters: {"link": "https://phamviettu.discourse.group/", "title" : "Forum"});
+          Get.toNamed(AppRoutes.newsWebview, parameters: {
+            "link": "https://phamviettu.discourse.group/",
+            "title": "Forum"
+          });
         },
         child: const IconTheme(
-          data: IconThemeData(
-              color: Colors.white),
+          data: IconThemeData(color: Colors.white),
           child: Icon(Icons.forum),
         ),
       ),

@@ -20,13 +20,14 @@ class BoxNews extends GetView<NewsBoxController> {
     FiNewsModule.initNewsRouteAndBinding();
     return Container(
       decoration: const BoxDecoration(color: Colors.white),
-      child: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
+      child: Column(
+        // physics: const NeverScrollableScrollPhysics(),
+        // scrollDirection: Axis.vertical,
+        // shrinkWrap: true,
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 16, left: 16),
+            alignment: Alignment.topLeft,
+            margin: const EdgeInsets.only(top: 12, left: 16),
             child: const Text(
               "Tin tức tài chính",
               style: TextStyle(
