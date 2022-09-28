@@ -73,7 +73,7 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
           isScrollable: true,
           padding: const EdgeInsets.symmetric(
             // vertical: 12,
-            horizontal: 8,
+            horizontal: 12,
           ),
           labelColor: Colors.white,
           labelStyle:
@@ -82,7 +82,7 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
               const TextStyle(fontSize: 16.0, fontWeight: FontWeight.normal),
           unselectedLabelColor: Colors.black,
           indicator: BoxDecoration(
-              border: Border.all(color: Colors.white, width: 4),
+              // border: Border.all(color: Colors.white, width: 4),
               borderRadius: BorderRadius.circular(10), // Creates border
               color: HexColor.fromHex('#58BD7D')),
           controller: controller.tabController,
@@ -98,10 +98,12 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
         ),
       ),
       body: Container(
+        padding: const EdgeInsets.only(top: 4),
         color: Colors.white,
         child: TabBarView(
           controller: controller.tabController,
-          children: controller.tabsId
+          children:
+          controller.tabsId
               .map((e) => NewsPage(
                     onNext: () => controller.tabController.index =
                         controller.tabController.index++,
@@ -115,7 +117,7 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
         tooltip: 'Forum',
         onPressed: () {
           Get.toNamed(AppRoutes.newsWebview, parameters: {
-            "link": "https://phamviettu.discourse.group/",
+            "link": "https://finews.discourse.group/",
             "title": "Forum"
           });
         },

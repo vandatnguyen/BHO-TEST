@@ -160,12 +160,14 @@ class NewsDetailController extends BaseController
     scrollController.dispose();
     _controller.dispose();
     if (model != null) {
-      var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
-      diff = (diff / 1000).round();
-      EventManager().fire(EventTrackingReadingNewsEnd(
-        model: model!,
-        time: diff,
-      ));
+      if (timeRead > 0){
+        var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
+        diff = (diff / 1000).round();
+        EventManager().fire(EventTrackingReadingNewsEnd(
+          model: model!,
+          time: diff,
+        ));
+      }
     }
     super.onClose();
   }

@@ -548,14 +548,23 @@ class SubNewsItem extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
                       ),
-                      child: Text(
-                        newsDetail.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      child: RichText(
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        strutStyle: const StrutStyle(fontSize: 12.0),
+                        text: TextSpan(
+                            style: const TextStyle(color: Colors.white),
+                            text: newsDetail.title),
                       ),
+
+                      // Text(
+                      //   newsDetail.title,
+                      //   style: const TextStyle(
+                      //     color: Colors.white,
+                      //     fontSize: 18,
+                      //     fontWeight: FontWeight.w700,
+                      //   ),
+                      // ),
                     ),
                     Row(
                       children: [

@@ -21,11 +21,14 @@ class HomePageMainController extends BaseController
   final tabsId = ["666666"];
   String idSelected = "666666";
   late TabController tabController;
+  int timeStart = 0;
 
   @override
   void onInit() {
     super.onInit();
+    timeStart = DateTime.now().millisecondsSinceEpoch;
     idSelected = Get.arguments["idSelected"] as String;
+    EventManager().fire(EventTrackingOpenModule());
     try {
       var websiteStringCached = box.read('websites');
       if (websiteStringCached != null) {
@@ -73,6 +76,15 @@ class HomePageMainController extends BaseController
   @override
   void onClose() {
     tabController.dispose();
+    try {
+      if (timeStart > 0){
+        var diff = DateTime.now().millisecondsSinceEpoch - timeStart;
+        diff = (diff / 1000).round();
+        EventManager().fire(EventTrackingCloseModule(timeSpent: diff));
+      }
+    } catch (e) {
+      print(e);
+    }
     super.onClose();
   }
 }

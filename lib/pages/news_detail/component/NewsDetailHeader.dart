@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class NewsDetailHeader extends StatelessWidget {
   final String title;
   final String sourceName;
+  final String desc;
   final String date;
-  const NewsDetailHeader({Key? key, required this.title, required this.sourceName,  required this.date}) : super(key: key);
+  const NewsDetailHeader({Key? key, required this.title, required this.sourceName,  required this.date,  required this.desc}) : super(key: key);
 
   
   @override
@@ -58,6 +59,14 @@ class NewsDetailHeader extends StatelessWidget {
             ],
           ),
           const SizedBox(
+            height: 14,
+          ),Text(
+            desc,
+            style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF454545)),
+          ),const SizedBox(
             height: 14,
           ),
         ],

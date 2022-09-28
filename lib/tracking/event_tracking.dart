@@ -100,6 +100,33 @@ class EventTrackingWidgetAllClickTab extends EventTracking {
   }
 }
 
+class EventTrackingOpenModule extends EventTracking {
+  EventTrackingOpenModule()
+      : super(name: 'news_open_module') {
+    var p = _getParams();
+    params = p;
+  }
+}
+
+
+class EventTrackingCloseModule extends EventTracking {
+  EventTrackingCloseModule({required int timeSpent})
+      : super(name: 'news_close_module') {
+    var p = _getParams();
+    p.putIfAbsent("timeSpent", () => timeSpent);
+    params = p;
+  }
+}
+
+class EventTrackingWidgetAllView extends EventTracking {
+  EventTrackingWidgetAllView()
+      : super(name: 'news_widget_all_view') {
+    var p = _getParams();
+    params = p;
+  }
+}
+
+
 class EventManager {
   static FirebaseAnalytics? firebaseAnalytics;
   late DateTime initTime;

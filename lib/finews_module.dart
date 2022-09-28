@@ -53,7 +53,7 @@ class MyCustomMessages implements LookupMessages {
   @override String minutes(int minutes) => '${minutes} phút trước';
   @override String aboutAnHour(int minutes) => '1 giờ trước';
   @override String hours(int hours) => '${hours} giờ trước';
-  @override String aDay(int hours) => '${hours} giờ trước';
+  @override String aDay(int hours) => '${(hours/24).round()} ngày trước';
   @override String days(int days) => '${days} ngày trước';
   @override String aboutAMonth(int days) => '${days}d';
   @override String months(int months) => '${months}mo';

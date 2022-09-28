@@ -18,6 +18,7 @@ class BoxNews extends GetView<NewsBoxController> {
   @override
   Widget build(BuildContext context) {
     FiNewsModule.initNewsRouteAndBinding();
+    EventManager().fire(EventTrackingWidgetAllView());
     return Container(
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
@@ -46,11 +47,11 @@ class BoxNews extends GetView<NewsBoxController> {
               ),
               labelColor: COLOR_333333,
               labelStyle: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 14.0,
                 fontWeight: FontWeight.w700,
               ),
               unselectedLabelStyle: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 14.0,
                 fontWeight: FontWeight.normal,
               ),
               unselectedLabelColor: COLOR_858585,

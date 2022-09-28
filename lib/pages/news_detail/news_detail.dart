@@ -47,7 +47,8 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                       NewsDetailHeader(
                           title: controller.model?.title ?? "",
                           sourceName: controller.model!.sourceName ?? "",
-                          date: controller.model?.formatDisplayDate() ?? ""),
+                          date: controller.model?.formatDisplayDate() ?? "",
+                      desc: controller.model!.desc ?? "",),
                       if (controller.model?.stockInfo != null &&
                           (controller.model?.stockInfo?.length ?? 0) > 0)
                         NewsDetailStock(
