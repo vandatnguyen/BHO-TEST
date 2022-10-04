@@ -96,6 +96,7 @@ class ListNewsController extends BaseController
       for (var element in res) {
         element.topicName = getTopicName(element.topic);
         element.sourceName = getSourceName(element.source);
+        element.sourceIconUrl = getSourceIconUrl(element.source);
       }
       listNews.addAll(res);
       debugPrint(listNews.toString());
@@ -140,7 +141,16 @@ class ListNewsController extends BaseController
         // }
       }
     }
-    return "123";
+    return "";
+  }
+
+  String? getSourceIconUrl(int id) {
+    for (var t in listWebsite) {
+      if (t.id == id) {
+        return t.iconUrl;
+      }
+    }
+    return "";
   }
 
   String? get title {

@@ -14,7 +14,7 @@ class NewsBoxController extends GetxController
 
   late TabController tabController = TabController(vsync: this, length: 0);
 
-  final tabs = ['Tất cả'];
+  final tabs = ['Trang chủ'];
   final tabsId = ['666666'];
   List<Website> listWebsite = <Website>[];
   RxList<String> tabsRx = RxList();

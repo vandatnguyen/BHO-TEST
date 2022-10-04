@@ -68,7 +68,7 @@ class ListNewsView extends GetView<ListNewsController> {
                 ],
               ),
             ),
-            const Divider(),
+            // const Divider(),
             Expanded(
               child: controller.obx(
                 (state) => CustomRefresher(

@@ -17,7 +17,7 @@ class HomePageMainController extends BaseController
   List<Website> listWebsite = <Website>[];
   String categoryId = "666666";
   final box = GetStorage();
-  final tabs = ["Tất cả"];
+  final tabs = ["Trang chủ"];
   final tabsId = ["666666"];
   String idSelected = "666666";
   late TabController tabController;

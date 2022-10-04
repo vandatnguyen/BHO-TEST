@@ -305,8 +305,8 @@ class NewsItem extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: CachedNetworkImage(
-                    height: 60,
-                    width: 60,
+                    height: 75,
+                    width: 105,
                     fit: BoxFit.cover,
                     imageUrl: newsDetail.thumb,
                     placeholder: (context, url) => Transform.scale(
@@ -325,19 +325,33 @@ class NewsItem extends StatelessWidget {
               Expanded(
                 child: Row(
                   children: [
-                    Text(
-                      newsDetail.sourceName ?? "",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: HexColor.fromHex("#858689"),
-                          fontSize: 13),
+                    CachedNetworkImage(
+                      height: 22,
+                      width: 22,
+                      fit: BoxFit.cover,
+                      imageUrl: newsDetail.sourceIconUrl ?? "",
+                      placeholder: (context, url) => Transform.scale(
+                        scale: 0.5,
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        newsDetail.sourceName ?? "",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: HexColor.fromHex("#858689"),
+                            fontSize: 13),
+                      ),
                     ),
                     TextWithIcon(
                       text: Text(
                           time_ago.format(DateTime.fromMillisecondsSinceEpoch(
                               newsDetail.pubdate!)),
                           style: TextStyle(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.normal,
                               color: HexColor.fromHex("#858689"),
                               fontSize: 13)),
                       icon: const Icon(
@@ -458,7 +472,7 @@ class HotNewsItem extends StatelessWidget {
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
@@ -525,7 +539,7 @@ class SubNewsItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    newsDetail.tags != null && newsDetail.tags!.isNotEmpty
+                    newsDetail.symbols != null && newsDetail.symbols!.isNotEmpty
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Container(
@@ -535,7 +549,7 @@ class SubNewsItem extends StatelessWidget {
                                 newsDetail.symbols != null &&
                                         newsDetail.symbols!.isNotEmpty
                                     ? newsDetail.symbols![0]
-                                    : "Nguồn",
+                                    : "",
                                 style: const TextStyle(
                                   fontSize: 13,
                                   color: Colors.white,

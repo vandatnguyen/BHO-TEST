@@ -47,6 +47,7 @@ class NewsDetailController extends BaseController
         var detail = await Get.find<NewsService>().getArticleInfo(id: id ?? "");
         detail.topicName = getTopicName(detail.topic);
         detail.sourceName = getSourceName(detail.source);
+        detail.sourceIconUrl = getSourceIconUrl(detail.source);
         model = detail;
         content = model?.content ?? "";
         EventManager().fire(EventTrackingReadingNews(model: detail));
@@ -69,6 +70,7 @@ class NewsDetailController extends BaseController
     for (var value in relative.articles) {
       value.sourceName = getSourceName(value.source);
       value.topicName = getTopicName(value.topic);
+      value.sourceIconUrl = getSourceIconUrl(value.source);
     }
     relativeNews.addAll(relative.articles);
   }
@@ -92,6 +94,16 @@ class NewsDetailController extends BaseController
     }
     return "";
   }
+
+  String? getSourceIconUrl(int id) {
+    for (var t in listWebsite) {
+      if (t.id == id) {
+        return t.iconUrl;
+      }
+    }
+    return "";
+  }
+
 
   final String pageTitle;
 

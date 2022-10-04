@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
@@ -10,7 +11,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:get_storage/get_storage.dart';
 
 class NewsHomePageController extends BaseController
-    with StateMixin<List<ArticleWrapper>>{
+    with StateMixin<List<ArticleWrapper>> {
   RefreshController refreshController = RefreshController();
   List<ArticleWrapper> listArticle = <ArticleWrapper>[];
   List<Website> listWebsite = <Website>[];
@@ -77,6 +78,15 @@ class NewsHomePageController extends BaseController
     return "";
   }
 
+  String? getSourceIconUrl(int id) {
+    for (var t in listWebsite) {
+      if (t.id == id) {
+        return t.iconUrl;
+      }
+    }
+    return "";
+  }
+
   Future getArticleV2({bool isLoadMore = false}) async {
     try {
       if (isLoadMore == false) {
@@ -85,15 +95,16 @@ class NewsHomePageController extends BaseController
       var listArticle = await Get.find<NewsService>()
           .getArticleV2(topic: categoryId, last: _last);
       _last = listArticle.last;
-      if (listArticle.articles.isEmpty){
+      if (listArticle.articles.isEmpty) {
         _loadEnd = true;
-      }else{
+      } else {
         _loadEnd = false;
       }
       for (var value in listArticle.articles) {
         var wrapper = ArticleWrapper();
         value.topicName = getTopicName(value.topic);
         value.sourceName = getSourceName(value.source);
+        value.sourceIconUrl = getSourceIconUrl(value.source);
         wrapper.model = value;
         this.listArticle.add(wrapper);
       }
@@ -106,7 +117,8 @@ class NewsHomePageController extends BaseController
         final scaffold = ScaffoldMessenger.of(Get.context!);
         scaffold.showSnackBar(
           const SnackBar(
-            content: Text('Có lỗi xảy ra, vui lòng kiểm tra kết nối mạng và thử lại'),
+            content: Text(
+                'Có lỗi xảy ra, vui lòng kiểm tra kết nối mạng và thử lại'),
             backgroundColor: Colors.green,
           ),
         );
@@ -123,7 +135,8 @@ class NewsHomePageController extends BaseController
     }
     var wrapper = ArticleWrapper();
     wrapper.type = 1;
-    var detail = listArticle.articles[0];
+    var detail =
+        listArticle.articles[Random().nextInt(listArticle.articles.length)];
     detail.sourceName = getSourceName(detail.source);
     detail.topicName = getTopicName(detail.topic);
     wrapper.model = detail;
@@ -158,7 +171,6 @@ class NewsHomePageController extends BaseController
       change(this.listArticle, status: RxStatus.success());
     }
   }
-
 }
 
 class ArticleWrapper {

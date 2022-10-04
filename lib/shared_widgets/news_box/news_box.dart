@@ -30,7 +30,7 @@ class BoxNews extends GetView<NewsBoxController> {
             alignment: Alignment.topLeft,
             margin: const EdgeInsets.only(top: 12, left: 16),
             child: const Text(
-              "Tin tức tài chính",
+              "Kinh tế tài chính",
               style: TextStyle(
                 color: COLOR_333333,
                 fontSize: 18,
