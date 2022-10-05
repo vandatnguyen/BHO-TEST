@@ -24,8 +24,8 @@ class BoxStockNews extends GetView<NewsStockBoxController> {
     FiNewsModule.initNewsRouteAndBinding();
     EventManager().fire(EventTrackingWidgetAllView());
     controller.stockName = stockName;
-    return Container(
-      decoration: const BoxDecoration(color: Colors.white),
+    return Expanded(
+      // decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         // physics: const NeverScrollableScrollPhysics(),
         // scrollDirection: Axis.vertical,
