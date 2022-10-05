@@ -90,7 +90,7 @@ class BoxNewsItem extends StatelessWidget {
                                     bottom: 0,
                                   ))
                                 : const SizedBox.shrink(),
-                            InkWell(
+                            newsDetail.topicName != null && newsDetail.topicName!.isNotEmpty ? InkWell(
                               onTap: () {
                                 Get.toNamed(
                                   AppRoutes.listNews,
@@ -113,7 +113,7 @@ class BoxNewsItem extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                            ),
+                            ) : SizedBox.shrink(),
                           ],
                         ),
                         Container(
