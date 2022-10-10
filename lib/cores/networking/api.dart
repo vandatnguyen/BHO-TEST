@@ -3,14 +3,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
+import 'package:finews_module/configs/constants.dart';
+import 'package:finews_module/cores/networking/result.dart';
 import 'package:finews_module/pages/home/main_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/dialog/dialog_route.dart';
-import 'package:finews_module/configs/constants.dart';
-import 'package:finews_module/cores/networking/result.dart'; 
-import 'package:finews_module/routes/app_routes.dart';
 
 enum Method { GET, POST, DELETE }
 
@@ -45,7 +43,7 @@ class Api extends GetConnect {
       request.headers["App-Ver"] = mainProvider.appVersion;
       request.headers["Trading-Ver"] = mainProvider.appTradingVersion;
       request.headers["Device-ID"] = mainProvider.deviceId;
-      request.headers['Authorization'] = mainProvider.accessToken ?? ""; 
+      request.headers['Authorization'] = mainProvider.accessToken ?? "";
       if (showLog) {
         log(request.headers.toString(), name: request.url.path);
       }
@@ -53,14 +51,14 @@ class Api extends GetConnect {
     });
     super.onInit();
   }
- 
+
   Future<Result> getData({
     required String endPoint,
     Map<String, dynamic>? params,
     required Duration timeOut,
   }) async {
     // onInit();
-    Response? res; 
+    Response? res;
     try {
       res = await get(endPoint, query: params).timeout(timeOut);
 
@@ -75,7 +73,7 @@ class Api extends GetConnect {
           bodyString: res.bodyString,
         );
       }
- 
+
       final rs = Result.fromJson(res.bodyString!);
       final handlerResponse = await handlerResult(rs, endPoint: endPoint);
       if (handlerResponse.code == 401 &&
@@ -127,7 +125,7 @@ class Api extends GetConnect {
         res = await httpClient.post(endPoint).timeout(timeOut);
       } else {
         res = await httpClient.post(endPoint, body: params).timeout(timeOut);
-        if (showLog){
+        if (showLog) {
           log("body:\n${res.body}");
         }
       }
@@ -262,14 +260,14 @@ class Api extends GetConnect {
     // if (kDebugMode) {
     if (true) {
       final fullUrl = baseUrl + endpoint;
-      if (showLog){
+      if (showLog) {
         log("$method: $fullUrl Params: $params", name: "API");
       }
       try {
         const JsonDecoder decoder = JsonDecoder();
         const JsonEncoder encoder = JsonEncoder.withIndent('  ');
         final object = decoder.convert(response as String);
-        if (showLog){
+        if (showLog) {
           log("Response => ${encoder.convert(object)}", name: "API");
         }
       } catch (e) {
@@ -298,10 +296,8 @@ class Api extends GetConnect {
     }
     return result;
   }
- 
-  Future onSessionTimeout(Result result) async {
-     
-  }
+
+  Future onSessionTimeout(Result result) async {}
 
   void _showMessageDialog(Widget dialog,
       {String? name, bool canDissmiss = true}) {

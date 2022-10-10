@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:finews_module/configs/colors.dart';
 import 'package:finews_module/pages/home/new_page.dart';
 import 'package:finews_module/pages/news_detail/html_parser/html_parser_widget.dart';
@@ -6,7 +8,6 @@ import 'package:finews_module/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../cores/models/comment_model.dart';
 import '../../cores/models/news_detail.dart';
 import 'component/NewsDetailFixedHeader.dart';
 import 'component/NewsDetailFooter.dart';
@@ -15,19 +16,6 @@ import 'component/NewsDetailStock.dart';
 import 'component/comment/comment_item.dart';
 import 'component/news_detail_error_widget.dart';
 import 'settings/NewsDetailSetting.dart';
-
-CommentModel fakeModel = CommentModel.fromJson({
-  "userName": "phamviettu9",
-  "email": "phamviettu@gmail.com",
-  "content": "Chao xxx",
-  "id": 83533,
-  "parentId": null,
-  "articleId": "56:29:c469521d65d87257febedcdbb6d83915",
-  "type": 0,
-  "numberLike": 0,
-  "numberComment": 0,
-  "createdDate": 1664529551000
-});
 
 class NewsDetailPageView extends GetView<NewsDetailController> {
   const NewsDetailPageView({Key? key}) : super(key: key);
@@ -47,7 +35,8 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
+    double height = MediaQuery.of(context).size.height;
+    //Get.put(NewsDetailController(pageTitle: ''));
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(children: [
@@ -65,7 +54,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             delegate: SliverChildListDelegate.fixed([
                           NewsDetailHeader(
                               title: controller.model?.title ?? "",
-                              sourceName: controller.model!.sourceName ?? "",
+                              sourceName: controller.model?.sourceName ?? "",
                               date:
                                   controller.model?.formatDisplayDate() ?? ""),
                           if (controller.model?.stockInfo != null &&
@@ -103,7 +92,15 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                         SliverToBoxAdapter(
                           child: GestureDetector(
                             onTap: () {
-                              print("row pressed");
+                              var comments = controller.comments;
+                              showModalBottomSheet(
+                                  isDismissible: true,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  context: context,
+                                  builder: (builder) {
+                                    return Container();
+                                  });
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -121,12 +118,11 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                      CommentItem(
-                                        commentModel: fakeModel,
-                                      ),
-                                      CommentItem(
-                                        commentModel: fakeModel,
-                                      ),
+                                      ...controller.comments.take(3).map(
+                                            (comment) => CommentItem(
+                                              commentModel: comment,
+                                            ),
+                                          )
                                     ],
                                   ),
                                   Column(

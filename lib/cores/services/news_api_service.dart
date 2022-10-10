@@ -2,6 +2,8 @@ import 'package:finews_module/data/entities/article_list_response.dart';
 import 'package:finews_module/data/entities/website_response.dart';
 
 import '../../configs/constants.dart';
+import '../../data/entities/comment_list_article.dart';
+import '../../data/entities/comment_response.dart';
 import '../models/news_detail.dart';
 import '../networking/decoder.dart';
 import 'api_services.dart';
@@ -24,9 +26,20 @@ abstract class NewsService extends ApiServices {
 
   Future<ArticleListResponse> getArticleWithTag(String tag, {double last});
 
-  Future<ArticleListResponse> getArticleWithTopic(String articleId, {double last});
+  Future<ArticleListResponse> getArticleWithTopic(String articleId,
+      {double last});
 
   Future<ArticleListResponse> getArticleStock(String stock, {double last});
+
+  Future<CommentListResponse> getAllComment(String articleId);
+
+  Future<CommentListResponse> getReplyComment(String commentParentId);
+
+  Future<CommentResponse> comment(String articleId, String content);
+
+  Future<CommentResponse> replyComment(String commentId, String content);
+
+  Future<CommentResponse> likeComment(String commentId);
 }
 
 class NewsServiceImpl extends NewsService {
@@ -174,6 +187,91 @@ class NewsServiceImpl extends NewsService {
         timeOut: AppConstants.TIME_OUT,
       ),
       decoder: ArticleListResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<CommentListResponse> getAllComment(String articleId) async {
+    return BaseDecoder(
+      await api.getData(
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+        },
+        endPoint: "/v1.0/article/$articleId/comment",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: CommentListResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<CommentResponse> comment(String articleId, String content) async {
+    return BaseDecoder(
+      await api.postData(
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+          "user": {
+            "phoneNumber": "03336688888",
+            "username": "phamviettu",
+            "avatarUrl":
+                "http://graph.facebook.com/2978211225754795/picture?type=large",
+            "email": "phamviettu@gmail.com"
+          },
+          "content": content
+        },
+        endPoint: "/v1.0/article/$articleId/comment",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: CommentResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<CommentListResponse> getReplyComment(String commentParentId) async {
+    return BaseDecoder(
+      await api.getData(
+    params: {
+    "db24h": "OBUG63LPORSWC3J2",
+    },
+      endPoint: "/v1.0/comment/$commentParentId/reply",
+      timeOut: AppConstants.TIME_OUT,
+    ),
+    decoder: CommentListResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<CommentResponse> likeComment(String commentId) async {
+    return BaseDecoder(
+      await api.postData(
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+        },
+        endPoint: "/v1.0/comment/$commentId/like",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: CommentResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<CommentResponse> replyComment(String commentId, String content) async {
+    return BaseDecoder(
+      await api.postData(
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+          "content": content,
+          "user": {
+            "phoneNumber": "03336688888",
+            "username": "phamviettu",
+            "avatarUrl": "http://graph.facebook.com/2978211225754795/picture?type=large",
+            "email": "phamviettu@gmail.com"
+          }
+        },
+        endPoint: "/v1.0/comment/$commentId/reply",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: CommentResponse.fromJson,
     ).decoded();
   }
 }

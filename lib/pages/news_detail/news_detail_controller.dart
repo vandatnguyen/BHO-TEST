@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:finews_module/cores/models/comment_model.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/data/entities/website.dart';
 import 'package:finews_module/tracking/event_tracking.dart';
@@ -20,6 +21,7 @@ class NewsDetailController extends BaseController
   final ScrollController scrollController = ScrollController();
   RxList<HtmlParserElement> elements = <HtmlParserElement>[].obs;
   RxList<NewsDetailModel> relativeNews = <NewsDetailModel>[].obs;
+  var comments = <CommentModel>[].obs;
 
   double _pixels = 0;
   int _timestamp = 0;
@@ -71,6 +73,12 @@ class NewsDetailController extends BaseController
       value.topicName = getTopicName(value.topic);
     }
     relativeNews.addAll(relative.articles);
+  }
+
+  Future<void> loadComment() async {
+    var res = await Get.find<NewsService>()
+        .getAllComment("56:29:c469521d65d87257febedcdbb6d83915");
+    comments(res.comments);
   }
 
   String? getTopicName(int id) {
@@ -153,6 +161,7 @@ class NewsDetailController extends BaseController
   void onReady() {
     super.onReady();
     loadContent();
+    loadComment();
   }
 
   @override
