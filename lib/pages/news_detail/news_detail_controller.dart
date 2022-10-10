@@ -76,8 +76,11 @@ class NewsDetailController extends BaseController
   }
 
   Future<void> loadComment() async {
+    if (model != null) {
+      id = model?.id;
+    }
     var res = await Get.find<NewsService>()
-        .getAllComment("56:29:c469521d65d87257febedcdbb6d83915");
+        .getAllComment(id ?? "");
     comments(res.comments);
   }
 

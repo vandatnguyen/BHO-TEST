@@ -6,7 +6,7 @@ class CommentModel {
   String? email;
   String? content;
   int? id;
-  String? parentId;
+  int? parentId;
   String? articleId;
   int? type;
   int? numberLike;

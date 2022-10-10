@@ -4,6 +4,7 @@ import 'package:finews_module/data/entities/website_response.dart';
 import '../../configs/constants.dart';
 import '../../data/entities/comment_list_article.dart';
 import '../../data/entities/comment_response.dart';
+import '../../data/entities/like_comment_response.dart';
 import '../models/news_detail.dart';
 import '../networking/decoder.dart';
 import 'api_services.dart';
@@ -39,7 +40,7 @@ abstract class NewsService extends ApiServices {
 
   Future<CommentResponse> replyComment(String commentId, String content);
 
-  Future<CommentResponse> likeComment(String commentId);
+  Future<LikeCommentResponse> likeComment(String commentId);
 }
 
 class NewsServiceImpl extends NewsService {
@@ -206,6 +207,7 @@ class NewsServiceImpl extends NewsService {
 
   @override
   Future<CommentResponse> comment(String articleId, String content) async {
+    print(content);
     return BaseDecoder(
       await api.postData(
         params: {
@@ -241,7 +243,7 @@ class NewsServiceImpl extends NewsService {
   }
 
   @override
-  Future<CommentResponse> likeComment(String commentId) async {
+  Future<LikeCommentResponse> likeComment(String commentId) async {
     return BaseDecoder(
       await api.postData(
         params: {
@@ -250,7 +252,7 @@ class NewsServiceImpl extends NewsService {
         endPoint: "/v1.0/comment/$commentId/like",
         timeOut: AppConstants.TIME_OUT,
       ),
-      decoder: CommentResponse.fromJson,
+      decoder: LikeCommentResponse.fromJson,
     ).decoded();
   }
 
