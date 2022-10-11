@@ -24,61 +24,53 @@ class BoxStockNews extends GetView<NewsStockBoxController> {
     FiNewsModule.initNewsRouteAndBinding();
     EventManager().fire(EventTrackingWidgetAllView());
     controller.stockName = stockName;
-    return Expanded(
-      // decoration: const BoxDecoration(color: Colors.white),
-      child: Column(
-        // physics: const NeverScrollableScrollPhysics(),
-        // scrollDirection: Axis.vertical,
-        // shrinkWrap: true,
-        children: [
-          controller.obx(
-            (listNews) => Expanded(
-              child: CustomRefresher(
-                controller: controller.refreshController,
-                onRefresh: controller.onRefresh,
-                onLoading: controller.onLoad,
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: listNews!.length,
-                  itemBuilder: (context, index) {
-                    final item = listNews[index];
-                    return BoxNewsItem(
-                      newsDetail: item,
-                    );
-                    // return NewsListItem(newsDetail: item,);
-                  },
-                ),
-              ),
-            ),
-            onLoading: ListNoDataBackground(
-              padding: PAD_SYM_H40,
-              pngPath: "assets/images/ic_no_data.png",
-              title: "",
-              desc: "Đang tải dữ liệu...",
-              showIconButton: true,
-              isLoading: true,
-              onPressed: () => controller.onRefresh(),
-            ),
-            onError: (error) => ListNoDataBackground(
-              padding: PAD_SYM_H40,
-              showIconButton: true,
-              btnTitle: "Thử lại",
-              pngPath: "assets/images/ic_no_data.png",
-              desc: "Có lỗi xảy ra, vui lòng thử lại",
-              onPressed: () => controller.onRefresh(),
-            ),
-            onEmpty: ListNoDataBackground(
-              padding: PAD_SYM_H40,
-              showIconButton: true,
-              btnTitle: "Thử lại",
-              pngPath: "assets/images/ic_no_data.png",
-              desc: "Có lỗi xảy ra, vui lòng thử lại",
-              onPressed: () => controller.onRefresh(),
-            ),
-          )
-        ],
+    return Expanded(child:  controller.obx(
+          (listNews) => CustomRefresher(
+        controller: controller.refreshController,
+        onRefresh: controller.onRefresh,
+        onLoading: controller.onLoad,
+        child: ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: listNews!.length,
+          itemBuilder: (context, index) {
+            final item = listNews[index];
+            return BoxNewsItem(
+              newsDetail: item,
+            );
+            // return NewsListItem(newsDetail: item,);
+          },
+        ),
       ),
-    );
+      onLoading: ListNoDataBackground(
+        padding: PAD_SYM_H40,
+        pngPath: "assets/images/ic_no_data.png",
+        title: "",
+        desc: "Đang tải dữ liệu...",
+        showIconButton: true,
+        isLoading: true,
+        onPressed: () => controller.onRefresh(),
+      ),
+      onError: (error) => ListNoDataBackground(
+        padding: PAD_SYM_H40,
+        showIconButton: true,
+        btnTitle: "Thử lại",
+        pngPath: "assets/images/ic_no_data.png",
+        desc: "Có lỗi xảy ra, vui lòng thử lại",
+        onPressed: () => controller.onRefresh(),
+      ),
+      onEmpty: ListNoDataBackground(
+        padding: PAD_SYM_H40,
+        showIconButton: true,
+        btnTitle: "Thử lại",
+        pngPath: "assets/images/ic_no_data.png",
+        desc: "Có lỗi xảy ra, vui lòng thử lại",
+        onPressed: () => controller.onRefresh(),
+      ),
+    ));
+
+
+
   }
 }
