@@ -1,8 +1,10 @@
 import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/routes/app_pages.dart';
+import 'package:finews_module/shared_widgets/news_box/news_bds_box_controller.dart';
 import 'package:finews_module/shared_widgets/news_box/news_box_controller.dart';
 import 'package:finews_module/shared_widgets/news_box/news_stock_box_controller.dart';
+import 'package:finews_module/shared_widgets/news_box/news_trading_box_controller.dart';
 import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:get/get.dart';
 import 'package:timeago/timeago.dart';
@@ -33,6 +35,8 @@ class FiNewsModule {
     Get.put<NewsService>(NewsServiceImpl());
     Get.put<NewsBoxController>(NewsBoxController());
     Get.put<NewsStockBoxController>(NewsStockBoxController());
+    Get.put<NewsTradingBoxController>(NewsTradingBoxController());
+    Get.put<NewsBDSBoxController>(NewsBDSBoxController());
     timeago.setLocaleMessages('en', MyCustomMessages());
 
   }

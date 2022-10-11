@@ -16,6 +16,9 @@ abstract class NewsService extends ApiServices {
   Future<ArticleListResponse> getArticleV2(
       {required String topic, required double last});
 
+  Future<ArticleListResponse> getArticleV2BySource(
+      {required String source, required String topic, required double last});
+
   Future<ArticleListResponse> getArticleHots({required String topic});
 
   Future<ArticleListResponse> getArticleHotsV2({required String topic});
@@ -174,6 +177,32 @@ class NewsServiceImpl extends NewsService {
         timeOut: AppConstants.TIME_OUT,
       ),
       decoder: ArticleListResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<ArticleListResponse> getArticleV2BySource({required String source, required String topic, required double last}) async {var params = {
+    "topic": topic,
+    "source": source,
+    "length": "20",
+    "db24h": "OBUG63LPORSWC3J2"
+  };
+  if (last > 0) {
+    params = {
+      "topic": topic,
+      "source": source,
+      "length": "20",
+      "db24h": "OBUG63LPORSWC3J2",
+      "last": last.toInt().toString()
+    };
+  }
+  return BaseDecoder(
+    await api.getData(
+    params: params,
+    endPoint: "/v1.0/articlev2",
+    timeOut: AppConstants.TIME_OUT,
+  ),
+    decoder: ArticleListResponse.fromJson,
     ).decoded();
   }
 }
