@@ -46,8 +46,8 @@ dependencies:
   html: ^0.15.0
   path_provider: ^2.0.11
   flutter_svg: ^1.0.3
-  webview_flutter: ^3.0.4
-  flutter_inappwebview: ^5.4.3+7
+  webview_flutter: 3.0.4
+  flutter_inappwebview: 5.4.3+7
   #  flutter_spinkit: ^4.1.2+1
   #  loading: ^1.0.2
 
@@ -80,6 +80,7 @@ flutter:
      - assets/images/
      - assets/images/FiNews.png
      - assets/images/icon_stock.png
+     - assets/images/ic_send_dis.png
   #   - images/a_dot_ham.jpeg
   #
   # For details regarding assets in packages, see
