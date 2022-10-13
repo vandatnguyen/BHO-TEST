@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:finews_module/cores/models/comment_model.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/data/entities/website.dart';
 import 'package:finews_module/tracking/event_tracking.dart';
@@ -20,6 +21,7 @@ class NewsDetailController extends BaseController
   final ScrollController scrollController = ScrollController();
   RxList<HtmlParserElement> elements = <HtmlParserElement>[].obs;
   RxList<NewsDetailModel> relativeNews = <NewsDetailModel>[].obs;
+  var comments = <CommentModel>[].obs;
 
   double _pixels = 0;
   int _timestamp = 0;
@@ -28,10 +30,13 @@ class NewsDetailController extends BaseController
 
   NewsDetailModel? model;
   String? id;
+
+  String? pageTitle = "";
+
   Rx<String?> error = Rx<String?>(null);
   List<Website> listWebsite = <Website>[];
 
-  NewsDetailController({this.model, this.id, required this.pageTitle}) {
+  NewsDetailController({this.model, this.id, this.pageTitle}) {
     id ??= model?.id;
   }
 
@@ -75,6 +80,15 @@ class NewsDetailController extends BaseController
     relativeNews.addAll(relative.articles);
   }
 
+  Future<void> loadComment() async {
+    if (model != null) {
+      id = model?.id;
+    }
+    var res = await Get.find<NewsService>()
+        .getAllComment(id ?? "");
+    comments(res.comments);
+  }
+
   String? getTopicName(int id) {
     for (var value in listWebsite) {
       for (var t in value.topic) {
@@ -103,9 +117,6 @@ class NewsDetailController extends BaseController
     }
     return "";
   }
-
-
-  final String pageTitle;
 
   final box = GetStorage();
 
@@ -165,6 +176,7 @@ class NewsDetailController extends BaseController
   void onReady() {
     super.onReady();
     loadContent();
+    loadComment();
   }
 
   @override

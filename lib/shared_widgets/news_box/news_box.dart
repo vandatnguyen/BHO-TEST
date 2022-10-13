@@ -82,7 +82,7 @@ class BoxNews extends GetView<NewsBoxController> {
                       )
                     : Column(
                         children: [
-                          ...listNews.take(3).toList().map((item) => Column(
+                          ...listNews.take(2).toList().map((item) => Column(
                                 children: [
                                   BoxNewsItem(
                                     newsDetail: item,

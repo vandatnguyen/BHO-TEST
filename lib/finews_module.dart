@@ -41,6 +41,7 @@ class FiNewsModule {
     Get.put<HtmlParser>(HtmlParser());
     Get.put<NewsService>(NewsServiceImpl());
     Get.put<NewsBoxController>(NewsBoxController());
+    Get.put<NewsDetailController>(NewsDetailController());
     Get.put<NewsStockBoxController>(NewsStockBoxController());
     Get.put<NewsTradingBoxController>(NewsTradingBoxController());
     Get.put<NewsBDSBoxController>(NewsBDSBoxController());

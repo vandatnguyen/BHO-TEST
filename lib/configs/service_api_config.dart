@@ -71,10 +71,10 @@ class Environment {
 
   BaseConfig _getConfig(EnvironmentConfiguration environment) {
     switch (environment) {
-      case EnvironmentConfiguration.product:
-        return ProdConfig();
-      case EnvironmentConfiguration.staging:
-        return StagingConfig();
+      // case EnvironmentConfiguration.product:
+      //   return ProdConfig();
+      // case EnvironmentConfiguration.staging:
+      //   return StagingConfig();
       default:
         return DevConfig();
     }

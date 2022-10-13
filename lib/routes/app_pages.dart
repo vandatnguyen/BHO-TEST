@@ -19,7 +19,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.newsDetail,
-      page: () => const NewsDetailPageView(),
+      page: () => NewsDetailPageView(),
       binding: NewsDetailBinding(),
     ),
     GetPage(
