@@ -135,7 +135,7 @@ class BoxNewsItem extends StatelessWidget {
                                     style: context.textSize16.copyWith(
                                         fontSize: 16,
                                         color: Colors.black,
-                                        fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               ),
