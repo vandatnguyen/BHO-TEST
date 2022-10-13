@@ -31,10 +31,14 @@ class ForumController extends BaseController {
 
   @override
   void onInit() {
-    title = "Cộng đồng";
-    var box = GetStorage();
-    url = "https://dev-forum.r14express.vn/home?redirect_path=/&access_token=" +
-        box.read("tikop_token");
+    try {
+      title = "Cộng đồng";
+      var box = GetStorage();
+      url = "https://dev-forum.r14express.vn/home?redirect_path=/&access_token=" +
+              box.read("tikop_token");
+    } catch (e) {
+      print(e);
+    }
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
         color: Colors.blue,
