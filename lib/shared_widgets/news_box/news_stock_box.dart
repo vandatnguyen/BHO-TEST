@@ -24,13 +24,14 @@ class BoxStockNews extends GetView<NewsStockBoxController> {
     FiNewsModule.initNewsRouteAndBinding();
     EventManager().fire(EventTrackingWidgetAllView());
     controller.stockName = stockName;
+    controller.initWebsite();
     return Expanded(child:  controller.obx(
           (listNews) => CustomRefresher(
         controller: controller.refreshController,
         onRefresh: controller.onRefresh,
         onLoading: controller.onLoad,
         child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
+          // physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: listNews!.length,
@@ -65,7 +66,7 @@ class BoxStockNews extends GetView<NewsStockBoxController> {
         showIconButton: true,
         btnTitle: "Thử lại",
         pngPath: "assets/images/ic_no_data.png",
-        desc: "Có lỗi xảy ra, vui lòng thử lại",
+        desc: "Không có dữ liệu",
         onPressed: () => controller.onRefresh(),
       ),
     ));

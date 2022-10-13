@@ -73,6 +73,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                         originSrc: controller.model?.url ?? "",
                         tags: controller.model?.tags ?? [],
                         onTapSource: () {
+                          print("URLlll: " + (controller.model?.url ?? ""));
                           Get.toNamed(AppRoutes.newsWebview, parameters: {
                             "link": controller.model?.url ?? "",
                             "title": controller.model?.title ?? ""

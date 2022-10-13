@@ -31,6 +31,7 @@ class ListNewsView extends GetView<ListNewsController> {
   Widget build(BuildContext context) {
     controller.refreshController = RefreshController();
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [

@@ -31,7 +31,7 @@ class NewsStockBoxController extends GetxController
   void onInit() {
     super.onInit();
     try {
-      stockName = "ACB";
+      // stockName = "ACB";
       var websiteStringCached = box.read('websites');
       if (websiteStringCached != null) {
         listWebsite = (jsonDecode(websiteStringCached) as List)
@@ -43,7 +43,7 @@ class NewsStockBoxController extends GetxController
     }
     // tabController = TabController(vsync: this, length: 1);
     // tabsRx.value = tabs;
-    initWebsite();
+    // initWebsite();
   }
 
   void initWebsite() async {
@@ -75,6 +75,10 @@ class NewsStockBoxController extends GetxController
       _loadEnd = false;
       change([], status: RxStatus.loading());
       var res = await newsService.getArticleStock(stockName, last: last);
+      if (res.articles.isEmpty){
+        change([], status: RxStatus.empty());
+        return;
+      }
       for (var value in res.articles) {
         value.topicName = getTopicName(value.topic);
         value.sourceName = getSourceName(value.source);

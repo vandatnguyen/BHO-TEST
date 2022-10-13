@@ -1,5 +1,7 @@
+import 'package:finews_module/pages/forum/forum_scene_controller.dart';
 import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
+import 'package:finews_module/pages/webview/webview_scene_controller.dart';
 import 'package:finews_module/routes/app_pages.dart';
 import 'package:finews_module/shared_widgets/news_box/news_bds_box_controller.dart';
 import 'package:finews_module/shared_widgets/news_box/news_box_controller.dart';
@@ -7,6 +9,7 @@ import 'package:finews_module/shared_widgets/news_box/news_stock_box_controller.
 import 'package:finews_module/shared_widgets/news_box/news_trading_box_controller.dart';
 import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:timeago/timeago.dart';
 
 import 'cores/services/news_api_service.dart';
@@ -21,6 +24,10 @@ class FiNewsModule {
   //   openFiNewsApp();
   // }
 
+  static void saveToken(String token){
+    var box = GetStorage();
+    box.write("tikop_token", token);
+  }
   static void initNewsRouteAndBinding() {
     EventManager().initEventTracking();
     Get.lazyPut(() => NewsHomePageController(), tag: "666666");
@@ -37,6 +44,7 @@ class FiNewsModule {
     Get.put<NewsStockBoxController>(NewsStockBoxController());
     Get.put<NewsTradingBoxController>(NewsTradingBoxController());
     Get.put<NewsBDSBoxController>(NewsBDSBoxController());
+    Get.put<ForumController>(ForumController());
     timeago.setLocaleMessages('en', MyCustomMessages());
 
   }
