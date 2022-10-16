@@ -12,6 +12,7 @@ class AppColors {
   static const Color lightBlue = Color(0xFF7AC7FF);
   static const Color lightBrown = Color(0xFFCA8179);
   static const Color whiteGrey = Color(0xFFFDFDFD);
+  static const Color white = Color(0xFFFFFFFF);
   static const Color lightCyan = Color(0xFF98D8D8);
   static const Color lightGreen = Color(0xFF78C850);
   static const Color lighterGrey = Color(0xFFF4F5F4);
@@ -35,7 +36,9 @@ class AppColors {
   static const Color color_18191F = Color(0xFF18191F);
   static const Color color_777E90 = Color(0xFF777E90);
   static const Color color_primary = Color(0xFF58BD7D);
+  static const Color color_primary_fade_30 = Color(0x4D58BD7D);
   static const Color color_23262F = Color(0xFF23262F);
   static const Color color_F8F8F8 = Color(0xFFF8F8F8);
+  static const Color color_474A57 = Color(0xFF474A57);
 
 }
