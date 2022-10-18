@@ -41,6 +41,7 @@ class ForumController extends BaseController {
     title = "Cộng đồng";
     url = "https://forum.r14express.vn/home?redirect_path=/&access_token=" +
         tikopToken;
+    // url = "https://forum.r14express.vn/";
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
         color: Colors.blue,
