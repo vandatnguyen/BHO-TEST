@@ -27,18 +27,20 @@ class ForumController extends BaseController {
   late PullToRefreshController pullToRefreshController;
   String title = "";
   String url = "";
+  String tikopToken = "";
   RxDouble progress = 0.0.obs;
 
   @override
   void onInit() {
     try {
-      title = "Cộng đồng";
       var box = GetStorage();
-      url = "https://dev-forum.r14express.vn/home?redirect_path=/&access_token=" +
-              box.read("tikop_token");
+      tikopToken = box.read("tikop_token");
     } catch (e) {
       print(e);
     }
+    title = "Cộng đồng";
+    url = "https://forum.r14express.vn/home?redirect_path=/&access_token=" +
+        tikopToken;
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
         color: Colors.blue,
