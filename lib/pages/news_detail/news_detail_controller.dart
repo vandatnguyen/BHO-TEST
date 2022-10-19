@@ -57,6 +57,7 @@ class NewsDetailController extends BaseController
         content = model?.content ?? "";
         EventManager().fire(EventTrackingReadingNews(model: detail));
         timeRead = DateTime.now().millisecondsSinceEpoch;
+        error.value = null;
       }
       print(content);
       var html = Get.find<HtmlParser>();

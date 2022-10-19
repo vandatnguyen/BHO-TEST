@@ -11,7 +11,10 @@ class WebsiteResponse {
   @JsonKey(name: "websites")
   final List<Website> websites;
 
-  WebsiteResponse(this.websites);
+  @JsonKey(name: "forum")
+  final String forum;
+
+  WebsiteResponse(this.websites, this.forum);
 
   static WebsiteResponse fromResult(dynamic data) =>
       WebsiteResponse.fromJson(data as Map<String, dynamic>);

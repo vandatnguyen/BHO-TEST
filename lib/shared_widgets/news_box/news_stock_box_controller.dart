@@ -53,6 +53,8 @@ class NewsStockBoxController extends GetxController
       listWebsite = response.websites;
       box.write(
           'websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
+      box.write(
+          'url_news_forum', response.forum);
       setTag(stockName);
     } catch (e) {
       print(e);

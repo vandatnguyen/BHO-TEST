@@ -25,7 +25,7 @@ class BoxStockNews extends GetView<NewsStockBoxController> {
     EventManager().fire(EventTrackingWidgetAllView());
     controller.stockName = stockName;
     controller.initWebsite();
-    return Expanded(child:  controller.obx(
+    return controller.obx(
           (listNews) => CustomRefresher(
         controller: controller.refreshController,
         onRefresh: controller.onRefresh,
@@ -69,7 +69,7 @@ class BoxStockNews extends GetView<NewsStockBoxController> {
         desc: "Không có dữ liệu",
         onPressed: () => controller.onRefresh(),
       ),
-    ));
+    );
 
 
 

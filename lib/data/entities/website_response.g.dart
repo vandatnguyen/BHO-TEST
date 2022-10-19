@@ -11,9 +11,11 @@ WebsiteResponse _$WebsiteResponseFromJson(Map<String, dynamic> json) =>
       (json['websites'] as List<dynamic>)
           .map((e) => Website.fromJson(e))
           .toList(),
+      json['forum'] as String,
     );
 
 Map<String, dynamic> _$WebsiteResponseToJson(WebsiteResponse instance) =>
     <String, dynamic>{
       'websites': instance.websites,
+      'forum': instance.forum,
     };

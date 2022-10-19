@@ -28,19 +28,30 @@ class ForumController extends BaseController {
   String title = "";
   String url = "";
   String tikopToken = "";
+  String urlForum = "";
   RxDouble progress = 0.0.obs;
 
   @override
   void onInit() {
+    var box = GetStorage();
     try {
-      var box = GetStorage();
       tikopToken = box.read("tikop_token");
     } catch (e) {
       print(e);
     }
+    try {
+      urlForum = box.read("url_news_forum");
+    } catch (e) {
+      print(e);
+    }
     title = "Cộng đồng";
-    url = "https://forum.r14express.vn/home?redirect_path=/&access_token=" +
-        tikopToken;
+    if (urlForum.isNotEmpty){
+      url = urlForum + "/home?redirect_path=/&access_token=" +
+          tikopToken;
+    }else {
+      url = "https://forum.r14express.vn/home?redirect_path=/&access_token=" +
+          tikopToken;
+    }
     // url = "https://forum.r14express.vn/";
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
