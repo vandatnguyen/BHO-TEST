@@ -1,5 +1,6 @@
 import 'package:finews_module/pages/forum/forum_scene_controller.dart';
 import 'package:finews_module/pages/home/home_page_controller.dart';
+import 'package:finews_module/pages/home/main_trading_provider.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/pages/webview/webview_scene_controller.dart';
 import 'package:finews_module/routes/app_pages.dart';
@@ -24,10 +25,22 @@ class FiNewsModule {
   //   openFiNewsApp();
   // }
 
-  static void saveToken(String token){
+  static void saveToken(String token) {
     var box = GetStorage();
     box.write("tikop_token", token);
   }
+
+  static void openFinewsModule(
+      {Function(String stockSymbol)? openStockDetail}) {
+    if (!Get.isRegistered<MainFiNewsProvider>()) {
+      Get.put<MainFiNewsTradingProvider>(
+        MainFiNewsTradingProvider(
+            openStockDetail
+        ),
+      );
+    }
+  }
+
   static void initNewsRouteAndBinding() {
     EventManager().initEventTracking();
     Get.lazyPut(() => NewsHomePageController(), tag: "666666");
@@ -47,32 +60,60 @@ class FiNewsModule {
     Get.put<NewsBDSBoxController>(NewsBDSBoxController());
     Get.put<ForumController>(ForumController());
     timeago.setLocaleMessages('en', MyCustomMessages());
-
   }
 
-
-  // static void openFiNewsApp() {
-  //   Get.toNamed(AppRoutes.homeParent);
-  // }
+// static void openFiNewsApp() {
+//   Get.toNamed(AppRoutes.homeParent);
+// }
 }
-
 
 // my_custom_messages.dart
 class MyCustomMessages implements LookupMessages {
-  @override String prefixAgo() => '';
-  @override String prefixFromNow() => '';
-  @override String suffixAgo() => '';
-  @override String suffixFromNow() => '';
-  @override String lessThanOneMinute(int seconds) => 'vừa xong';
-  @override String aboutAMinute(int minutes) => '${minutes} phút trước';
-  @override String minutes(int minutes) => '${minutes} phút trước';
-  @override String aboutAnHour(int minutes) => '1 giờ trước';
-  @override String hours(int hours) => '${hours} giờ trước';
-  @override String aDay(int hours) => '${(hours/24).round()} ngày trước';
-  @override String days(int days) => '${days} ngày trước';
-  @override String aboutAMonth(int days) => '${days}d';
-  @override String months(int months) => '${months}mo';
-  @override String aboutAYear(int year) => '${year}y';
-  @override String years(int years) => '${years}y';
-  @override String wordSeparator() => ' ';
+  @override
+  String prefixAgo() => '';
+
+  @override
+  String prefixFromNow() => '';
+
+  @override
+  String suffixAgo() => '';
+
+  @override
+  String suffixFromNow() => '';
+
+  @override
+  String lessThanOneMinute(int seconds) => 'vừa xong';
+
+  @override
+  String aboutAMinute(int minutes) => '${minutes} phút trước';
+
+  @override
+  String minutes(int minutes) => '${minutes} phút trước';
+
+  @override
+  String aboutAnHour(int minutes) => '1 giờ trước';
+
+  @override
+  String hours(int hours) => '${hours} giờ trước';
+
+  @override
+  String aDay(int hours) => '${(hours / 24).round()} ngày trước';
+
+  @override
+  String days(int days) => '${days} ngày trước';
+
+  @override
+  String aboutAMonth(int days) => '${days}d';
+
+  @override
+  String months(int months) => '${months}mo';
+
+  @override
+  String aboutAYear(int year) => '${year}y';
+
+  @override
+  String years(int years) => '${years}y';
+
+  @override
+  String wordSeparator() => ' ';
 }

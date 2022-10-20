@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:finews_module/configs/constants.dart';
@@ -41,6 +42,11 @@ class Api extends GetConnect {
       request.headers["Parent-App"] = "TIKOP";
       request.headers["Lang"] = "vi";
       request.headers["App-Ver"] = mainProvider.appVersion;
+      if (Platform.isAndroid){
+        request.headers["Platform"] = "android";
+      }else if (Platform.isIOS){
+        request.headers["Platform"] = "ios";
+      }
       request.headers["Trading-Ver"] = mainProvider.appTradingVersion;
       request.headers["Device-ID"] = mainProvider.deviceId;
       request.headers['Authorization'] = mainProvider.accessToken ?? "";

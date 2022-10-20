@@ -46,12 +46,13 @@ class ForumController extends BaseController {
     }
     title = "Cộng đồng";
     if (urlForum.isNotEmpty){
-      url = urlForum + "/home?redirect_path=/&access_token=" +
+      url = urlForum + "home?redirect_path=/&access_token=" +
           tikopToken;
     }else {
-      url = "https://forum.r14express.vn/home?redirect_path=/&access_token=" +
+      url = "https://dev-forum.r14express.vn/home?redirect_path=/&access_token=" +
           tikopToken;
     }
+    print("4rum url" + url);
     // url = "https://forum.r14express.vn/";
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(
