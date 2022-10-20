@@ -100,114 +100,114 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             },
                           ),
                         ),
-                        SliverToBoxAdapter(
-                          child: GestureDetector(
-                            onTap: () {
-                              var id = controller.id;
-
-                              showModalBottomSheet(
-                                isDismissible: true,
-                                isScrollControlled: true,
-                                backgroundColor: Colors.white,
-                                context: context,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                builder: (builder) {
-                                  return BottomSheetComment(
-                                    articleId: id ?? fakeId,
-                                  );
-                                },
-                              );
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              child: Column(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        "Bình luận",
-                                        style: TextStyle(
-                                          color: AppColors.color_777E90,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      ...controller.comments.take(3).map(
-                                            (comment) => CommentItem(
-                                              commentModel: comment,
-                                              likeComment: () async {
-                                                await newsService.likeComment(
-                                                    comment.id?.toString() ??
-                                                        "");
-                                                await controller.loadComment();
-                                              },
-                                              replyComment: () {
-                                                showModalBottomSheet(
-                                                  isDismissible: true,
-                                                  isScrollControlled: true,
-                                                  backgroundColor: Colors.white,
-                                                  context: context,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  ),
-                                                  builder: (builder) {
-                                                    return ReplyBottomSheetComment(
-                                                      parentCommentId:
-                                                          comment.id.toString(),
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          )
-                                    ],
-                                  ),
-                                  Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      controller.comments.isNotEmpty
-                                          ? const Text(
-                                              "Xem tất cả bình luận",
-                                              style: TextStyle(
-                                                  color:
-                                                      AppColors.color_primary),
-                                            )
-                                          : const Text(
-                                              "Chưa có bình luận nào",
-                                            ),
-                                      Container(
-                                        width: width,
-                                        margin: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 10,
-                                          horizontal: 20,
-                                        ),
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(19)),
-                                          color: AppColors.color_F8F8F8,
-                                        ),
-                                        child: const Text(
-                                          "Để lại bình luận của bạn...",
-                                          style: TextStyle(
-                                              color: AppColors.color_777E90),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        // SliverToBoxAdapter(
+                        //   child: GestureDetector(
+                        //     onTap: () {
+                        //       var id = controller.id;
+                        //
+                        //       showModalBottomSheet(
+                        //         isDismissible: true,
+                        //         isScrollControlled: true,
+                        //         backgroundColor: Colors.white,
+                        //         context: context,
+                        //         shape: RoundedRectangleBorder(
+                        //           borderRadius: BorderRadius.circular(10.0),
+                        //         ),
+                        //         builder: (builder) {
+                        //           return BottomSheetComment(
+                        //             articleId: id ?? fakeId,
+                        //           );
+                        //         },
+                        //       );
+                        //     },
+                        //     child: Container(
+                        //       padding: const EdgeInsets.symmetric(vertical: 16),
+                        //       child: Column(
+                        //         children: [
+                        //           Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             children: [
+                        //               const Text(
+                        //                 "Bình luận",
+                        //                 style: TextStyle(
+                        //                   color: AppColors.color_777E90,
+                        //                   fontSize: 16,
+                        //                   fontWeight: FontWeight.w600,
+                        //                 ),
+                        //               ),
+                        //               ...controller.comments.take(3).map(
+                        //                     (comment) => CommentItem(
+                        //                       commentModel: comment,
+                        //                       likeComment: () async {
+                        //                         await newsService.likeComment(
+                        //                             comment.id?.toString() ??
+                        //                                 "");
+                        //                         await controller.loadComment();
+                        //                       },
+                        //                       replyComment: () {
+                        //                         showModalBottomSheet(
+                        //                           isDismissible: true,
+                        //                           isScrollControlled: true,
+                        //                           backgroundColor: Colors.white,
+                        //                           context: context,
+                        //                           shape: RoundedRectangleBorder(
+                        //                             borderRadius:
+                        //                                 BorderRadius.circular(
+                        //                                     10.0),
+                        //                           ),
+                        //                           builder: (builder) {
+                        //                             return ReplyBottomSheetComment(
+                        //                               parentCommentId:
+                        //                                   comment.id.toString(),
+                        //                             );
+                        //                           },
+                        //                         );
+                        //                       },
+                        //                     ),
+                        //                   )
+                        //             ],
+                        //           ),
+                        //           Column(
+                        //             mainAxisSize: MainAxisSize.max,
+                        //             children: [
+                        //               controller.comments.isNotEmpty
+                        //                   ? const Text(
+                        //                       "Xem tất cả bình luận",
+                        //                       style: TextStyle(
+                        //                           color:
+                        //                               AppColors.color_primary),
+                        //                     )
+                        //                   : const Text(
+                        //                       "Chưa có bình luận nào",
+                        //                     ),
+                        //               Container(
+                        //                 width: width,
+                        //                 margin: const EdgeInsets.symmetric(
+                        //                   vertical: 8,
+                        //                 ),
+                        //                 padding: const EdgeInsets.symmetric(
+                        //                   vertical: 10,
+                        //                   horizontal: 20,
+                        //                 ),
+                        //                 decoration: const BoxDecoration(
+                        //                   borderRadius: BorderRadius.all(
+                        //                       Radius.circular(19)),
+                        //                   color: AppColors.color_F8F8F8,
+                        //                 ),
+                        //                 child: const Text(
+                        //                   "Để lại bình luận của bạn...",
+                        //                   style: TextStyle(
+                        //                       color: AppColors.color_777E90),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SliverList(
                             delegate:
                                 SliverChildBuilderDelegate((context, index) {
