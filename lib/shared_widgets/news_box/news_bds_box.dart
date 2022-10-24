@@ -135,32 +135,32 @@ class BoxBSDNews extends GetView<NewsBDSBoxController> {
               onPressed: () => controller.onRefresh(),
             ),
           ),
-          Obx(() => GestureDetector(
-                onTap: () {
-                  print('onTaponTap:');
-                  Get.toNamed(AppRoutes.homeParent2,
-                      arguments: {"idSelected": controller.currentTag});
-                  EventManager().fire(EventTrackingWidgetAllClickMore(
-                      topicId: controller.currentTag));
-                },
-                onLongPress: () {
-                  // open dialog OR navigate OR do what you want
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  // width: double.infinity,
-                  // color: Colors.lightBlue,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 12,
-                    horizontal: 12,
-                  ),
-                  child: controller.tabsRx2.isNotEmpty
-                      ? Text("Xem thêm",
-                          style: TextStyle(
-                              color: HexColor.fromHex("#2F80ED"), fontSize: 14))
-                      : const SizedBox.shrink(),
-                ),
-              )),
+          // Obx(() => GestureDetector(
+          //       onTap: () {
+          //         print('onTaponTap:');
+          //         Get.toNamed(AppRoutes.homeParent2,
+          //             arguments: {"idSelected": controller.currentTag});
+          //         EventManager().fire(EventTrackingWidgetAllClickMore(
+          //             topicId: controller.currentTag));
+          //       },
+          //       onLongPress: () {
+          //         // open dialog OR navigate OR do what you want
+          //       },
+          //       child: Container(
+          //         alignment: Alignment.center,
+          //         // width: double.infinity,
+          //         // color: Colors.lightBlue,
+          //         padding: const EdgeInsets.symmetric(
+          //           vertical: 12,
+          //           horizontal: 12,
+          //         ),
+          //         child: controller.tabsRx2.isNotEmpty
+          //             ? Text("Xem thêm",
+          //                 style: TextStyle(
+          //                     color: HexColor.fromHex("#2F80ED"), fontSize: 14))
+          //             : const SizedBox.shrink(),
+          //       ),
+          //     )),
         ],
       ),
     );
