@@ -30,6 +30,14 @@ class FiNewsModule {
     box.write("tikop_token", token);
   }
 
+  static void saveUserInfo(String phone, String name, String email, String avatar) {
+    var box = GetStorage();
+    box.write("tikop_user_phone", phone);
+    box.write("tikop_user_name", name);
+    box.write("tikop_user_email", email);
+    box.write("tikop_user_avatar", avatar);
+  }
+
   static void openFinewsModule(
       {Function(String stockSymbol)? openStockDetail}) {
     if (!Get.isRegistered<MainFiNewsProvider>()) {
