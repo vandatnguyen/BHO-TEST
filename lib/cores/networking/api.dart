@@ -17,7 +17,7 @@ class Api extends GetConnect {
   final String backendUrl;
   String fullToken;
   final String userId;
-  final bool showLog = true;
+  final bool showLog = false;
 
   Api(
       {required this.backendUrl,
@@ -37,7 +37,6 @@ class Api extends GetConnect {
   void onInit() {
     httpClient.timeout = AppConstants.TIME_OUT;
     final mainProvider = GetInstance().find<MainFiNewsProvider>();
-    // print("addRequestModifier");
     httpClient.addRequestModifier<void>((request) async {
       request.headers["Parent-App"] = "TIKOP";
       request.headers["Lang"] = "vi";

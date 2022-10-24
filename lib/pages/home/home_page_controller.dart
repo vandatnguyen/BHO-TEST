@@ -32,7 +32,6 @@ class NewsHomePageController extends BaseController
   }
 
   Future onLoadMore() async {
-    print('onLoadMore:');
     if (!_loadEnd) {
       getArticleV2(isLoadMore: true);
       refreshController.loadComplete();

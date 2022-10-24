@@ -8,6 +8,8 @@ import 'package:finews_module/pages/webview/webview_scene.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:get/get.dart';
 
+import '../app/modules/comment_list/bindings/comment_list_binding.dart';
+import '../app/modules/comment_list/views/comment_list_view.dart';
 import '../pages/list_news_route/list_news_binding.dart';
 
 class AppPages {
@@ -31,6 +33,11 @@ class AppPages {
       name: AppRoutes.listNews,
       page: () => const ListNewsView(),
       binding: ListNewsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.commentListView,
+      page: () => const CommentListView(),
+      binding: CommentListBinding(),
     ),
   ];
 }

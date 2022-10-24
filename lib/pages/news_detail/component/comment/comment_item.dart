@@ -78,14 +78,12 @@ class _CommentItemState extends State<CommentItem> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Flexible(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: Image.network(
-                fakeUrl,
-                height: 36,
-                width: 36,
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Image.network(
+              fakeUrl,
+              height: 36,
+              width: 36,
             ),
           ),
           Expanded(

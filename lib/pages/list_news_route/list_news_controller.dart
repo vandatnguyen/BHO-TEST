@@ -60,7 +60,6 @@ class ListNewsController extends BaseController
   @override
   void onInit() {
     super.onInit();
-    print("get tag: "+ detail.id + type.name);
     if (box.hasData('websites')) {
       var websiteStringCached = box.read('websites');
       if (websiteStringCached != null) {

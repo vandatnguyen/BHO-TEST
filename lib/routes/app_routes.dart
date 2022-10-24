@@ -4,4 +4,5 @@ abstract class AppRoutes {
   static const newsDetail = '/newsDetail';
   static const listNews = '/listNews';
   static const newsWebview = '/newsWebview';
+  static const commentListView = '/commentListView';
 }

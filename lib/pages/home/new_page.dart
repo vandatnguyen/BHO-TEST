@@ -191,7 +191,6 @@ class NewsItem extends StatelessWidget {
         return null;
       }
       if (symbols.isNotEmpty) {
-        print(symbols[0]);
         return symbols[0];
       }
     } catch (e) {
@@ -250,7 +249,6 @@ class NewsItem extends StatelessWidget {
                   : const SizedBox.shrink(),
               InkWell(
                 onTap: () {
-                  print("newsDetail.topicName" + newsDetail.topicName!);
                   Get.toNamed(
                     AppRoutes.listNews,
                     arguments: {

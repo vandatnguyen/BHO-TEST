@@ -10,7 +10,6 @@ class ListNewsBinding extends Bindings {
     try {
       final NewsDetailModel detail = Get.arguments["item"];
       final ListNewsType type = Get.arguments["type"];
-      print("NewsDetailModel: " + detail.id);
       Get.lazyPut(
             () => ListNewsController(
               detail,
