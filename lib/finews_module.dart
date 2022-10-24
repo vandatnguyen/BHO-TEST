@@ -30,7 +30,7 @@ class FiNewsModule {
     box.write("tikop_token", token);
   }
 
-  static void saveUserInfo(String phone, String name, String email, String avatar) {
+  static void saveUserInfo(String? phone, String? name, String? email, String? avatar) {
     var box = GetStorage();
     box.write("tikop_user_phone", phone);
     box.write("tikop_user_name", name);
