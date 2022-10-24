@@ -28,20 +28,20 @@ class BoxBSDNews extends GetView<NewsBDSBoxController> {
         // scrollDirection: Axis.vertical,
         // shrinkWrap: true,
         children: [
-          Obx(
-            () => Container(
-              alignment: Alignment.topLeft,
-              margin: const EdgeInsets.only(top: 12, left: 16),
-              child: Text(
-                controller.tabsTitle.value,
-                style: const TextStyle(
-                  color: COLOR_333333,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ),
+          // Obx(
+          //   () => Container(
+          //     alignment: Alignment.topLeft,
+          //     margin: const EdgeInsets.only(top: 12, left: 16),
+          //     child: Text(
+          //       controller.tabsTitle.value,
+          //       style: const TextStyle(
+          //         color: COLOR_333333,
+          //         fontSize: 18,
+          //         fontWeight: FontWeight.w700,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           PreferredSize(
             preferredSize: Size.fromHeight(40),
 
@@ -95,7 +95,7 @@ class BoxBSDNews extends GetView<NewsBDSBoxController> {
                       )
                     : Column(
                         children: [
-                          ...listNews.take(3).toList().map((item) => Column(
+                          ...listNews.take(30).toList().map((item) => Column(
                                 children: [
                                   BoxNewsItem(
                                     newsDetail: item,
