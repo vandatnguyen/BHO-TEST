@@ -112,20 +112,20 @@ class _HomeApplicationFlowState extends State<HomeApplicationFlow> {
               .toList(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: HexColor.fromHex('#58BD7D'),
-        tooltip: 'Forum',
-        onPressed: () {
-          Get.toNamed(AppRoutes.newsWebview, parameters: {
-            "link": "https://finews.discourse.group/",
-            "title": "Forum"
-          });
-        },
-        child: const IconTheme(
-          data: IconThemeData(color: Colors.white),
-          child: Icon(Icons.forum),
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: HexColor.fromHex('#58BD7D'),
+      //   tooltip: 'Forum',
+      //   onPressed: () {
+      //     Get.toNamed(AppRoutes.newsWebview, parameters: {
+      //       "link": "https://finews.discourse.group/",
+      //       "title": "Forum"
+      //     });
+      //   },
+      //   child: const IconTheme(
+      //     data: IconThemeData(color: Colors.white),
+      //     child: Icon(Icons.forum),
+      //   ),
+      // ),
     );
   }
 }
