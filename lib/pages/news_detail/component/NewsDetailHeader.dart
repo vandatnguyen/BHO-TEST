@@ -105,6 +105,7 @@ class NewsDetailHeader extends StatelessWidget {
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   String sym = split2[0];
+                  sym = sym.replaceAll(",", "");
                   Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(sym);
                 });
           listTextSpan.add(textSpanSym);

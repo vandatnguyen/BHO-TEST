@@ -34,6 +34,7 @@ class HtmlParserTextWidget extends HtmlParserWidgetBase {
                     ..onTap = () {
                       try {
                         String sym = split2[0];
+                        sym = sym.replaceAll(",", "");
                         Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(sym);
                       } catch (e) {
                         print(e);
