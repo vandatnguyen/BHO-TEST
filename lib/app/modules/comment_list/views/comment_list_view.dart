@@ -73,12 +73,12 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
       valueListenable: textInputController,
       builder: (context, value, child) => SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(16.0),
                 width: width,
                 child: Stack(
                   children: [
@@ -165,13 +165,13 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
               ),
               Container(
                 padding: EdgeInsets.only(bottom: paddingBot),
-                margin: const EdgeInsets.symmetric(vertical: 12),
+                margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(
                       Radius.circular(100),
                     ),
-                    color: AppColors.color_F8F8F8,
+                    color: Color(0xFFEEEFF4),
                   ),
                   child: Row(
                     children: <Widget>[
@@ -217,7 +217,7 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
                                 ? AppColors.color_primary
                                 : AppColors.color_primary_fade_30,
                           ),
-                          padding: const EdgeInsets.all(14),
+                          padding: const EdgeInsets.all(16),
                           child: Row(
                             children: [
                               Transform.rotate(

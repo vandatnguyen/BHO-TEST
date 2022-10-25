@@ -43,10 +43,10 @@ class _CommentItemState extends State<CommentItem> {
           color: AppColors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: const Offset(0, 3), // changes position of shadow
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 0.5,
+              blurRadius: 0.5,
+              offset: const Offset(0, 2), // changes position of shadow
             ),
           ],
         ),
@@ -72,7 +72,7 @@ class _CommentItemState extends State<CommentItem> {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       width: width,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,6 +101,7 @@ class _CommentItemState extends State<CommentItem> {
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                           color: AppColors.color_F8F8F8,
+
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

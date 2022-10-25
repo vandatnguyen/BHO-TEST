@@ -26,16 +26,23 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
 
   final newsService = Get.find<NewsService>();
 
+  String? id;
+
   @override
   String? get tag {
-    if (Get.arguments != null && Get.arguments["news"] is NewsDetailModel) {
-      NewsDetailModel item = Get.arguments["news"] as NewsDetailModel;
-      return item.id;
-    } else if (Get.arguments != null && Get.arguments["id"] is String) {
-      String id = Get.arguments["id"] as String;
-      return id;
+    if (id == null) {
+      if (Get.arguments != null && Get.arguments["news"] is NewsDetailModel) {
+        NewsDetailModel item = Get.arguments["news"] as NewsDetailModel;
+        id = item.id;
+        return item.id;
+      } else if (Get.arguments != null && Get.arguments["id"] is String) {
+        String id = Get.arguments["id"] as String;
+        id = id;
+        return id;
+      }
+    }else {
     }
-    return null;
+    return id;
   }
 
   @override
