@@ -49,6 +49,13 @@ class NewsBDSBoxController extends GetxController
     try {
       var response = await Get.find<NewsService>().getWebsite();
       listWebsite = response.websites;
+      try {
+        box.write(
+                  'websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
+        box.write('url_news_forum', response.forum);
+      } catch (e) {
+        print(e);
+      }
       initTabs();
     } catch (e) {
       print(e);
@@ -68,8 +75,6 @@ class NewsBDSBoxController extends GetxController
         });
       }
     });
-    box.write(
-        'websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
     // listWebsiteRx.addAll();
     tabController = TabController(vsync: this, length: tabs.length);
     tabsRx.value = tabs;
