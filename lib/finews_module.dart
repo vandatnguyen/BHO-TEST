@@ -111,16 +111,16 @@ class MyCustomMessages implements LookupMessages {
   String days(int days) => '${days} ngày trước';
 
   @override
-  String aboutAMonth(int days) => '${days}d';
+  String aboutAMonth(int days) => '1 tháng trước';
 
   @override
-  String months(int months) => '${months}mo';
+  String months(int months) => '${months} tháng trước';
 
   @override
-  String aboutAYear(int year) => '${year}y';
+  String aboutAYear(int year) => '1 năm trước';
 
   @override
-  String years(int years) => '${years}y';
+  String years(int years) => '${years} năm trước';
 
   @override
   String wordSeparator() => ' ';
