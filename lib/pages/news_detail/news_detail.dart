@@ -1,7 +1,6 @@
-
 import 'package:finews_module/app/modules/comment_list/views/comment_list_view.dart';
 import 'package:finews_module/configs/colors.dart';
-import 'package:finews_module/cores/models/comment_model.dart';
+import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/pages/home/new_page.dart';
 import 'package:finews_module/pages/news_detail/html_parser/html_parser_widget.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
@@ -40,20 +39,13 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
         id = id;
         return id;
       }
-    }else {
-    }
+    } else {}
     return id;
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    if (!Get.isRegistered<NewsDetailController>()) {
-      Get.put(
-          () => NewsDetailController(
-              id: fakeId, pageTitle: Get.arguments["title"] ?? ""),
-          tag: fakeId);
-    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -112,25 +104,31 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                           child: GestureDetector(
                             onTap: () {
                               var id = controller.id;
-                              
-                              Get.toNamed(AppRoutes.commentListView, arguments: {
-                                "articleId": id ?? fakeId
-                              });
 
-                              // showModalBottomSheet(
-                              //   isDismissible: true,
-                              //   isScrollControlled: true,
-                              //   backgroundColor: Colors.white,
-                              //   context: context,
-                              //   shape: RoundedRectangleBorder(
-                              //     borderRadius: BorderRadius.circular(10.0),
-                              //   ),
-                              //   builder: (builder) {
-                              //     return BottomSheetComment(
-                              //       articleId: id ?? fakeId,
-                              //     );
-                              //   },
-                              // );
+                              // Get.toNamed(AppRoutes.commentListView, arguments: {
+                              //   "articleId": id ?? fakeId
+                              // });
+
+                              if (id == null) {
+                                return;
+                              }
+
+                              showModalBottomSheet(
+                                isDismissible: true,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.white,
+                                context: context,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                builder: (builder) {
+                                  return BottomSheetComment(
+                                    articleId: id,
+                                  );
+                                },
+                              ).whenComplete(() {
+                                controller.loadComment();
+                              });
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -140,14 +138,20 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
-                                        "Bình luận",
-                                        style: TextStyle(
-                                          color: AppColors.color_777E90,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                      RichText(
+                                        text: TextSpan(children: [
+                                          TextSpan(
+                                            text:
+                                                "Bình luận (${controller.comments.length})",
+                                            style: const TextStyle(
+                                              color: AppColors.color_777E90,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ]),
                                       ),
+                                      SIZED_BOX_H12,
                                       ...controller.comments.take(3).map(
                                             (comment) => CommentItem(
                                               commentModel: comment,
@@ -155,7 +159,8 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                                 await newsService.likeComment(
                                                     comment.id?.toString() ??
                                                         "");
-                                                await Future.delayed(const Duration(seconds: 1));
+                                                await Future.delayed(
+                                                    const Duration(seconds: 1));
                                                 await controller.loadComment();
                                               },
                                               replyComment: () {
@@ -175,7 +180,9 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                                           comment.id.toString(),
                                                     );
                                                   },
-                                                );
+                                                ).whenComplete(() {
+                                                  controller.loadComment();
+                                                });
                                               },
                                             ),
                                           )

@@ -82,6 +82,7 @@ flutter:
      - assets/images/FiNews.png
      - assets/images/icon_stock.png
      - assets/images/ic_send_dis.png
+     - assets/images/ic_reply.png
   #   - images/a_dot_ham.jpeg
   #
   # For details regarding assets in packages, see
