@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-enum ServerEnvironment {
-  develop,
-  staging,
-  product,
-}
+// enum ServerEnvironment {
+//   develop,
+//   staging,
+//   product,
+// }
 enum ConditionState {
   none,
   success,

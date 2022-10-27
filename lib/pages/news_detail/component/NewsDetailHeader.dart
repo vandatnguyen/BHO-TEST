@@ -1,3 +1,4 @@
+import 'package:finews_module/pages/home/main_tikop_provider.dart';
 import 'package:finews_module/pages/home/main_trading_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -105,7 +106,8 @@ class NewsDetailHeader extends StatelessWidget {
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   String sym = split2[0];
-                  Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(sym);
+                  // Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(sym);
+                  Get.find<MainFiNewsTikopProvider>().openStockDetail?.call(sym);
                 });
           listTextSpan.add(textSpanSym);
           var textSpan = TextSpan(

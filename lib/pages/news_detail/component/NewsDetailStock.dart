@@ -1,4 +1,5 @@
 import 'package:finews_module/cores/models/stock_info.dart';
+import 'package:finews_module/pages/home/main_tikop_provider.dart';
 import 'package:finews_module/pages/home/main_trading_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -121,7 +122,8 @@ class NewsDetailStock extends StatelessWidget {
           )),
       onTap: () {
         try {
-          Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(model.symbol);
+          // Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(model.symbol);
+          Get.find<MainFiNewsTikopProvider>().openStockDetail?.call(model.symbol);
         } catch (e) {
           print(e);
         }
