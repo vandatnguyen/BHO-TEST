@@ -20,6 +20,7 @@ class CommentItem extends StatefulWidget {
   }) : super(key: key);
 
   final CommentModel commentModel;
+
   final Function likeComment;
   final Function? replyComment;
 
@@ -31,6 +32,8 @@ class _CommentItemState extends State<CommentItem> {
   final newServices = Get.find<NewsService>();
   final replyComments = <CommentModel>[].obs;
 
+  var totalLike = 0;
+
   Future<void> reloadReplyComment() async {
     try {
       var res = await newServices
@@ -38,6 +41,28 @@ class _CommentItemState extends State<CommentItem> {
       replyComments(res.comments);
     } catch (e) {
       replyComments([]);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      totalLike = widget.commentModel.numberLike ?? 0;
+    });
+  }
+
+  Future<void> _likeComment() async {
+    try {
+      var res = await newServices
+          .likeComment(widget.commentModel.id?.toString() ?? "");
+      setState(() {
+        totalLike = res.total;
+      });
+    } catch (e) {
+      setState(() {
+        totalLike = widget.commentModel.numberLike ?? 0;
+      });
     }
   }
 
@@ -55,7 +80,7 @@ class _CommentItemState extends State<CommentItem> {
 
     var likeWidget = InkWell(
       onTap: () {
-        widget.likeComment();
+        _likeComment();
       },
       child: Container(
         decoration: BoxDecoration(
@@ -77,7 +102,7 @@ class _CommentItemState extends State<CommentItem> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              widget.commentModel.numberLike?.toString() ?? "-1",
+              totalLike.toString() ?? "0",
               style: const TextStyle(
                 color: AppColors.color_474A57,
                 fontSize: 11,
@@ -199,7 +224,7 @@ class _CommentItemState extends State<CommentItem> {
                                   fontSize: 14),
                             ),
                             onTap: () {
-                              widget.likeComment();
+                              _likeComment();
                             },
                           ),
                         ],
@@ -210,25 +235,6 @@ class _CommentItemState extends State<CommentItem> {
               )
             ],
           ),
-          // Container(
-          //   margin: EdgeInsets.only(left: 48),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       true
-          //           ? Row(
-          //               children: [
-          //                 ImageIcon(const AssetImage(
-          //                     "assets/images/ic_send_dis.png",
-          //                     package: 'finews_module')),
-          //                 Text("Xem thêm ${replyComments.length - 3} phản hồi"),
-          //               ],
-          //             )
-          //           : Container(),
-          //       ...replyComments.take(3).map((e) => Text("data")),
-          //     ],
-          //   ),
-          // )
         ],
       ),
     );

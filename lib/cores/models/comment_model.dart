@@ -1,4 +1,7 @@
+import 'package:finews_module/data/entities/comment_list_article.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+part 'comment_model.g.dart';
 
 @JsonSerializable()
 class CommentModel {
@@ -12,6 +15,7 @@ class CommentModel {
   int? numberLike;
   int? numberComment;
   int? createdDate;
+  CommentListResponse? replys;
 
   CommentModel({
     this.userName,
@@ -24,33 +28,11 @@ class CommentModel {
     this.numberLike,
     this.numberComment,
     this.createdDate,
+    this.replys,
   });
 
-  CommentModel.fromJson(Map<String, dynamic> json) {
-    userName = json['userName'];
-    email = json['email'];
-    content = json['content'];
-    id = json['id'];
-    parentId = json['parentId'];
-    articleId = json['articleId'];
-    type = json['type'];
-    numberLike = json['numberLike'];
-    numberComment = json['numberComment'];
-    createdDate = json['createdDate'];
-  }
+  factory CommentModel.fromJson(Map<String, dynamic> json) =>
+      _$CommentModelFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['userName'] = this.userName;
-    data['email'] = this.email;
-    data['content'] = this.content;
-    data['id'] = this.id;
-    data['parentId'] = this.parentId;
-    data['articleId'] = this.articleId;
-    data['type'] = this.type;
-    data['numberLike'] = this.numberLike;
-    data['numberComment'] = this.numberComment;
-    data['createdDate'] = this.createdDate;
-    return data;
-  }
+  Map<String, dynamic> toJson() => _$CommentModelToJson(this);
 }

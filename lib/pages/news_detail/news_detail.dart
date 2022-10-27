@@ -176,8 +176,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                                   ),
                                                   builder: (builder) {
                                                     return ReplyBottomSheetComment(
-                                                      parentCommentId:
-                                                          comment.id.toString(),
+                                                      parentComment: comment,
                                                     );
                                                   },
                                                 ).whenComplete(() {

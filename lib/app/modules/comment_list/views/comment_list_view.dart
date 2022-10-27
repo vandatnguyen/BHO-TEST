@@ -4,6 +4,7 @@ import 'package:finews_module/configs/colors.dart';
 import 'package:finews_module/cores/models/comment_model.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/pages/news_detail/component/comment/comment_item.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -58,6 +59,25 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
         _isLoading = false;
       });
     }
+  }
+
+  openBottomSheetReply(CommentModel parentComment) {
+    showModalBottomSheet(
+      isDismissible: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      builder: (builder) {
+        return ReplyBottomSheetComment(
+          parentComment: parentComment,
+        );
+      },
+    ).whenComplete(() {
+      reloadComment();
+    });
   }
 
   @override
@@ -135,6 +155,11 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
                           ? ListView.builder(
                               itemBuilder: (context, i) {
                                 var item = comments[i];
+                                var replyList = item.replys?.comments ?? [];
+
+                                var shouldShowExpandReply =
+                                    replyList.length > 3;
+
                                 return Column(
                                   children: [
                                     CommentItem(
@@ -147,26 +172,52 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
                                         await reloadComment();
                                       },
                                       replyComment: () {
-                                        showModalBottomSheet(
-                                          isDismissible: true,
-                                          isScrollControlled: true,
-                                          backgroundColor: Colors.white,
-                                          context: context,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          builder: (builder) {
-                                            return ReplyBottomSheetComment(
-                                              parentCommentId:
-                                                  item.id.toString(),
-                                            );
-                                          },
-                                        ).whenComplete((){
-                                          reloadComment();
-                                        });
+                                        openBottomSheetReply(item);
                                       },
                                     ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        openBottomSheetReply(item);
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.only(left: 50),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            shouldShowExpandReply
+                                                ? Text(
+                                                    "Xem thêm ${replyList.length - 3} phản hồi",
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 16,
+                                                      color: AppColors
+                                                          .color_141416,
+                                                    ),
+                                                  )
+                                                : Container(),
+                                            ...?item.replys?.comments
+                                                .take(3)
+                                                .map(
+                                                  (childComment) => CommentItem(
+                                                    commentModel: childComment,
+                                                    likeComment: () async {
+                                                      await newServices
+                                                          .likeComment(
+                                                              childComment.id
+                                                                  .toString());
+                                                      await Future.delayed(
+                                                          const Duration(
+                                                              seconds: 1));
+                                                      await reloadComment();
+                                                    },
+                                                  ),
+                                                ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
                                   ],
                                 );
                               },
@@ -177,8 +228,7 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
                             )),
                 ),
                 Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 12),
+                  margin: const EdgeInsets.symmetric(vertical: 12),
                   child: Container(
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(
@@ -218,7 +268,9 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
                               reloadComment();
                               textInputController.clear();
                             } catch (e) {
-                              print(e);
+                              if (kDebugMode) {
+                                print(e);
+                              }
                             }
                           },
                           child: Container(
@@ -272,10 +324,10 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
 }
 
 class ReplyBottomSheetComment extends StatefulWidget {
-  const ReplyBottomSheetComment({Key? key, required this.parentCommentId})
+  const ReplyBottomSheetComment({Key? key, required this.parentComment})
       : super(key: key);
 
-  final String parentCommentId;
+  final CommentModel parentComment;
 
   @override
   State<ReplyBottomSheetComment> createState() =>
@@ -299,7 +351,8 @@ class _ReplyBottomSheetCommentState extends State<ReplyBottomSheetComment> {
       setState(() {
         _isLoading = true;
       });
-      var res = await newServices.getReplyComment(widget.parentCommentId);
+      var res = await newServices
+          .getReplyComment(widget.parentComment.id?.toString() ?? "");
       replyComments(res.comments);
     } catch (e) {
       replyComments([]);
@@ -314,6 +367,12 @@ class _ReplyBottomSheetCommentState extends State<ReplyBottomSheetComment> {
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
 
+    var parentId = widget.parentComment.id;
+
+    if (parentId == null) {
+      return Container();
+    }
+
     return ValueListenableBuilder(
       valueListenable: textInputController,
       builder: (context, value, child) => SizedBox(
@@ -324,7 +383,7 @@ class _ReplyBottomSheetCommentState extends State<ReplyBottomSheetComment> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   child: Stack(
                     children: [
                       Positioned(
@@ -372,24 +431,30 @@ class _ReplyBottomSheetCommentState extends State<ReplyBottomSheetComment> {
                     ],
                   ),
                 ),
+                CommentItem(
+                    commentModel: widget.parentComment, likeComment: () {}),
                 Expanded(
                   child: _isLoading
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
                       : Obx(() => replyComments.isNotEmpty
-                          ? ListView.builder(
-                              itemBuilder: (context, i) {
-                                var item = replyComments[i];
-                                return CommentItem(
-                                  commentModel: item,
-                                  likeComment: () {
-                                    newServices.likeComment(item.id.toString());
-                                    reloadReplyComment();
-                                  },
-                                );
-                              },
-                              itemCount: replyComments.length,
+                          ? Container(
+                              margin: const EdgeInsets.only(left: 50),
+                              child: ListView.builder(
+                                itemBuilder: (context, i) {
+                                  var item = replyComments[i];
+                                  return CommentItem(
+                                    commentModel: item,
+                                    likeComment: () {
+                                      newServices
+                                          .likeComment(item.id.toString());
+                                      reloadReplyComment();
+                                    },
+                                  );
+                                },
+                                itemCount: replyComments.length,
+                              ),
                             )
                           : const Center(
                               child: Text("Chưa có phản hồi nào"),
@@ -399,7 +464,7 @@ class _ReplyBottomSheetCommentState extends State<ReplyBottomSheetComment> {
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
+                      borderRadius: const BorderRadius.all(
                         Radius.circular(100),
                       ),
                       color: AppColors.color_F4F5F7,
@@ -432,11 +497,13 @@ class _ReplyBottomSheetCommentState extends State<ReplyBottomSheetComment> {
                             FocusManager.instance.primaryFocus?.unfocus();
                             try {
                               await newServices.replyComment(
-                                  widget.parentCommentId, content);
+                                  parentId.toString(), content);
                               reloadReplyComment();
                               textInputController.clear();
                             } catch (e) {
-                              print(e);
+                              if (kDebugMode) {
+                                print(e);
+                              }
                             }
                           },
                           child: Container(
