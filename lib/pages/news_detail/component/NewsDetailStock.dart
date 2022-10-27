@@ -33,97 +33,109 @@ class NewsDetailStock extends StatelessWidget {
                 children: [
                   Expanded(
                       child: Container(
-                        alignment: Alignment.center,
-                        padding:
+                    alignment: Alignment.center,
+                    padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4)),
-                        child: Text(
-                          model.symbol,
-                          style: const TextStyle(
-                              color: Color(0xFF58BD7D),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4)),
+                    child: Text(
+                      model.symbol,
+                      style: const TextStyle(
+                          color: Color(0xFF58BD7D),
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Giá",
-                            style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            price,
-                            style: const TextStyle(
-                                color: Color(0xFF23262F),
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      )),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Giá",
+                        style:
+                            TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      Text(
+                        price,
+                        style: const TextStyle(
+                            color: Color(0xFF23262F),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  )),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Tăng trưởng",
-                            style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            grow,
-                            style: TextStyle(
-                                color: Color(0xFFFF3B30),
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      )),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Tăng trưởng",
+                        style:
+                            TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      (model.percentChange != null && model.percentChange! > 0)
+                          ? Text(
+                              grow,
+                              style: TextStyle(
+                                  color: Color(0xFF58BD7D),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          : Text(
+                              grow,
+                              style: TextStyle(
+                                  color: Color(0xFFFF3B30),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            )
+                    ],
+                  )),
                   const SizedBox(
                     width: 10,
                   ),
                   Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Tổng KL",
-                            style: TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
-                          ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            total,
-                            style: TextStyle(
-                                color: Color(0xFF23262F),
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ))
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Tổng KL",
+                        style:
+                            TextStyle(color: Color(0xFF9CA3AF), fontSize: 12),
+                      ),
+                      const SizedBox(
+                        height: 2,
+                      ),
+                      Text(
+                        total,
+                        style: TextStyle(
+                            color: Color(0xFF23262F),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ))
                 ],
               ),
             ),
           )),
       onTap: () {
         try {
-          // Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(model.symbol);
-          Get.find<MainFiNewsTikopProvider>().openStockDetail?.call(model.symbol);
+          Get.find<MainFiNewsTikopProvider>()
+              .openStockDetail
+              ?.call(model.symbol);
         } catch (e) {
           print(e);
         }
