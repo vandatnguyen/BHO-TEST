@@ -102,7 +102,7 @@ class _CommentItemState extends State<CommentItem> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              totalLike.toString() ?? "0",
+              totalLike.toString(),
               style: const TextStyle(
                 color: AppColors.color_474A57,
                 fontSize: 11,

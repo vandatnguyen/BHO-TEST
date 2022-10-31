@@ -190,16 +190,22 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                   Column(
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      controller.comments.isNotEmpty
-                                          ? const Text(
-                                              "Xem tất cả bình luận",
-                                              style: TextStyle(
-                                                  color:
-                                                      AppColors.color_primary),
-                                            )
-                                          : const Text(
-                                              "Chưa có bình luận nào",
-                                            ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          horizontal: 24,
+                                        ),
+                                        child: controller.comments.isNotEmpty
+                                            ? const Text(
+                                                "Xem tất cả bình luận",
+                                                style: TextStyle(
+                                                    color: AppColors
+                                                        .color_primary),
+                                              )
+                                            : const Text(
+                                                "Chưa có bình luận nào",
+                                              ),
+                                      ),
                                       Container(
                                         width: width,
                                         margin: const EdgeInsets.symmetric(
