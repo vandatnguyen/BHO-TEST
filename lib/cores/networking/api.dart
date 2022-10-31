@@ -17,7 +17,7 @@ class Api extends GetConnect {
   final String backendUrl;
   String fullToken;
   final String userId;
-  final bool showLog = false;
+  final bool showLog = true;
 
   Api(
       {required this.backendUrl,
