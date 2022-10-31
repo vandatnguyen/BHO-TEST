@@ -14,8 +14,8 @@ class NewsBoxController extends GetxController
 
   late TabController tabController = TabController(vsync: this, length: 0);
 
-  final tabs = ['Trang chủ'];
-  final tabsId = ['666666'];
+  final tabs = <String>[];
+  final tabsId = <String>[];
   List<Website> listWebsite = <Website>[];
   RxList<String> tabsRx = RxList();
   RxList<String> tabsRx2 = RxList();
@@ -47,40 +47,47 @@ class NewsBoxController extends GetxController
     try {
       var response = await Get.find<NewsService>().getWebsite();
       listWebsite = response.websites;
-      tabs.clear();
-      tabsId.clear();
-      listWebsite.forEach((element) {
-        if (element.id == 666666) {
-          element.topic.forEach((topic) {
-            tabs.add(topic.name);
-            tabsId.add(topic.id.toString());
-          });
-        }
-      });
       try {
-        box.write(
-                  'websites', jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
-        box.write(
-                  'url_news_forum', response.forum);
+        box.write('websites',
+            jsonEncode(listWebsite.map((e) => e.toJson()).toList()));
+        box.write('url_news_forum', response.forum);
       } catch (e) {
         print(e);
       }
-      // listWebsiteRx.addAll();
-      tabController = TabController(vsync: this, length: tabs.length);
-      tabsRx.value = tabs;
-      tabsRx2.value = tabs;
-      setTag(tabsId[0]);
+      initTabs();
     } catch (e) {
       print(e);
       change([], status: RxStatus.empty());
     }
   }
 
+  void initTabs() {
+    tabs.clear();
+    tabsId.clear();
+    listWebsite.forEach((element) {
+      if (element.id == 666666) {
+        element.topic.forEach((topic) {
+          tabs.add(topic.name);
+          tabsId.add(topic.id.toString());
+        });
+      }
+    });
+    // listWebsiteRx.addAll();
+    tabController = TabController(vsync: this, length: tabs.length);
+    tabsRx.value = tabs;
+    tabsRx2.value = tabs;
+    setTag(tabsId[0]);
+  }
+
   void onRefresh() {
     if (listWebsite == null || listWebsite.isEmpty) {
       initWebsite();
     } else {
-      setTag(currentTag);
+      if (tabs.isEmpty) {
+        initTabs();
+      } else {
+        setTag(currentTag);
+      }
     }
   }
 

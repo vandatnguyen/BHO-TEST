@@ -1,3 +1,4 @@
+import 'package:finews_module/pages/home/main_tikop_provider.dart';
 import 'package:finews_module/pages/home/main_trading_provider.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,8 @@ class HtmlParserTextWidget extends HtmlParserWidgetBase {
                     ..onTap = () {
                       try {
                         String sym = split2[0];
-                        Get.find<MainFiNewsTradingProvider>().openStockDetail?.call(sym);
+                        sym = sym.replaceAll(",", "").replaceAll(".", "").replaceAll(")", "").replaceAll("(", "").removeAllWhitespace;
+                        Get.find<MainFiNewsTikopProvider>().openStockDetail?.call(sym);
                       } catch (e) {
                         print(e);
                       }

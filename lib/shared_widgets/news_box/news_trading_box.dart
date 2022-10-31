@@ -36,7 +36,7 @@ class BoxTradingNews extends GetView<NewsTradingBoxController> {
                 style: const TextStyle(
                   color: COLOR_333333,
                   fontSize: 18,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

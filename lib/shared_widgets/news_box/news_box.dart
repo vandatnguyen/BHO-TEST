@@ -34,7 +34,7 @@ class BoxNews extends GetView<NewsBoxController> {
               style: TextStyle(
                 color: COLOR_333333,
                 fontSize: 18,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),

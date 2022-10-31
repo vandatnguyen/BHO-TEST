@@ -16,6 +16,7 @@ class ForumScene extends GetView<ForumController> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
+        toolbarHeight: 0,
         automaticallyImplyLeading: false,
         // leading: IconButton(
         //   icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -24,10 +25,10 @@ class ForumScene extends GetView<ForumController> {
         backgroundColor: Colors.white,
         // title: Image.asset('assets/images/FiNews.png',
         //     package: 'finews_module', width: 90, height: 16),
-        title: Text(controller.title, style: TextStyle(color: Colors.black, fontSize: 18)),
+        // title: Text(controller.title, style: TextStyle(color: Colors.black, fontSize: 18)),
         // titleSpacing: 0,
         // leadingWidth: 8,
-        centerTitle: true,
+        // centerTitle: true,
       ),
       body: Stack(
         children: [
