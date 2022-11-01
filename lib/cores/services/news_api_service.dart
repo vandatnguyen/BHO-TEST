@@ -1,5 +1,6 @@
 import 'package:finews_module/data/entities/article_list_response.dart';
 import 'package:finews_module/data/entities/website_response.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../configs/constants.dart';
 import '../../data/entities/comment_list_article.dart';
@@ -236,17 +237,21 @@ class NewsServiceImpl extends NewsService {
 
   @override
   Future<CommentResponse> comment(String articleId, String content) async {
-    print(content);
+    var box = GetStorage();
+    String phone = box.read("tikop_user_phone");
+    String name = box.read("tikop_user_name");
+    String email = box.read("tikop_user_email");
+    String avatar = box.read("tikop_user_avatar");
     return BaseDecoder(
       await api.postData(
         params: {
           "db24h": "OBUG63LPORSWC3J2",
           "user": {
-            "phoneNumber": "03336688888",
-            "username": "phamviettu",
+            "phoneNumber": phone,
+            "username": name,
             "avatarUrl":
-                "http://graph.facebook.com/2978211225754795/picture?type=large",
-            "email": "phamviettu@gmail.com"
+            avatar,
+            "email": email
           },
           "content": content
         },
@@ -287,16 +292,21 @@ class NewsServiceImpl extends NewsService {
 
   @override
   Future<CommentResponse> replyComment(String commentId, String content) async {
+    var box = GetStorage();
+    String phone = box.read("tikop_user_phone");
+    String name = box.read("tikop_user_name");
+    String email = box.read("tikop_user_email");
+    String avatar = box.read("tikop_user_avatar");
     return BaseDecoder(
       await api.postData(
         params: {
           "db24h": "OBUG63LPORSWC3J2",
           "content": content,
           "user": {
-            "phoneNumber": "03336688888",
-            "username": "phamviettu",
-            "avatarUrl": "http://graph.facebook.com/2978211225754795/picture?type=large",
-            "email": "phamviettu@gmail.com"
+            "phoneNumber": phone,
+            "username": name,
+            "avatarUrl": avatar,
+            "email": email
           }
         },
         endPoint: "/v1.0/comment/$commentId/reply",

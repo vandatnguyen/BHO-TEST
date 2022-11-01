@@ -99,7 +99,7 @@ extension DateExtension on NewsDetailModel {
     final diff = current.difference(createdDateTime);
     var outputFormat = DateFormat('HH:mm dd/MM/yyyy');
 
-    return outputFormat.format(current);
+    return outputFormat.format(createdDateTime);
   }
 
   String formatDisplayTime() {
@@ -107,6 +107,6 @@ extension DateExtension on NewsDetailModel {
     final diff = current.difference(createdDateTime);
     var outputFormat = DateFormat('HH:mmm');
 
-    return outputFormat.format(current);
+    return outputFormat.format(createdDateTime);
   }
 }
