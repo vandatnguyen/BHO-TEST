@@ -79,7 +79,7 @@ class NewsTradingBoxController extends GetxController
     }
   }
 
-  void onRefresh() {
+  void onRefresh({isRefreshApi = false}) {
     if (listWebsite == null || listWebsite.isEmpty) {
       initWebsite();
     } else {
@@ -87,10 +87,10 @@ class NewsTradingBoxController extends GetxController
     }
   }
 
-  void setTag(String tag) async {
+  void setTag(String tag, {isRefreshApi = false}) async {
     try {
       currentTag = tag;
-      if (cachedData[currentTag] == null || cachedData[currentTag]!.isEmpty) {
+      if (isRefreshApi || (cachedData[currentTag] == null || cachedData[currentTag]!.isEmpty)) {
         change([], status: RxStatus.loading());
         var res = await newsService.getArticleV2BySource(source: "222222",topic: tag, last: -1);
         if (res.articles.isEmpty){
