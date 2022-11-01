@@ -71,8 +71,8 @@ class ListNoDataBackground extends StatelessWidget {
         if (desc != null)
           Text(
             desc!,
-            // style: context.textSize14.copyWith(
-            //     fontWeight: FontWeight.normal, color: const Color(0xFF5C5C5C)),
+            style: context.textSize14.copyWith(
+                fontWeight: FontWeight.normal, color: const Color(0xFF5C5C5C)),
             textAlign: TextAlign.center,
           ),
         SIZED_BOX_H12,

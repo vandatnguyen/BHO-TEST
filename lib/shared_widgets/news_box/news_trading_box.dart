@@ -96,8 +96,11 @@ class BoxTradingNews extends GetView<NewsTradingBoxController> {
                         children: [
                           ...listNews.take(3).toList().map((item) => Column(
                                 children: [
-                                  BoxNewsItem(
-                                    newsDetail: item,
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                                    child: BoxNewsItem(
+                                      newsDetail: item,
+                                    ),
                                   ),
                                   i++ < 2
                                       ? const Divider()
