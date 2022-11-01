@@ -79,7 +79,7 @@ class NewsTradingBoxController extends GetxController
     }
   }
 
-  void onRefresh({isRefreshApi = false}) {
+  void onRefresh({bool isRefreshApi = false}) {
     if (listWebsite == null || listWebsite.isEmpty) {
       initWebsite();
     } else {
@@ -87,7 +87,7 @@ class NewsTradingBoxController extends GetxController
     }
   }
 
-  void setTag(String tag, {isRefreshApi = false}) async {
+  void setTag(String tag, {bool isRefreshApi = false}) async {
     try {
       currentTag = tag;
       if (isRefreshApi || (cachedData[currentTag] == null || cachedData[currentTag]!.isEmpty)) {
