@@ -87,6 +87,14 @@ class NewsTradingBoxController extends GetxController
     }
   }
 
+  void onRefreshApi() {
+    if (listWebsite == null || listWebsite.isEmpty) {
+      initWebsite();
+    } else {
+      setTag(currentTag, isRefreshApi: true);
+    }
+  }
+
   void setTag(String tag, {bool isRefreshApi = false}) async {
     try {
       currentTag = tag;
