@@ -83,7 +83,7 @@ class NewsTradingBoxController extends GetxController
     if (listWebsite == null || listWebsite.isEmpty) {
       initWebsite();
     } else {
-      setTag(currentTag);
+      setTag(currentTag, isRefreshApi: isRefreshApi);
     }
   }
 
