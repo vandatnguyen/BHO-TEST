@@ -44,7 +44,7 @@ class ProdConfig implements BaseConfig {
    @override
   EnvironmentConfiguration get environment => EnvironmentConfiguration.develop;
   @override
-  String get host => "dev-api.r14express.vn";
+  String get host => "api.r14express.vn";
   @override
   String get protocol => "https://"; 
   @override 
@@ -71,10 +71,10 @@ class Environment {
 
   BaseConfig _getConfig(EnvironmentConfiguration environment) {
     switch (environment) {
-      // case EnvironmentConfiguration.product:
-      //   return ProdConfig();
-      // case EnvironmentConfiguration.staging:
-      //   return StagingConfig();
+      case EnvironmentConfiguration.product:
+        return ProdConfig();
+      case EnvironmentConfiguration.staging:
+        return StagingConfig();
       default:
         return DevConfig();
     }

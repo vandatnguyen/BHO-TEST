@@ -1,5 +1,6 @@
 import 'package:finews_module/pages/forum/forum_scene_controller.dart';
 import 'package:finews_module/pages/home/home_page_controller.dart';
+import 'package:finews_module/pages/home/main_tikop_provider.dart';
 import 'package:finews_module/pages/home/main_trading_provider.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/pages/webview/webview_scene_controller.dart';
@@ -13,6 +14,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:timeago/timeago.dart';
 
+import 'configs/constants.dart';
+import 'configs/service_api_config.dart';
 import 'cores/services/news_api_service.dart';
 import 'pages/home/main_provider.dart';
 import 'pages/news_detail/html_parser/html_parser.dart';
@@ -24,6 +27,8 @@ class FiNewsModule {
   //   initNewsRouteAndBinding();
   //   openFiNewsApp();
   // }
+
+  static EnvironmentConfiguration envFinews = EnvironmentConfiguration.staging;
 
   static void saveToken(String token) {
     var box = GetStorage();
@@ -43,6 +48,20 @@ class FiNewsModule {
     if (!Get.isRegistered<MainFiNewsProvider>()) {
       Get.put<MainFiNewsTradingProvider>(
         MainFiNewsTradingProvider(
+            openStockDetail
+        ),
+      );
+    }
+  }
+
+  static void openFinewsModuleFromTikop(EnvironmentConfiguration envConfig,
+      {Function(String stockSymbol)? openStockDetail}) {
+    envFinews = envConfig;
+    print("envFinews: " + envFinews.name);
+    Environment().initConfig(envFinews);
+    if (!Get.isRegistered<MainFiNewsProvider>()) {
+      Get.put<MainFiNewsTikopProvider>(
+        MainFiNewsTikopProvider(
             openStockDetail
         ),
       );
@@ -111,16 +130,16 @@ class MyCustomMessages implements LookupMessages {
   String days(int days) => '${days} ngày trước';
 
   @override
-  String aboutAMonth(int days) => '${days}d';
+  String aboutAMonth(int days) => '1 tháng trước';
 
   @override
-  String months(int months) => '${months}mo';
+  String months(int months) => '${months} tháng trước';
 
   @override
-  String aboutAYear(int year) => '${year}y';
+  String aboutAYear(int year) => '1 năm trước';
 
   @override
-  String years(int years) => '${years}y';
+  String years(int years) => '${years} năm trước';
 
   @override
   String wordSeparator() => ' ';
