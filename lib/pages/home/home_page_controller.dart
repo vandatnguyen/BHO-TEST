@@ -4,11 +4,14 @@ import 'dart:math';
 import 'package:finews_module/cores/models/news_detail.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/cores/states/base_controller.dart';
+import 'package:finews_module/data/entities/list_currency_response.dart';
+import 'package:finews_module/data/entities/list_gold_response.dart';
 import 'package:finews_module/data/entities/website.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NewsHomePageController extends BaseController
     with StateMixin<List<ArticleWrapper>> {
@@ -24,6 +27,8 @@ class NewsHomePageController extends BaseController
   void onInit() {
     super.onInit();
     getWebsite();
+    getGold();
+    getCurrency();
   }
 
   Future onRefresh() async {
@@ -37,6 +42,31 @@ class NewsHomePageController extends BaseController
       refreshController.loadComplete();
       return;
     }
+  }
+
+  var listGoldRes = Rxn<ListGoldResponse>();
+  var listCurrencyRes = Rxn<ListCurrencyResponse>();
+
+  void getGold() async {
+    try {
+      var response = await Get.find<NewsService>().getListGold();
+      listGoldRes(response);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    } finally {}
+  }
+
+  void getCurrency() async {
+    try {
+      var response = await Get.find<NewsService>().getListCurrency();
+      listCurrencyRes(response);
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    } finally {}
   }
 
   Future getWebsite() async {

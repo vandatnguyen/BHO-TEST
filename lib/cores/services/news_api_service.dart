@@ -1,4 +1,6 @@
 import 'package:finews_module/data/entities/article_list_response.dart';
+import 'package:finews_module/data/entities/list_currency_response.dart';
+import 'package:finews_module/data/entities/list_gold_response.dart';
 import 'package:finews_module/data/entities/website_response.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -45,6 +47,10 @@ abstract class NewsService extends ApiServices {
   Future<CommentResponse> replyComment(String commentId, String content);
 
   Future<LikeCommentResponse> likeComment(String commentId);
+
+  Future<ListGoldResponse> getListGold();
+
+  Future<ListCurrencyResponse> getListCurrency();
 }
 
 class NewsServiceImpl extends NewsService {
@@ -196,28 +202,32 @@ class NewsServiceImpl extends NewsService {
   }
 
   @override
-  Future<ArticleListResponse> getArticleV2BySource({required String source, required String topic, required double last}) async {var params = {
-    "topic": topic,
-    "source": source,
-    "length": "20",
-    "db24h": "OBUG63LPORSWC3J2"
-  };
-  if (last > 0) {
-    params = {
+  Future<ArticleListResponse> getArticleV2BySource(
+      {required String source,
+      required String topic,
+      required double last}) async {
+    var params = {
       "topic": topic,
       "source": source,
       "length": "20",
-      "db24h": "OBUG63LPORSWC3J2",
-      "last": last.toInt().toString()
+      "db24h": "OBUG63LPORSWC3J2"
     };
-  }
-  return BaseDecoder(
-    await api.getData(
-    params: params,
-    endPoint: "/v1.0/articlev2",
-    timeOut: AppConstants.TIME_OUT,
-  ),
-    decoder: ArticleListResponse.fromJson,
+    if (last > 0) {
+      params = {
+        "topic": topic,
+        "source": source,
+        "length": "20",
+        "db24h": "OBUG63LPORSWC3J2",
+        "last": last.toInt().toString()
+      };
+    }
+    return BaseDecoder(
+      await api.getData(
+        params: params,
+        endPoint: "/v1.0/articlev2",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: ArticleListResponse.fromJson,
     ).decoded();
   }
 
@@ -249,8 +259,7 @@ class NewsServiceImpl extends NewsService {
           "user": {
             "phoneNumber": phone,
             "username": name,
-            "avatarUrl":
-            avatar,
+            "avatarUrl": avatar,
             "email": email
           },
           "content": content
@@ -266,13 +275,41 @@ class NewsServiceImpl extends NewsService {
   Future<CommentListResponse> getReplyComment(String commentParentId) async {
     return BaseDecoder(
       await api.getData(
-    params: {
-    "db24h": "OBUG63LPORSWC3J2",
-    },
-      endPoint: "/v1.0/comment/$commentParentId/reply",
-      timeOut: AppConstants.TIME_OUT,
-    ),
-    decoder: CommentListResponse.fromJson,
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+        },
+        endPoint: "/v1.0/comment/$commentParentId/reply",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: CommentListResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<ListGoldResponse> getListGold() async {
+    return BaseDecoder(
+      await api.getData(
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+        },
+        endPoint: "/v1.0/gold",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: ListGoldResponse.fromJson,
+    ).decoded();
+  }
+
+  @override
+  Future<ListCurrencyResponse> getListCurrency() async {
+    return BaseDecoder(
+      await api.getData(
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+        },
+        endPoint: "/v1.0/currency",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: ListCurrencyResponse.fromJson,
     ).decoded();
   }
 

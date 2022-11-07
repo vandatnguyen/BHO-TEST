@@ -1,6 +1,6 @@
 import 'package:finews_module/cores/networking/result.dart';
 
-typedef Decoder<T> = T Function(dynamic data);
+typedef Decoder<T> = T Function(Map<String, dynamic> data);
 
 class BaseDecoder<T> {
   final Result result;

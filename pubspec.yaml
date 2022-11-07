@@ -48,9 +48,9 @@ dependencies:
   flutter_svg: ^1.0.3
   webview_flutter: 3.0.4
 
-  flutter_inappwebview: ^5.4.3+7
-#  flutter_inappwebview:
-#    git: https://github.com/CodeEagle/flutter_inappwebview
+#  flutter_inappwebview: ^5.4.3+7
+  flutter_inappwebview:
+    git: https://github.com/CodeEagle/flutter_inappwebview
   #  flutter_spinkit: ^4.1.2+1
   #  loading: ^1.0.2
 
@@ -64,6 +64,7 @@ dependencies:
   firebase_analytics: ^9.3.4
   timeago: ^3.3.0
   flutter_html_all: ^3.0.0-alpha.5
+  prototype_constrained_box: ^0.0.1+1
 
 dev_dependencies:
   flutter_test:
