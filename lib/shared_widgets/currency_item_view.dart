@@ -14,20 +14,20 @@ class CurrencyItemView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SIZED_BOX_W16,
-        // Container(
-        //   padding: const EdgeInsets.all(1), // Border width
-        //   decoration: const BoxDecoration(
-        //       color: AppColors.color_000000_fade_8, shape: BoxShape.circle),
-        //   child: ClipOval(
-        //     child: Image.network(
-        //       item. ?? "",
-        //       fit: BoxFit.cover,
-        //       width: 40,
-        //       height: 40,
-        //     ),
-        //   ),
-        // ),
-        // SIZED_BOX_W08,
+        Container(
+          padding: const EdgeInsets.all(1), // Border width
+          decoration: const BoxDecoration(
+              color: AppColors.color_000000_fade_8, shape: BoxShape.circle),
+          child: ClipOval(
+            child: Image.network(
+              "https://raw.githubusercontent.com/transferwise/currency-flags/master/src/flags/${item.code?.toLowerCase()}.png",
+              fit: BoxFit.cover,
+              width: 40,
+              height: 40,
+            ),
+          ),
+        ),
+        SIZED_BOX_W08,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

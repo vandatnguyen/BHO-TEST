@@ -41,7 +41,7 @@ class GoldItemView extends StatelessWidget {
             ),
             item.buy_change != null
                 ? RichText(
-                    textAlign: TextAlign.left,
+                    textAlign: TextAlign.end,
                     text: TextSpan(
                       children: [
                         const TextSpan(
@@ -61,15 +61,19 @@ class GoldItemView extends StatelessWidget {
                           ),
                         ),
                         WidgetSpan(
-                          child: item.buy_change! > 0
-                              ? const Icon(
-                                  Icons.arrow_drop_up,
-                                  color: AppColors.color_00B14F,
-                                )
-                              : const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: AppColors.color_FF3B30,
-                                ),
+                          alignment: PlaceholderAlignment.bottom,
+                          child: Container(
+                            color: AppColors.red,
+                            child: item.buy_change! > 0
+                                ? const Icon(
+                                    Icons.arrow_drop_up,
+                                    color: AppColors.color_00B14F,
+                                  )
+                                : const Icon(
+                                    Icons.arrow_drop_down,
+                                    color: AppColors.color_FF3B30,
+                                  ),
+                          ),
                         )
                       ],
                     ),

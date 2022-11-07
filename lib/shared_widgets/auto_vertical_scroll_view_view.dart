@@ -17,7 +17,7 @@ class AutoVerticalScrollView<T> extends StatefulWidget {
       _AutoVerticalScrollViewState<T>();
 }
 
-const Duration timeRerun = Duration(milliseconds: 100);
+const Duration timeRerun = Duration(milliseconds: 10);
 
 class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
   final controller = ScrollController();
@@ -53,7 +53,7 @@ class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
       (_) {
         scrollInterval?.cancel();
         scrollInterval = Timer.periodic(timeRerun, (timer) {
-          controller.jumpTo(controller.offset + 1);
+          controller.jumpTo(controller.offset + 0.5);
         });
       },
     );

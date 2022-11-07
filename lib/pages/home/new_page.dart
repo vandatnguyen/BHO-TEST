@@ -48,6 +48,9 @@ class NewsPage extends GetView<NewsHomePageController> {
                       },
                     ),
                   ),
+
+                  SIZED_BOX_H12,
+
                   Obx(
                     () => AutoVerticalScrollView(
                       listItem: controller.listCurrencyRes.value?.value,
