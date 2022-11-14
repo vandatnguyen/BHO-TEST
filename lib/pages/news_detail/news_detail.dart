@@ -198,7 +198,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                         child: controller.comments.isNotEmpty
                                             ? const Text(
                                                 "Xem tất cả bình luận",
-                                                style: TextStyle(
+                                                style: TextStyle(fontSize: 14,
                                                     color: AppColors
                                                         .color_primary),
                                               )
@@ -223,6 +223,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                         child: const Text(
                                           "Để lại bình luận của bạn...",
                                           style: TextStyle(
+                                              fontSize: 14,
                                               color: AppColors.color_777E90),
                                         ),
                                       ),
