@@ -176,11 +176,11 @@ class _CommentItemState extends State<CommentItem> {
                               ],
                             ),
                           ),
-                          Positioned(
-                            child: likeWidget,
-                            bottom: 0,
-                            right: 10,
-                          )
+                          // Positioned(
+                          //   child: likeWidget,
+                          //   bottom: 0,
+                          //   right: 10,
+                          // )
                         ],
                       ),
                       SIZED_BOX_H06,
@@ -215,18 +215,18 @@ class _CommentItemState extends State<CommentItem> {
                               : const SizedBox(
                                   width: 10,
                                 ),
-                          GestureDetector(
-                            child: const Text(
-                              "Thích",
-                              style: TextStyle(
-                                  color: AppColors.color_141416,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14),
-                            ),
-                            onTap: () {
-                              _likeComment();
-                            },
-                          ),
+                          // GestureDetector(
+                          //   child: const Text(
+                          //     "Thích",
+                          //     style: TextStyle(
+                          //         color: AppColors.color_141416,
+                          //         fontWeight: FontWeight.w600,
+                          //         fontSize: 14),
+                          //   ),
+                          //   onTap: () {
+                          //     _likeComment();
+                          //   },
+                          // ),
                         ],
                       ),
                     ],

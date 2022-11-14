@@ -49,7 +49,7 @@ class ForumController extends BaseController {
       url = urlForum + "home?redirect_path=/&access_token=" +
           tikopToken;
     }else {
-      url = "https://dev-forum.r14express.vn/home?redirect_path=/&access_token=" +
+      url = "https://forum.r14express.vn/home?redirect_path=/&access_token=" +
           tikopToken;
     }
     print("4rum url" + url);
