@@ -63,7 +63,6 @@ class GoldItemView extends StatelessWidget {
                         WidgetSpan(
                           alignment: PlaceholderAlignment.bottom,
                           child: Container(
-                            color: AppColors.red,
                             child: item.buy_change! > 0
                                 ? const Icon(
                                     Icons.arrow_drop_up,

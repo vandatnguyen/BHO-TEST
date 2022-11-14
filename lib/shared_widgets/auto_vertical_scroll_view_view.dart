@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:prototype_constrained_box/prototype_constrained_box.dart';
 
 typedef RendererFunction<T> = Widget Function(T item);
 
@@ -58,9 +57,9 @@ class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
       },
     );
 
-    return PrototypeConstrainedBox.tight(
+    return PrototypeHeight(
       prototype: renderItem(listItem[0]),
-      child: ListView.builder(
+      listView: ListView.builder(
         controller: controller,
         scrollDirection: Axis.horizontal,
         itemBuilder: (_, index) {
@@ -68,6 +67,33 @@ class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
           return renderItem(currentItem);
         },
       ),
+    );
+  }
+}
+
+class PrototypeHeight extends StatelessWidget {
+  final Widget prototype;
+  final ListView listView;
+
+  const PrototypeHeight({
+    Key? key,
+    required this.prototype,
+    required this.listView,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        IgnorePointer(
+          child: Opacity(
+            opacity: 0.0,
+            child: prototype,
+          ),
+        ),
+        const SizedBox(width: double.infinity),
+        Positioned.fill(child: listView),
+      ],
     );
   }
 }
