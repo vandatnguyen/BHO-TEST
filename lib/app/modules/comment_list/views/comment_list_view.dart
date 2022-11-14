@@ -226,7 +226,9 @@ class _BottomSheetCommentState extends State<BottomSheetComment> {
                                 itemCount: comments.length,
                               )
                             : const Center(
-                                child: Text("Chưa có bình luận nào"),
+                                child: Text("Chưa có bình luận nào",style: TextStyle(
+                                  fontSize: 14,
+                                )),
                               )),
                   ),
                   Container(

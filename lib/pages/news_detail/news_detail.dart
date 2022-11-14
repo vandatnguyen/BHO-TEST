@@ -203,7 +203,9 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                                         .color_primary),
                                               )
                                             : const Text(
-                                                "Chưa có bình luận nào",
+                                                "Chưa có bình luận nào",style: TextStyle(
+                                          fontSize: 12,
+                                        )
                                               ),
                                       ),
                                       Container(
