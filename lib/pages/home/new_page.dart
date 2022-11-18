@@ -42,6 +42,8 @@ class NewsPage extends GetView<NewsHomePageController> {
                 children: [
                   Obx(
                     () => AutoVerticalScrollView(
+                      maxHeight: 100,
+                      maxWidth: 200,
                       listItem: controller.listGoldRes.value?.values,
                       renderItem: (GoldModel item) {
                         return GoldItemView(item: item);
@@ -53,6 +55,8 @@ class NewsPage extends GetView<NewsHomePageController> {
 
                   Obx(
                     () => AutoVerticalScrollView(
+                      maxHeight: 100,
+                      maxWidth: 160,
                       listItem: controller.listCurrencyRes.value?.value,
                       renderItem: (CurrencyModel item) {
                         return CurrencyItemView(item: item);

@@ -1,25 +1,29 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_carousel/infinite_carousel.dart';
 
 typedef RendererFunction<T> = Widget Function(T item);
 
 class AutoVerticalScrollView<T> extends StatefulWidget {
   const AutoVerticalScrollView(
-      {Key? key, required this.listItem, required this.renderItem})
+      {Key? key, required this.listItem, required this.renderItem, required this.maxHeight, required this.maxWidth})
       : super(key: key);
   final List<T>? listItem;
   final RendererFunction<T> renderItem;
+  final double maxWidth;
+  final double maxHeight;
 
   @override
   State<AutoVerticalScrollView<T>> createState() =>
       _AutoVerticalScrollViewState<T>();
 }
 
-const Duration timeRerun = Duration(milliseconds: 10);
+const Duration timeRerun = Duration(milliseconds: 2000);
 
 class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
-  final controller = ScrollController();
+  final controller = InfiniteScrollController();
 
   @override
   void initState() {
@@ -52,20 +56,30 @@ class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
       (_) {
         scrollInterval?.cancel();
         scrollInterval = Timer.periodic(timeRerun, (timer) {
-          controller.jumpTo(controller.offset + 0.5);
+          try {
+            controller.animateTo(controller.offset + 100,
+                duration: timeRerun, curve: Curves.linear);
+          } catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
         });
       },
     );
 
-    return PrototypeHeight(
-      prototype: renderItem(listItem[0]),
-      listView: ListView.builder(
+    return SizedBox(
+      height: widget.maxHeight,
+      child: InfiniteCarousel.builder(
+        itemCount: listItem.length,
         controller: controller,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (_, index) {
-          var currentItem = listItem[index % listItem.length];
-          return renderItem(currentItem);
+        loop: true,
+        itemBuilder: (context, itemIndex, realIndex) {
+          return renderItem(
+            listItem[itemIndex],
+          );
         },
+        itemExtent: widget.maxWidth,
       ),
     );
   }
@@ -73,12 +87,12 @@ class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
 
 class PrototypeHeight extends StatelessWidget {
   final Widget prototype;
-  final ListView listView;
+  final Widget child;
 
   const PrototypeHeight({
     Key? key,
     required this.prototype,
-    required this.listView,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -92,7 +106,7 @@ class PrototypeHeight extends StatelessWidget {
           ),
         ),
         const SizedBox(width: double.infinity),
-        Positioned.fill(child: listView),
+        Positioned.fill(child: child),
       ],
     );
   }
