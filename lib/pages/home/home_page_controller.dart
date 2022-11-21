@@ -152,21 +152,25 @@ class NewsHomePageController extends BaseController
       } else {
         _loadEnd = false;
       }
-      if (categoryId == "31"){
-        try {
-          if (this.listArticle.isNotEmpty) {
-                    for (var value in this.listArticle) {
-                      if (value.type == 5) {
-                        this.listArticle.remove(value);
-                      }
-                    }
-                  }
-        } catch (e) {
-          print(e);
-        }
-        var wrapper = ArticleWrapper();
-        wrapper.type = 5;
-        this.listArticle.insert(0,wrapper);
+      try {
+        if (categoryId == "31"){
+                try {
+                  if (this.listArticle.isNotEmpty) {
+                            for (var value in this.listArticle) {
+                              if (value.type == 5) {
+                                this.listArticle.remove(value);
+                              }
+                            }
+                          }
+                } catch (e) {
+                  print(e);
+                }
+                var wrapper = ArticleWrapper();
+                wrapper.type = 5;
+                this.listArticle.insert(0,wrapper);
+              }
+      } catch (e) {
+        print(e);
       }
       for (var value in listArticle.articles) {
         var wrapper = ArticleWrapper();
@@ -176,7 +180,6 @@ class NewsHomePageController extends BaseController
         wrapper.model = value;
         this.listArticle.add(wrapper);
       }
-      print("listArticle size: " + this.listArticle.length.toString());
       if (this.listArticle.length <= 20){
         for (var value in this.listArticle) {
           if (value.type == 3 || value.type == 4) {
@@ -239,6 +242,7 @@ class NewsHomePageController extends BaseController
         var wrapper = ArticleWrapper();
         value.topicName = getTopicName(value.topic);
         value.sourceName = getSourceName(value.source);
+        value.sourceIconUrl = getSourceIconUrl(value.source);
         wrapper.model = value;
         this.listArticle.add(wrapper);
       }

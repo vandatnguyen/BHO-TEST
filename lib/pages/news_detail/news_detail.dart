@@ -4,6 +4,7 @@ import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/data/entities/currency_model.dart';
 import 'package:finews_module/data/entities/gold_model.dart';
 import 'package:finews_module/pages/home/new_page.dart';
+import 'package:finews_module/pages/list_news_route/list_news.dart';
 import 'package:finews_module/pages/news_detail/html_parser/html_parser_widget.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/pages/news_detail/settings/NewsDetailSetting.dart';
@@ -14,6 +15,7 @@ import 'package:finews_module/shared_widgets/gold_item_view.dart';
 import 'package:finews_module/shared_widgets/stockchart/market_header_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../cores/models/news_detail.dart';
 import '../../cores/services/news_api_service.dart';
@@ -54,6 +56,11 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(
+        // backgroundColor: Colors.white, // App bar color
+        brightness: Brightness.light,
+        toolbarHeight: 0,
+      ),
       backgroundColor: Colors.white,
       body: Stack(children: [
         Scaffold(
@@ -145,6 +152,16 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                 "link": controller.model?.url ?? "",
                                 "title": controller.model?.title ?? ""
                               });
+                            },
+                            onTapTag: (e){
+                              Get.toNamed(
+                                AppRoutes.listNews,
+                                arguments: {
+                                  "item": controller.model!,
+                                  "tag": e,
+                                  "type": ListNewsType.typeTag,
+                                },
+                              );
                             },
                           ),
                         ),
@@ -314,6 +331,13 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                 Get.back();
               },
               onBookmark: () {},
+              onShare: () {
+                try {
+                  _launchURL(controller.model!.webUrl!);
+                } catch (e) {
+                  print(e);
+                }
+              },
               onSetting: () {
                 showModalBottomSheet(
                     isDismissible: true,
@@ -325,5 +349,14 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
             )),
       ]),
     );
+  }
+  
+  _launchURL(String urlNews) async {
+    final Uri url = Uri.parse(urlNews);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

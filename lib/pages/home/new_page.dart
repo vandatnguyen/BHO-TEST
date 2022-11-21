@@ -325,7 +325,7 @@ class NewsItem extends StatelessWidget {
                     AppRoutes.listNews,
                     arguments: {
                       "item": newsDetail,
-                      "type": ListNewsType.typeTag
+                      "type": ListNewsType.typeSym
                     },
                   );
                 },
