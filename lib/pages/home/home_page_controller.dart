@@ -2,11 +2,14 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:finews_module/cores/models/news_detail.dart';
+import 'package:finews_module/cores/resources/data_state.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/cores/states/base_controller.dart';
 import 'package:finews_module/data/entities/list_currency_response.dart';
 import 'package:finews_module/data/entities/list_gold_response.dart';
 import 'package:finews_module/data/entities/website.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_index_model.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_index_model_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,8 +30,9 @@ class NewsHomePageController extends BaseController
   void onInit() {
     super.onInit();
     getWebsite();
-    getGold();
-    getCurrency();
+    getStockIndex();
+    // getGold();
+    // getCurrency();
   }
 
   Future onRefresh() async {
@@ -65,6 +69,30 @@ class NewsHomePageController extends BaseController
     } catch (e) {
       if (kDebugMode) {
         print(e);
+      }
+    } finally {}
+  }
+
+  RxList<MarketIndexModel> listMarketCate = <MarketIndexModel>[].obs;
+  void getStockIndex() async {
+    try {
+      print("getStockIndex:  + result");
+      var result = await Get.find<NewsService>().getMarketIndex();
+      print("getStockIndex:  + result 2222");
+      if (result.success) {
+        print("getStockIndex:  + result success" + result.code.toString());
+        var model = result.modelDTO;
+        print("getStockIndex:  + result success 2");
+        final List<MarketIndexModel> list =[];
+        for (final value in model) {
+          print("getStockIndex: " + model.toString());
+          list.add(value.toModel());
+        }
+        listMarketCate.value = list;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("getStockIndex: " + e.toString());
       }
     } finally {}
   }
@@ -136,6 +164,21 @@ class NewsHomePageController extends BaseController
         value.sourceIconUrl = getSourceIconUrl(value.source);
         wrapper.model = value;
         this.listArticle.add(wrapper);
+      }
+      print("listArticle size: " + this.listArticle.length.toString());
+      if (this.listArticle.length <= 20){
+        for (var value in this.listArticle) {
+          if (value.type == 3 || value.type == 4) {
+            this.listArticle.remove(value);
+          }
+        }
+        var wrapper = ArticleWrapper();
+        wrapper.type = 3;
+        this.listArticle.insert(10, wrapper);
+        var wrapper2 = ArticleWrapper();
+        wrapper2.type = 4;
+        this.listArticle.insert(20, wrapper2);
+        print("listArticle size: getGold getCurrency");
       }
       change(this.listArticle, status: RxStatus.success());
     } catch (e) {

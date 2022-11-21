@@ -64,6 +64,7 @@ dependencies:
   firebase_analytics: ^9.3.4
   timeago: ^3.3.0
   flutter_html_all: ^3.0.0-alpha.5
+  fl_chart: ^0.36.1
 
 dev_dependencies:
   flutter_test:

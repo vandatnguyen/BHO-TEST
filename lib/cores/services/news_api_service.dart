@@ -1,7 +1,12 @@
+import 'package:finews_module/cores/networking/api.dart';
+import 'package:finews_module/cores/networking/decoder_list.dart';
 import 'package:finews_module/data/entities/article_list_response.dart';
 import 'package:finews_module/data/entities/list_currency_response.dart';
 import 'package:finews_module/data/entities/list_gold_response.dart';
 import 'package:finews_module/data/entities/website_response.dart';
+import 'package:finews_module/pages/home/main_provider.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_index_model_dto.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../configs/constants.dart';
@@ -51,6 +56,9 @@ abstract class NewsService extends ApiServices {
   Future<ListGoldResponse> getListGold();
 
   Future<ListCurrencyResponse> getListCurrency();
+
+
+  Future<BaseDecoderList<List<MarketIndexModelDTO>>> getMarketIndex();
 }
 
 class NewsServiceImpl extends NewsService {
@@ -352,4 +360,20 @@ class NewsServiceImpl extends NewsService {
       decoder: CommentResponse.fromJson,
     ).decoded();
   }
+
+
+  @override
+  Future<BaseDecoderList<List<MarketIndexModelDTO>>> getMarketIndex() async {
+    final MainFiNewsProvider mainProvider = Get.find<MainFiNewsProvider>();
+    var apiTrading = Api(
+        backendUrl: "http://34.124.235.74:8501",
+        fullToken: mainProvider.accessToken ?? "",
+        userId: mainProvider.userId?.toString() ?? "");
+    return BaseDecoderList(
+        await apiTrading.getData(
+            endPoint: "/stock/v1/chart-market-symbols",
+            timeOut: AppConstants.TIME_OUT),
+        decoder: MarketIndexModelDTO.getList);
+  }
+
 }

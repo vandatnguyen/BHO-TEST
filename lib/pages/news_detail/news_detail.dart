@@ -1,11 +1,16 @@
 import 'package:finews_module/app/modules/comment_list/views/comment_list_view.dart';
 import 'package:finews_module/configs/colors.dart';
 import 'package:finews_module/configs/constants.dart';
+import 'package:finews_module/data/entities/currency_model.dart';
+import 'package:finews_module/data/entities/gold_model.dart';
 import 'package:finews_module/pages/home/new_page.dart';
 import 'package:finews_module/pages/news_detail/html_parser/html_parser_widget.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/pages/news_detail/settings/NewsDetailSetting.dart';
 import 'package:finews_module/routes/app_routes.dart';
+import 'package:finews_module/shared_widgets/auto_vertical_scroll_view_view.dart';
+import 'package:finews_module/shared_widgets/currency_item_view.dart';
+import 'package:finews_module/shared_widgets/gold_item_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -67,6 +72,22 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             sourceName: controller.model?.sourceName ?? "",
                             date: controller.model?.formatDisplayDate() ?? "",
                             desc: controller.model?.desc ?? "",
+                          ),
+                          Obx(
+                            () => AutoVerticalScrollView(
+                              listItem: controller.listGoldRes.value?.values,
+                              renderItem: (GoldModel item) {
+                                return GoldItemView(item: item);
+                              },
+                            ),
+                          ),
+                          Obx(
+                            () => AutoVerticalScrollView(
+                              listItem: controller.listCurrencyRes.value?.value,
+                              renderItem: (CurrencyModel item) {
+                                return CurrencyItemView(item: item);
+                              },
+                            ),
                           ),
                           if (controller.model?.stockInfo != null &&
                               (controller.model?.stockInfo?.length ?? 0) > 0)

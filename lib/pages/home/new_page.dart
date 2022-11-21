@@ -12,6 +12,7 @@ import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
 import 'package:finews_module/shared_widgets/auto_vertical_scroll_view_view.dart';
 import 'package:finews_module/shared_widgets/currency_item_view.dart';
 import 'package:finews_module/shared_widgets/gold_item_view.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_header_cell.dart';
 import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,24 +42,29 @@ class NewsPage extends GetView<NewsHomePageController> {
               return Column(
                 children: [
                   Obx(
-                    () => AutoVerticalScrollView(
-                      listItem: controller.listGoldRes.value?.values,
-                      renderItem: (GoldModel item) {
-                        return GoldItemView(item: item);
-                      },
-                    ),
+                        () => Container(
+                          height: 68,
+                          child: ListView.separated(
+                            padding:
+                            const EdgeInsets.only(left: 16, right: 16, bottom: 08, top: 08),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: controller.listMarketCate.length,
+                            itemBuilder: (_, index) => MarketHeaderCell(
+                              stock: controller.listMarketCate[index],
+                              onPressed: () {
+                                // controller.gotoMarketDetail(
+                                //     controller.listMarketCate[index]);
+                              },
+                            ),
+                            separatorBuilder: (_, index) => const Divider(
+                              indent: 8.0,
+                              endIndent: 0.0,
+                            ),
+                          ),
+                        ),
                   ),
 
-                  SIZED_BOX_H12,
-
-                  Obx(
-                    () => AutoVerticalScrollView(
-                      listItem: controller.listCurrencyRes.value?.value,
-                      renderItem: (CurrencyModel item) {
-                        return CurrencyItemView(item: item);
-                      },
-                    ),
-                  ),
+                  const Divider()
                 ],
               );
               return HeadingItem(state[0].model).buildTitle(context);
@@ -66,6 +72,39 @@ class NewsPage extends GetView<NewsHomePageController> {
             if (state[index].type == 2) {
               return HorizontalListViewItem(state[index].listNewsDetailModel)
                   .buildHorizontalListView(context);
+            }
+            if (state[index].type == 3){
+              controller.getGold();
+              return Column(
+                children: [
+                  Obx(
+                        () => AutoVerticalScrollView(
+                      listItem: controller.listGoldRes.value?.values,
+                      renderItem: (GoldModel item) {
+                        return GoldItemView(item: item);
+                      },
+                    ),
+                  ),
+
+                  const Divider()
+                ],
+              );
+            }
+            if (state[index].type == 4){
+              controller.getCurrency();
+              return Column(
+                children: [
+                  Obx(
+                        () => AutoVerticalScrollView(
+                      listItem: controller.listCurrencyRes.value?.value,
+                      renderItem: (CurrencyModel item) {
+                        return CurrencyItemView(item: item);
+                      },
+                    ),
+                  ),
+                  const Divider()
+                ],
+              );
             }
             final item = state[index];
             return MessageItem(item.model).buildSubtitle(context);
