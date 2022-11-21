@@ -74,12 +74,13 @@ class NewsHomePageController extends BaseController
   }
 
   RxList<MarketIndexModel> listMarketCate = <MarketIndexModel>[].obs;
+
   void getStockIndex() async {
     try {
       var result = await Get.find<NewsService>().getMarketIndex();
       if (result.success) {
         var model = result.modelDTO;
-        final List<MarketIndexModel> list =[];
+        final List<MarketIndexModel> list = [];
         for (final value in model) {
           list.add(value.toModel());
         }
@@ -153,22 +154,22 @@ class NewsHomePageController extends BaseController
         _loadEnd = false;
       }
       try {
-        if (categoryId == "31"){
-                try {
-                  if (this.listArticle.isNotEmpty) {
-                            for (var value in this.listArticle) {
-                              if (value.type == 5) {
-                                this.listArticle.remove(value);
-                              }
-                            }
-                          }
-                } catch (e) {
-                  print(e);
+        if (categoryId == "31") {
+          try {
+            if (this.listArticle.isNotEmpty) {
+              for (var value in this.listArticle) {
+                if (value.type == 5) {
+                  this.listArticle.remove(value);
                 }
-                var wrapper = ArticleWrapper();
-                wrapper.type = 5;
-                this.listArticle.insert(0,wrapper);
               }
+            }
+          } catch (e) {
+            print(e);
+          }
+          var wrapper = ArticleWrapper();
+          wrapper.type = 5;
+          this.listArticle.insert(0, wrapper);
+        }
       } catch (e) {
         print(e);
       }
@@ -180,19 +181,22 @@ class NewsHomePageController extends BaseController
         wrapper.model = value;
         this.listArticle.add(wrapper);
       }
-      if (this.listArticle.length <= 20){
-        for (var value in this.listArticle) {
-          if (value.type == 3 || value.type == 4) {
-            this.listArticle.remove(value);
+
+      if (categoryId != "34") {
+        if (this.listArticle.length <= 20) {
+          for (var value in this.listArticle) {
+            if (value.type == 3 || value.type == 4) {
+              this.listArticle.remove(value);
+            }
           }
+          var wrapper = ArticleWrapper();
+          wrapper.type = 3;
+          this.listArticle.insert(10, wrapper);
+          var wrapper2 = ArticleWrapper();
+          wrapper2.type = 4;
+          this.listArticle.insert(20, wrapper2);
+          print("listArticle size: getGold getCurrency");
         }
-        var wrapper = ArticleWrapper();
-        wrapper.type = 3;
-        this.listArticle.insert(10, wrapper);
-        var wrapper2 = ArticleWrapper();
-        wrapper2.type = 4;
-        this.listArticle.insert(20, wrapper2);
-        print("listArticle size: getGold getCurrency");
       }
       change(this.listArticle, status: RxStatus.success());
     } catch (e) {

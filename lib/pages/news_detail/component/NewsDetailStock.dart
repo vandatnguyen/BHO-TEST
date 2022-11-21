@@ -17,7 +17,7 @@ class NewsDetailStock extends StatelessWidget {
       "/" +
       (model.percentChange ?? 0).toPercentCurrency();
 
-  String get total => (model.volume ?? 0.0).toCurrency();
+  String get total => (model.volume ?? 0.0).toVolume();
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +158,13 @@ extension DoubleCurrency on double {
       return "0.0";
     }
     var formatter = NumberFormat('#.##');
+    return formatter.format(this);
+  }
+  String toVolume() {
+    if (this == 0) {
+      return "0.0";
+    }
+    var formatter = NumberFormat("#,##0", "en_US");
     return formatter.format(this);
   }
 }
