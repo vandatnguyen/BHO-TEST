@@ -1,13 +1,21 @@
 import 'package:finews_module/app/modules/comment_list/views/comment_list_view.dart';
 import 'package:finews_module/configs/colors.dart';
 import 'package:finews_module/configs/constants.dart';
+import 'package:finews_module/data/entities/currency_model.dart';
+import 'package:finews_module/data/entities/gold_model.dart';
 import 'package:finews_module/pages/home/new_page.dart';
+import 'package:finews_module/pages/list_news_route/list_news.dart';
 import 'package:finews_module/pages/news_detail/html_parser/html_parser_widget.dart';
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/pages/news_detail/settings/NewsDetailSetting.dart';
 import 'package:finews_module/routes/app_routes.dart';
+import 'package:finews_module/shared_widgets/auto_vertical_scroll_view_view.dart';
+import 'package:finews_module/shared_widgets/currency_item_view.dart';
+import 'package:finews_module/shared_widgets/gold_item_view.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_header_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../cores/models/news_detail.dart';
 import '../../cores/services/news_api_service.dart';
@@ -48,6 +56,11 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      appBar: AppBar(
+        // backgroundColor: Colors.white, // App bar color
+        brightness: Brightness.light,
+        toolbarHeight: 0,
+      ),
       backgroundColor: Colors.white,
       body: Stack(children: [
         Scaffold(
@@ -67,6 +80,48 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             sourceName: controller.model?.sourceName ?? "",
                             date: controller.model?.formatDisplayDate() ?? "",
                             desc: controller.model?.desc ?? "",
+                          ),
+                          Obx(
+                            () => AutoVerticalScrollView(
+                              maxHeight: 80,
+                              maxWidth: 200,
+                              listItem: controller.listGoldRes.value?.values,
+                              renderItem: (GoldModel item) {
+                                return GoldItemView(item: item);
+                              },
+                            ),
+                          ),
+                          Obx(
+                            () => AutoVerticalScrollView(
+                              maxHeight: 80,
+                              maxWidth: 160,
+                              listItem: controller.listCurrencyRes.value?.value,
+                              renderItem: (CurrencyModel item) {
+                                return CurrencyItemView(item: item);
+                              },
+                            ),
+                          ),
+                          Obx(
+                            () => controller.listMarketIndexModel.value != null ? Container(
+                              height: 68,
+                              child: ListView.separated(
+                                padding: const EdgeInsets.only(
+                                    right: 16, bottom: 08, top: 08),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.listMarketIndexModel.value!.length,
+                                itemBuilder: (_, index) => MarketHeaderCell(
+                                  stock: controller.listMarketIndexModel.value![index],
+                                  onPressed: () {
+                                    // controller.gotoMarketDetail(
+                                    //     controller.listMarketCate[index]);
+                                  },
+                                ),
+                                separatorBuilder: (_, index) => const Divider(
+                                  indent: 8.0,
+                                  endIndent: 0.0,
+                                ),
+                              ),
+                            ) : const SizedBox(),
                           ),
                           if (controller.model?.stockInfo != null &&
                               (controller.model?.stockInfo?.length ?? 0) > 0)
@@ -97,6 +152,16 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                                 "link": controller.model?.url ?? "",
                                 "title": controller.model?.title ?? ""
                               });
+                            },
+                            onTapTag: (e){
+                              Get.toNamed(
+                                AppRoutes.listNews,
+                                arguments: {
+                                  "item": controller.model!,
+                                  "tag": e,
+                                  "type": ListNewsType.typeTag,
+                                },
+                              );
                             },
                           ),
                         ),
@@ -269,6 +334,13 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                 Get.back();
               },
               onBookmark: () {},
+              onShare: () {
+                try {
+                  _launchURL(controller.model!.webUrl!);
+                } catch (e) {
+                  print(e);
+                }
+              },
               onSetting: () {
                 showModalBottomSheet(
                     isDismissible: true,
@@ -280,5 +352,14 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
             )),
       ]),
     );
+  }
+  
+  _launchURL(String urlNews) async {
+    final Uri url = Uri.parse(urlNews);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

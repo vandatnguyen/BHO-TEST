@@ -1,12 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/cores/models/news_detail.dart';
+import 'package:finews_module/data/entities/currency_model.dart';
+import 'package:finews_module/data/entities/gold_model.dart';
 import 'package:finews_module/pages/home/component/TextWithIcon.dart';
 import 'package:finews_module/pages/home/home_page_controller.dart';
 import 'package:finews_module/pages/list_news_route/list_news.dart';
 import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/shared_widgets/CustomRefresher.dart';
 import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
+import 'package:finews_module/shared_widgets/auto_vertical_scroll_view_view.dart';
+import 'package:finews_module/shared_widgets/currency_item_view.dart';
+import 'package:finews_module/shared_widgets/gold_item_view.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_header_cell.dart';
 import 'package:finews_module/utils/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,6 +44,72 @@ class NewsPage extends GetView<NewsHomePageController> {
             if (state[index].type == 2) {
               return HorizontalListViewItem(state[index].listNewsDetailModel)
                   .buildHorizontalListView(context);
+            }
+            if (state[index].type == 3) {
+              controller.getGold();
+              return Column(
+                children: [
+                  Obx(
+                    () => AutoVerticalScrollView(
+                      maxHeight: 75,
+                      maxWidth: 200,
+                      listItem: controller.listGoldRes.value?.values,
+                      renderItem: (GoldModel item) {
+                        return GoldItemView(item: item);
+                      },
+                    ),
+                  ),
+                  const Divider()
+                ],
+              );
+            }
+            if (state[index].type == 4) {
+              controller.getCurrency();
+              return Column(
+                children: [
+                  Obx(
+                    () => AutoVerticalScrollView(
+                      maxHeight: 80,
+                      maxWidth: 154,
+                      listItem: controller.listCurrencyRes.value?.value,
+                      renderItem: (CurrencyModel item) {
+                        return CurrencyItemView(item: item);
+                      },
+                    ),
+                  ),
+                  const Divider()
+                ],
+              );
+            }
+            if (state[index].type == 5) {
+              controller.getStockIndex();
+              return Column(
+                children: [
+                  Obx(
+                        () => Container(
+                      height: 68,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, bottom: 08, top: 08),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.listMarketCate.length,
+                        itemBuilder: (_, index) => MarketHeaderCell(
+                          stock: controller.listMarketCate[index],
+                          onPressed: () {
+                            // controller.gotoMarketDetail(
+                            //     controller.listMarketCate[index]);
+                          },
+                        ),
+                        separatorBuilder: (_, index) => const Divider(
+                          indent: 8.0,
+                          endIndent: 0.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider()
+                ],
+              );
             }
             final item = state[index];
             return MessageItem(item.model).buildSubtitle(context);
@@ -253,7 +325,7 @@ class NewsItem extends StatelessWidget {
                     AppRoutes.listNews,
                     arguments: {
                       "item": newsDetail,
-                      "type": ListNewsType.typeTag
+                      "type": ListNewsType.typeSym
                     },
                   );
                 },

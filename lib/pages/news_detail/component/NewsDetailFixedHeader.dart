@@ -9,6 +9,7 @@ class NewsDetailFixedHeader extends StatelessWidget {
 
   final VoidCallback? onBack;
   final VoidCallback? onSetting;
+  final VoidCallback? onShare;
   final VoidCallback? onBookmark;
 
   const NewsDetailFixedHeader(
@@ -18,6 +19,7 @@ class NewsDetailFixedHeader extends StatelessWidget {
       this.foregroundColor = const Color(0xFF000000),
       this.onBack,
       this.onSetting,
+      this.onShare,
       this.onBookmark})
       : super(key: key);
   @override
@@ -52,6 +54,19 @@ class NewsDetailFixedHeader extends StatelessWidget {
                             fontSize: 20,
                             color: foregroundColor),
                       )),
+                      InkWell(
+                        child: SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: ImageIcon( const AssetImage("assets/images/ic_share.png", package:  'finews_module'), color: foregroundColor)
+                              //Icon(Icons.text_decrease, color: foregroundColor),
+                        ),
+                        onTap: () {
+                          if (onShare != null) {
+                            onShare!();
+                          }
+                        },
+                      ),
                      //  InkWell(
                      //    child: SizedBox(
                      //      width: 30,

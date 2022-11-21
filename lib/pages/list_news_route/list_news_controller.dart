@@ -14,11 +14,12 @@ import 'list_news.dart';
 
 class ListNewsController extends BaseController
     with StateMixin<List<NewsDetailModel>> {
-  ListNewsController(this.detail, this.type);
+  ListNewsController(this.detail, this.type, this.tag);
 
   List<Website> listWebsite = <Website>[];
   final NewsDetailModel detail;
   final ListNewsType type;
+  final String tag;
   RefreshController refreshController = RefreshController();
   var service = Get.find<NewsService>();
   var box = GetStorage();
@@ -30,7 +31,7 @@ class ListNewsController extends BaseController
 
   Future<List<NewsDetailModel>> getNewsList() async {
     switch (type) {
-      case ListNewsType.typeTag:
+      case ListNewsType.typeSym:
         {
           var res = await service.getArticleWithTopic(
             detail.id,
@@ -44,6 +45,15 @@ class ListNewsController extends BaseController
         {
           var res = await service.getArticleStock(
             detail.symbols?[0] ?? "",
+            last: last,
+          );
+          last = res.last;
+          return res.articles;
+        }
+      case ListNewsType.typeTag:
+        {
+          var res = await service.getArticleWithTag(
+            tag,
             last: last,
           );
           last = res.last;
@@ -159,9 +169,14 @@ class ListNewsController extends BaseController
           return detail.symbols?[0];
         }
 
-      case ListNewsType.typeTag:
+      case ListNewsType.typeSym:
         {
           return detail.topicName;
+        }
+
+      case ListNewsType.typeTag:
+        {
+          return "#" + tag;
         }
 
       default:

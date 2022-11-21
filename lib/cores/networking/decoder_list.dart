@@ -1,15 +1,16 @@
+
 import 'package:finews_module/cores/networking/result.dart';
 
-typedef Decoder<T> = T Function(Map<String, dynamic> data);
+typedef Decoder<T> = T Function(dynamic data);
 
-class BaseDecoder<T> {
+class BaseDecoderList<T> {
   final Result result;
   final Decoder decoder;
 
-  BaseDecoder(
-    this.result, {
-    required this.decoder,
-  });
+  BaseDecoderList(
+      this.result, {
+        required this.decoder,
+      });
 
   bool get success => result.success;
 
@@ -25,8 +26,10 @@ class BaseDecoder<T> {
   T get modelDTO => decoded();
 
   T decoded() {
-    try { 
+    try {
+      print("getStockIndex decoded");
       if (result.data != null) {
+        print("getStockIndex decoded data ");
         return decoder(result.data) as T;
       } else {
         throw UnsupportedError(

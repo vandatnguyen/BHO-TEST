@@ -8,14 +8,28 @@ class ListNewsBinding extends Bindings {
   @override
   void dependencies() {
     try {
-      final NewsDetailModel detail = Get.arguments["item"];
       final ListNewsType type = Get.arguments["type"];
-      Get.lazyPut(
-            () => ListNewsController(
-              detail,
-              type,
-            )
-          , tag: detail.id + type.name);
+      NewsDetailModel detail = Get.arguments["item"];
+      if (type.name == ListNewsType.typeTag.name){
+        final String tag = Get.arguments["tag"];
+        Get.lazyPut(
+                () =>
+                ListNewsController(
+                  detail,
+                  type,
+                  tag,
+                )
+            , tag: tag + type.name);
+      }else {
+        Get.lazyPut(
+                () =>
+                ListNewsController(
+                  detail,
+                  type,
+                  "",
+                )
+            , tag: detail.id + type.name);
+      }
     } catch (e) {
       print(e);
     }

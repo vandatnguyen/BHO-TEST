@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:finews_module/cores/models/comment_model.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
+import 'package:finews_module/data/entities/list_currency_response.dart';
+import 'package:finews_module/data/entities/list_gold_response.dart';
 import 'package:finews_module/data/entities/website.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_index_model.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_index_model_dto.dart';
 import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -58,8 +62,8 @@ class NewsDetailController extends BaseController
         EventManager().fire(EventTrackingReadingNews(model: detail));
         timeRead = DateTime.now().millisecondsSinceEpoch;
         error.value = null;
+        checkToLoadGoldOrCurrency();
       }
-      print(content);
       var html = Get.find<HtmlParser>();
       await html.parserHtml(content);
       elements.clear();
@@ -67,6 +71,31 @@ class NewsDetailController extends BaseController
       loadRecommend();
     } catch (e) {
       error.value = "Đã có lỗi xảy ra, vui lòng thử lại";
+    }
+  }
+
+  void checkToLoadGoldOrCurrency() {
+    if (model?.stockInfo != null && (model?.stockInfo?.length ?? 0) > 0) {
+    } else {
+      var tagString = "";
+      if (model != null && model!.tags != null){
+        tagString = model!.tags.toString();
+      }
+      print("tagString: " + tagString);
+      var title = model!.title.toLowerCase() + tagString;
+      print("tagString: " + title);
+      if (title.contains("vàng") ||
+          title.contains("bạc")) {
+        getGold();
+      }else{
+        if (title.contains("usd")) {
+          getCurrency();
+        } else{
+          if (title.contains("vn-index") || title.contains("vn index")|| title.contains("vn 30")|| title.contains("vn30")) {
+            getStockIndex();
+          }
+        }
+      }
     }
   }
 
@@ -85,8 +114,7 @@ class NewsDetailController extends BaseController
     if (model != null) {
       id = model?.id;
     }
-    var res = await Get.find<NewsService>()
-        .getAllComment(id ?? "");
+    var res = await Get.find<NewsService>().getAllComment(id ?? "");
     comments(res.comments);
   }
 
@@ -178,6 +206,10 @@ class NewsDetailController extends BaseController
     super.onReady();
     loadContent();
     loadComment();
+    try {
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -185,7 +217,7 @@ class NewsDetailController extends BaseController
     scrollController.dispose();
     _controller.dispose();
     if (model != null) {
-      if (timeRead > 0){
+      if (timeRead > 0) {
         var diff = DateTime.now().millisecondsSinceEpoch - timeRead;
         diff = (diff / 1000).round();
         EventManager().fire(EventTrackingReadingNewsEnd(
@@ -195,5 +227,43 @@ class NewsDetailController extends BaseController
       }
     }
     super.onClose();
+  }
+
+  var listGoldRes = Rxn<ListGoldResponse>();
+  var listCurrencyRes = Rxn<ListCurrencyResponse>();
+  var listMarketIndexModel = Rxn<List<MarketIndexModel>>();
+
+  void getStockIndex() async {
+    try {
+      var result = await Get.find<NewsService>().getMarketIndex();
+      if (result.success) {
+        var model = result.modelDTO;
+        final List<MarketIndexModel> list =[];
+        for (final value in model) {
+          list.add(value.toModel());
+        }
+        listMarketIndexModel.value = list;
+      }
+    } catch (e) {
+    } finally {}
+  }
+
+
+  void getGold() async {
+    try {
+      var response = await Get.find<NewsService>().getListGold();
+      listGoldRes(response);
+    } catch (e) {
+      print(e);
+    } finally {}
+  }
+
+  void getCurrency() async {
+    try {
+      var response = await Get.find<NewsService>().getListCurrency();
+      listCurrencyRes(response);
+    } catch (e) {
+      print(e);
+    } finally {}
   }
 }

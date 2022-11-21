@@ -10,7 +10,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../configs/colors.dart';
 import '../../shared_widgets/CustomRefresher.dart';
 
-enum ListNewsType { typeTag, typeStock }
+enum ListNewsType { typeSym, typeStock, typeTag }
 
 class ListNewsView extends GetView<ListNewsController> {
   const ListNewsView({Key? key}) : super(key: key);
@@ -18,8 +18,11 @@ class ListNewsView extends GetView<ListNewsController> {
   @override
   String? get tag {
     try {
-      NewsDetailModel detail = Get.arguments["item"];
       ListNewsType type = Get.arguments["type"];
+      if (type == ListNewsType.typeTag){
+        return Get.arguments["tag"]+  type.name;
+      }
+      NewsDetailModel detail = Get.arguments["item"];
       return detail.id + type.name;
     } catch (e) {
       print(e);
