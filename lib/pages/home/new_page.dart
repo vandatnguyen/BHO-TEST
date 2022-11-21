@@ -39,10 +39,54 @@ class NewsPage extends GetView<NewsHomePageController> {
           itemCount: state!.length,
           itemBuilder: (context, index) {
             if (state[index].type == 1) {
+              return HeadingItem(state[0].model).buildTitle(context);
+            }
+            if (state[index].type == 2) {
+              return HorizontalListViewItem(state[index].listNewsDetailModel)
+                  .buildHorizontalListView(context);
+            }
+            if (state[index].type == 3) {
+              controller.getGold();
               return Column(
                 children: [
                   Obx(
-                    () => Container(
+                    () => AutoVerticalScrollView(
+                      maxHeight: 75,
+                      maxWidth: 200,
+                      listItem: controller.listGoldRes.value?.values,
+                      renderItem: (GoldModel item) {
+                        return GoldItemView(item: item);
+                      },
+                    ),
+                  ),
+                  const Divider()
+                ],
+              );
+            }
+            if (state[index].type == 4) {
+              controller.getCurrency();
+              return Column(
+                children: [
+                  Obx(
+                    () => AutoVerticalScrollView(
+                      maxHeight: 80,
+                      maxWidth: 154,
+                      listItem: controller.listCurrencyRes.value?.value,
+                      renderItem: (CurrencyModel item) {
+                        return CurrencyItemView(item: item);
+                      },
+                    ),
+                  ),
+                  const Divider()
+                ],
+              );
+            }
+            if (state[index].type == 5) {
+              controller.getStockIndex();
+              return Column(
+                children: [
+                  Obx(
+                        () => Container(
                       height: 68,
                       child: ListView.separated(
                         padding: const EdgeInsets.only(
@@ -61,47 +105,6 @@ class NewsPage extends GetView<NewsHomePageController> {
                           endIndent: 0.0,
                         ),
                       ),
-                    ),
-                  ),
-                  const Divider()
-                ],
-              );
-              return HeadingItem(state[0].model).buildTitle(context);
-            }
-            if (state[index].type == 2) {
-              return HorizontalListViewItem(state[index].listNewsDetailModel)
-                  .buildHorizontalListView(context);
-            }
-            if (state[index].type == 3) {
-              controller.getGold();
-              return Column(
-                children: [
-                  Obx(
-                    () => AutoVerticalScrollView(
-                      maxHeight: 100,
-                      maxWidth: 200,
-                      listItem: controller.listGoldRes.value?.values,
-                      renderItem: (GoldModel item) {
-                        return GoldItemView(item: item);
-                      },
-                    ),
-                  ),
-                  const Divider()
-                ],
-              );
-            }
-            if (state[index].type == 4) {
-              controller.getCurrency();
-              return Column(
-                children: [
-                  Obx(
-                    () => AutoVerticalScrollView(
-                      maxHeight: 100,
-                      maxWidth: 200,
-                      listItem: controller.listCurrencyRes.value?.value,
-                      renderItem: (CurrencyModel item) {
-                        return CurrencyItemView(item: item);
-                      },
                     ),
                   ),
                   const Divider()

@@ -30,7 +30,7 @@ class NewsHomePageController extends BaseController
   void onInit() {
     super.onInit();
     getWebsite();
-    getStockIndex();
+    // getStockIndex();
     // getGold();
     // getCurrency();
   }
@@ -76,16 +76,11 @@ class NewsHomePageController extends BaseController
   RxList<MarketIndexModel> listMarketCate = <MarketIndexModel>[].obs;
   void getStockIndex() async {
     try {
-      print("getStockIndex:  + result");
       var result = await Get.find<NewsService>().getMarketIndex();
-      print("getStockIndex:  + result 2222");
       if (result.success) {
-        print("getStockIndex:  + result success" + result.code.toString());
         var model = result.modelDTO;
-        print("getStockIndex:  + result success 2");
         final List<MarketIndexModel> list =[];
         for (final value in model) {
-          print("getStockIndex: " + model.toString());
           list.add(value.toModel());
         }
         listMarketCate.value = list;
@@ -156,6 +151,22 @@ class NewsHomePageController extends BaseController
         _loadEnd = true;
       } else {
         _loadEnd = false;
+      }
+      if (categoryId == "31"){
+        try {
+          if (this.listArticle.isNotEmpty) {
+                    for (var value in this.listArticle) {
+                      if (value.type == 5) {
+                        this.listArticle.remove(value);
+                      }
+                    }
+                  }
+        } catch (e) {
+          print(e);
+        }
+        var wrapper = ArticleWrapper();
+        wrapper.type = 5;
+        this.listArticle.insert(0,wrapper);
       }
       for (var value in listArticle.articles) {
         var wrapper = ArticleWrapper();

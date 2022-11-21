@@ -5,6 +5,8 @@ import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/data/entities/list_currency_response.dart';
 import 'package:finews_module/data/entities/list_gold_response.dart';
 import 'package:finews_module/data/entities/website.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_index_model.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_index_model_dto.dart';
 import 'package:finews_module/tracking/event_tracking.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -75,12 +77,23 @@ class NewsDetailController extends BaseController
   void checkToLoadGoldOrCurrency() {
     if (model?.stockInfo != null && (model?.stockInfo?.length ?? 0) > 0) {
     } else {
-      if (model!.title.toLowerCase().contains("vàng") ||
-          model!.title.toLowerCase().contains("bạc")) {
+      var tagString = "";
+      if (model != null && model!.tags != null){
+        tagString = model!.tags.toString();
+      }
+      print("tagString: " + tagString);
+      var title = model!.title.toLowerCase() + tagString;
+      print("tagString: " + title);
+      if (title.contains("vàng") ||
+          title.contains("bạc")) {
         getGold();
       }else{
-        if (model!.title.toLowerCase().contains("usd")) {
+        if (title.contains("usd")) {
           getCurrency();
+        } else{
+          if (title.contains("vn-index") || title.contains("vn index")|| title.contains("vn 30")|| title.contains("vn30")) {
+            getStockIndex();
+          }
         }
       }
     }
@@ -218,6 +231,23 @@ class NewsDetailController extends BaseController
 
   var listGoldRes = Rxn<ListGoldResponse>();
   var listCurrencyRes = Rxn<ListCurrencyResponse>();
+  var listMarketIndexModel = Rxn<List<MarketIndexModel>>();
+
+  void getStockIndex() async {
+    try {
+      var result = await Get.find<NewsService>().getMarketIndex();
+      if (result.success) {
+        var model = result.modelDTO;
+        final List<MarketIndexModel> list =[];
+        for (final value in model) {
+          list.add(value.toModel());
+        }
+        listMarketIndexModel.value = list;
+      }
+    } catch (e) {
+    } finally {}
+  }
+
 
   void getGold() async {
     try {

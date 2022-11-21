@@ -87,7 +87,7 @@ class GoldItemView extends StatelessWidget {
                       text: TextSpan(
                         children: [
                           const TextSpan(
-                            text: "Bán ",
+                            text: "Bán  ",
                             style: TextStyle(
                               color: AppColors.color_777E90,
                               fontSize: 10,

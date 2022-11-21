@@ -20,7 +20,7 @@ class AutoVerticalScrollView<T> extends StatefulWidget {
       _AutoVerticalScrollViewState<T>();
 }
 
-const Duration timeRerun = Duration(milliseconds: 2000);
+const Duration timeRerun = Duration(milliseconds: 1800);
 
 class _AutoVerticalScrollViewState<T> extends State<AutoVerticalScrollView<T>> {
   final controller = InfiniteScrollController();

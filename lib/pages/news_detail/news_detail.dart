@@ -11,6 +11,7 @@ import 'package:finews_module/routes/app_routes.dart';
 import 'package:finews_module/shared_widgets/auto_vertical_scroll_view_view.dart';
 import 'package:finews_module/shared_widgets/currency_item_view.dart';
 import 'package:finews_module/shared_widgets/gold_item_view.dart';
+import 'package:finews_module/shared_widgets/stockchart/market_header_cell.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -75,6 +76,8 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                           ),
                           Obx(
                             () => AutoVerticalScrollView(
+                              maxHeight: 80,
+                              maxWidth: 200,
                               listItem: controller.listGoldRes.value?.values,
                               renderItem: (GoldModel item) {
                                 return GoldItemView(item: item);
@@ -83,11 +86,35 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                           ),
                           Obx(
                             () => AutoVerticalScrollView(
+                              maxHeight: 80,
+                              maxWidth: 160,
                               listItem: controller.listCurrencyRes.value?.value,
                               renderItem: (CurrencyModel item) {
                                 return CurrencyItemView(item: item);
                               },
                             ),
+                          ),
+                          Obx(
+                            () => controller.listMarketIndexModel.value != null ? Container(
+                              height: 68,
+                              child: ListView.separated(
+                                padding: const EdgeInsets.only(
+                                    right: 16, bottom: 08, top: 08),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: controller.listMarketIndexModel.value!.length,
+                                itemBuilder: (_, index) => MarketHeaderCell(
+                                  stock: controller.listMarketIndexModel.value![index],
+                                  onPressed: () {
+                                    // controller.gotoMarketDetail(
+                                    //     controller.listMarketCate[index]);
+                                  },
+                                ),
+                                separatorBuilder: (_, index) => const Divider(
+                                  indent: 8.0,
+                                  endIndent: 0.0,
+                                ),
+                              ),
+                            ) : const SizedBox(),
                           ),
                           if (controller.model?.stockInfo != null &&
                               (controller.model?.stockInfo?.length ?? 0) > 0)
