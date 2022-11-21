@@ -42,28 +42,27 @@ class NewsPage extends GetView<NewsHomePageController> {
               return Column(
                 children: [
                   Obx(
-                        () => Container(
-                          height: 68,
-                          child: ListView.separated(
-                            padding:
-                            const EdgeInsets.only(left: 16, right: 16, bottom: 08, top: 08),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: controller.listMarketCate.length,
-                            itemBuilder: (_, index) => MarketHeaderCell(
-                              stock: controller.listMarketCate[index],
-                              onPressed: () {
-                                // controller.gotoMarketDetail(
-                                //     controller.listMarketCate[index]);
-                              },
-                            ),
-                            separatorBuilder: (_, index) => const Divider(
-                              indent: 8.0,
-                              endIndent: 0.0,
-                            ),
-                          ),
+                    () => Container(
+                      height: 68,
+                      child: ListView.separated(
+                        padding: const EdgeInsets.only(
+                            left: 16, right: 16, bottom: 08, top: 08),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.listMarketCate.length,
+                        itemBuilder: (_, index) => MarketHeaderCell(
+                          stock: controller.listMarketCate[index],
+                          onPressed: () {
+                            // controller.gotoMarketDetail(
+                            //     controller.listMarketCate[index]);
+                          },
                         ),
+                        separatorBuilder: (_, index) => const Divider(
+                          indent: 8.0,
+                          endIndent: 0.0,
+                        ),
+                      ),
+                    ),
                   ),
-
                   const Divider()
                 ],
               );
@@ -73,29 +72,32 @@ class NewsPage extends GetView<NewsHomePageController> {
               return HorizontalListViewItem(state[index].listNewsDetailModel)
                   .buildHorizontalListView(context);
             }
-            if (state[index].type == 3){
+            if (state[index].type == 3) {
               controller.getGold();
               return Column(
                 children: [
                   Obx(
-                        () => AutoVerticalScrollView(
+                    () => AutoVerticalScrollView(
+                      maxHeight: 100,
+                      maxWidth: 200,
                       listItem: controller.listGoldRes.value?.values,
                       renderItem: (GoldModel item) {
                         return GoldItemView(item: item);
                       },
                     ),
                   ),
-
                   const Divider()
                 ],
               );
             }
-            if (state[index].type == 4){
+            if (state[index].type == 4) {
               controller.getCurrency();
               return Column(
                 children: [
                   Obx(
-                        () => AutoVerticalScrollView(
+                    () => AutoVerticalScrollView(
+                      maxHeight: 100,
+                      maxWidth: 200,
                       listItem: controller.listCurrencyRes.value?.value,
                       renderItem: (CurrencyModel item) {
                         return CurrencyItemView(item: item);
