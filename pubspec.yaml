@@ -97,6 +97,7 @@ flutter:
   # To add assets to your package, add an assets section, like this:
    assets:
      - assets/images/
+     - assets/images/flag/
      - assets/images/FiNews.png
      - assets/images/icon_stock.png
      - assets/images/ic_send_dis.png

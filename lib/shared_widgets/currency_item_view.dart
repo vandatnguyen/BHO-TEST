@@ -19,8 +19,14 @@ class CurrencyItemView extends StatelessWidget {
           decoration: const BoxDecoration(
               color: AppColors.color_000000_fade_8, shape: BoxShape.circle),
           child: ClipOval(
-            child: Image.network(
-              "https://raw.githubusercontent.com/transferwise/currency-flags/master/src/flags/${item.code?.toLowerCase()}.png",
+            // child: Image.network(
+            //   "https://raw.githubusercontent.com/transferwise/currency-flags/master/src/flags/${item.code?.toLowerCase()}.png",
+            //   fit: BoxFit.cover,
+            //   width: 40,
+            //   height: 40,
+            // ),
+            child: Image.asset(
+              "assets/images/flag/ic_${item.code?.toLowerCase()}.png", package: 'finews_module',
               fit: BoxFit.cover,
               width: 40,
               height: 40,
