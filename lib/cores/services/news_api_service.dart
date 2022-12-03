@@ -1,5 +1,6 @@
 import 'package:finews_module/cores/networking/api.dart';
 import 'package:finews_module/cores/networking/decoder_list.dart';
+import 'package:finews_module/data/entities/BankRankResponse.dart';
 import 'package:finews_module/data/entities/article_list_response.dart';
 import 'package:finews_module/data/entities/list_currency_response.dart';
 import 'package:finews_module/data/entities/list_gold_response.dart';
@@ -57,6 +58,7 @@ abstract class NewsService extends ApiServices {
 
   Future<ListCurrencyResponse> getListCurrency();
 
+  Future<BankRateResponse> getBankRate();
 
   Future<BaseDecoderList<List<MarketIndexModelDTO>>> getMarketIndex();
 }
@@ -361,7 +363,6 @@ class NewsServiceImpl extends NewsService {
     ).decoded();
   }
 
-
   @override
   Future<BaseDecoderList<List<MarketIndexModelDTO>>> getMarketIndex() async {
     final MainFiNewsProvider mainProvider = Get.find<MainFiNewsProvider>();
@@ -376,4 +377,17 @@ class NewsServiceImpl extends NewsService {
         decoder: MarketIndexModelDTO.getList);
   }
 
+  @override
+  Future<BankRateResponse> getBankRate() async {
+    return BaseDecoder(
+      await api.getData(
+        params: {
+          "db24h": "OBUG63LPORSWC3J2",
+        },
+        endPoint: "/v1.0/interest_rate_v2",
+        timeOut: AppConstants.TIME_OUT,
+      ),
+      decoder: BankRateResponse.fromJson,
+    ).decoded();
+  }
 }

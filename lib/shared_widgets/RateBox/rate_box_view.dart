@@ -1,0 +1,175 @@
+import 'package:finews_module/configs/colors.dart';
+import 'package:finews_module/configs/constants.dart';
+import 'package:finews_module/cores/services/news_api_service.dart';
+import 'package:finews_module/data/entities/BankRankResponse.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+class BankRateView extends StatefulWidget {
+  const BankRateView({Key? key}) : super(key: key);
+
+  @override
+  State<BankRateView> createState() => _BankRateViewState();
+}
+
+const TextStyle text1 = TextStyle(
+    fontWeight: FontWeight.w500, fontSize: 18, color: AppColors.color_333333);
+
+const TextStyle text2 = TextStyle(
+    fontWeight: FontWeight.w400, fontSize: 12, color: AppColors.color_858585);
+
+const TextStyle text3 = TextStyle(
+    fontWeight: FontWeight.w500, fontSize: 14, color: AppColors.color_333333);
+
+const TextStyle text4 = TextStyle(
+    fontWeight: FontWeight.w500, fontSize: 12, color: AppColors.color_858689);
+
+class _BankRateViewState extends State<BankRateView> {
+  final newServices = Get.find<NewsService>();
+
+  Future<BankRateResponse?> getBankRate() async {
+    try {
+      return await newServices.getBankRate();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 11),
+          child: Text(
+            "So sánh lãi suất",
+            style: text1,
+          ),
+        ),
+        FutureBuilder(
+            initialData: null,
+            future: getBankRate(),
+            builder: (context, snap) {
+              final res = snap.data as BankRateResponse?;
+              final message = res?.message;
+              final listBankRate = res?.data ?? [];
+              return Column(
+                children: [
+                  Row(children: const [
+                    Expanded(
+                        flex: 3,
+                        child: Text(
+                          "Ngân hàng/Ứng dụng",
+                          style: text2,
+                        )),
+                    Expanded(
+                        flex: 2,
+                        child: Text(
+                          "Không kỳ hạn",
+                          style: text2,
+                          textAlign: TextAlign.end,
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: Text(
+                          "1 tháng",
+                          style: text2,
+                          textAlign: TextAlign.end,
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: Text(
+                          "3 tháng",
+                          style: text2,
+                          textAlign: TextAlign.end,
+                        )),
+                  ]),
+                  SIZED_BOX_H20,
+                  ListView(
+                    shrinkWrap: true,
+                    children: [
+                      ...listBankRate.map((bankRate) {
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              child: Row(children: [
+                                Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          bankRate.bank ?? "",
+                                          style: text3,
+                                        ),
+                                        bankRate.isApp == 1
+                                            ? const Icon(
+                                                Icons.phone_iphone_outlined,
+                                                size: 16,
+                                                color: AppColors.color_858585,
+                                              )
+                                            : Container()
+                                      ],
+                                    )),
+                                Expanded(
+                                  flex: 2,
+                                  child: Text(
+                                    bankRate.noRate != 0
+                                        ? "${bankRate.noRate}%"
+                                        : "_",
+                                    textAlign: TextAlign.end,
+                                    style: text4,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    bankRate.rate1 != 0
+                                        ? "${bankRate.rate1}%"
+                                        : "_",
+                                    textAlign: TextAlign.end,
+                                    style: text4,
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    bankRate.rate3 != 0
+                                        ? "${bankRate.rate3}%"
+                                        : "_",
+                                    textAlign: TextAlign.end,
+                                    style: text4,
+                                  ),
+                                ),
+                              ]),
+                            ),
+                            const Divider(),
+                          ],
+                        );
+                      }),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(message ?? ""),
+                      ),
+                      Row(
+                        children: const [
+                          Text("Xem thêm", style: text3),
+                          Icon(
+                            Icons.arrow_forward_ios_sharp,
+                            size: 12,
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              );
+            })
+      ],
+    );
+  }
+}

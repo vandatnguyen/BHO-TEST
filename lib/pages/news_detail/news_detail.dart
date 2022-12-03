@@ -9,6 +9,7 @@ import 'package:finews_module/pages/news_detail/html_parser/html_parser_widget.d
 import 'package:finews_module/pages/news_detail/news_detail_controller.dart';
 import 'package:finews_module/pages/news_detail/settings/NewsDetailSetting.dart';
 import 'package:finews_module/routes/app_routes.dart';
+import 'package:finews_module/shared_widgets/RateBox/rate_box_view.dart';
 import 'package:finews_module/shared_widgets/auto_vertical_scroll_view_view.dart';
 import 'package:finews_module/shared_widgets/currency_item_view.dart';
 import 'package:finews_module/shared_widgets/gold_item_view.dart';
@@ -73,6 +74,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                 const EdgeInsets.only(top: 0, bottom: 100, left: 16, right: 16),*/
                       controller: controller.scrollController,
                       slivers: [
+
                         SliverList(
                             delegate: SliverChildListDelegate.fixed([
                           NewsDetailHeader(
@@ -81,6 +83,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             date: controller.model?.formatDisplayDate() ?? "",
                             desc: controller.model?.desc ?? "",
                           ),
+                          BankRateView(),
                           Obx(
                             () => AutoVerticalScrollView(
                               maxHeight: 80,
