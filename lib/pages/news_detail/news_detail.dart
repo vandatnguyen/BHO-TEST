@@ -83,7 +83,7 @@ class NewsDetailPageView extends GetView<NewsDetailController> {
                             date: controller.model?.formatDisplayDate() ?? "",
                             desc: controller.model?.desc ?? "",
                           ),
-                          BankRateView(),
+                          // BankRateView(),
                           Obx(
                             () => AutoVerticalScrollView(
                               maxHeight: 80,
