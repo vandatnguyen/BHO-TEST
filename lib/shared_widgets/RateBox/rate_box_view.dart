@@ -4,16 +4,21 @@ import 'package:finews_module/configs/colors.dart';
 import 'package:finews_module/configs/constants.dart';
 import 'package:finews_module/cores/services/news_api_service.dart';
 import 'package:finews_module/data/entities/BankRankResponse.dart';
+import 'package:finews_module/finews_module.dart';
 import 'package:finews_module/shared_widgets/ListNoDataBackground.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class BankRateView extends StatefulWidget {
   const BankRateView({Key? key}) : super(key: key);
 
   @override
-  State<BankRateView> createState() => _BankRateViewState();
+  State<BankRateView> createState() {
+    FiNewsModule.initNewsRouteAndBinding();
+    return _BankRateViewState();
+  }
 }
 
 const TextStyle text1 = TextStyle(
@@ -63,17 +68,16 @@ class _BankRateViewState extends State<BankRateView> {
   Widget build(BuildContext context) {
     final message = _res?.message;
     final listBankRate = _res?.data ?? [];
-
     return Container(
       decoration: const BoxDecoration(color: Colors.white),
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.symmetric(vertical: 11),
+            padding: EdgeInsets.symmetric(vertical: 0),
             child: Text(
-              "So sánh lãi suất",
+              "So sánh lợi nhuận",
               style: text1,
             ),
           ),
@@ -218,14 +222,20 @@ class _BankRateViewState extends State<BankRateView> {
                         fontSize: 12,
                         fontWeight: FontWeight.normal),),
                   ),
-                  Row(
-                    children: const [
-                      Text("Xem thêm", style: text3),
-                      Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        size: 12,
-                      ),
-                    ],
+                  GestureDetector(
+                    onTap: () {
+                      _launchURL("https://news.tikop.vn/lai-suat?period=1");
+                    },
+                    child:
+                    Row(
+                      children: const [
+                        Text("Xem thêm", style: text3),
+                        Icon(
+                          Icons.arrow_forward_ios_sharp,
+                          size: 12,
+                        ),
+                      ],
+                    ),
                   )
                 ],
               )
@@ -234,5 +244,13 @@ class _BankRateViewState extends State<BankRateView> {
         ],
       ),
     );
+  }
+  _launchURL(String urlNews) async {
+    final Uri url = Uri.parse(urlNews);
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }
