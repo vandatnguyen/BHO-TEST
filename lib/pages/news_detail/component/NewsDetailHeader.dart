@@ -105,9 +105,13 @@ class NewsDetailHeader extends StatelessWidget {
                   color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 17),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  String sym = split2[0];
-                  sym = sym.replaceAll(",", "").replaceAll(".", "").replaceAll(")", "").replaceAll("(", "").removeAllWhitespace;
-                  Get.find<MainFiNewsTikopProvider>().openStockDetail?.call(sym);
+                  try {
+                    String sym = split2[0];
+                    sym = sym.replaceAll(",", "").replaceAll(".", "").replaceAll(")", "").replaceAll("(", "").removeAllWhitespace;
+                    Get.find<MainFiNewsTikopProvider>().openStockDetail?.call(sym);
+                  } catch (e) {
+                    print(e);
+                  }
                 });
           listTextSpan.add(textSpanSym);
           var textSpan = TextSpan(
