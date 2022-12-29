@@ -18,7 +18,14 @@ class BoxNews extends GetView<NewsBoxController> {
   @override
   Widget build(BuildContext context) {
     FiNewsModule.initNewsRouteAndBinding();
-    EventManager().fire(EventTrackingWidgetAllView());
+    try {
+      var paramsTracking = EventTrackingWidgetAllView();
+      if (paramsTracking.params?['previous_route'] == '/home') {
+        EventManager().fire(EventTrackingWidgetAllView());
+      }
+    } catch (e) {
+      print(e);
+    }
     return Container(
       decoration: const BoxDecoration(color: Colors.white),
       child: Column(
@@ -62,7 +69,8 @@ class BoxNews extends GetView<NewsBoxController> {
               controller: controller.tabController,
               onTap: (index) {
                 controller.setTag(controller.tabsId[index]);
-                EventManager().fire(EventTrackingWidgetAllClickTab(topicId: controller.tabsId[index]));
+                EventManager().fire(EventTrackingWidgetAllClickTab(
+                    topicId: controller.tabsId[index]));
               },
               tabs: controller.tabsRx
                   .map((e) => Tab(
@@ -127,7 +135,8 @@ class BoxNews extends GetView<NewsBoxController> {
                   print('onTaponTap:');
                   Get.toNamed(AppRoutes.homeParent2,
                       arguments: {"idSelected": controller.currentTag});
-                  EventManager().fire(EventTrackingWidgetAllClickMore(topicId: controller.currentTag));
+                  EventManager().fire(EventTrackingWidgetAllClickMore(
+                      topicId: controller.currentTag));
                 },
                 onLongPress: () {
                   // open dialog OR navigate OR do what you want
