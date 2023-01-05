@@ -29,7 +29,11 @@ class FiNewsModule {
   // }
 
   static void trackingOpenTikopForNews(){
-    EventManager().fire(EventOpenAppTikopForNews());
+    try {
+      EventManager().fire(EventOpenAppTikopForNews());
+    } catch (e) {
+      print(e);
+    }
   }
 
   static EnvironmentConfiguration envFinews = EnvironmentConfiguration.staging;
