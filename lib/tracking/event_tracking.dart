@@ -5,7 +5,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
-const SHOW_EVENT_TRACKING_LOG = true;
+const SHOW_EVENT_TRACKING_LOG = false;
 
 abstract class EventTracking {
   final String name;
