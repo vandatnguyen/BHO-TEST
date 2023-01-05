@@ -126,6 +126,14 @@ class EventTrackingWidgetAllView extends EventTracking {
   }
 }
 
+class EventOpenAppTikopForNews extends EventTracking {
+  EventOpenAppTikopForNews()
+      : super(name: 'news_open_app_tikop') {
+    var p = _getParams();
+    params = p;
+  }
+}
+
 
 class EventManager {
   static FirebaseAnalytics? firebaseAnalytics;

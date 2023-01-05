@@ -28,6 +28,10 @@ class FiNewsModule {
   //   openFiNewsApp();
   // }
 
+  static void trackingOpenTikopForNews(){
+    EventManager().fire(EventOpenAppTikopForNews());
+  }
+
   static EnvironmentConfiguration envFinews = EnvironmentConfiguration.staging;
 
   static void saveToken(String token) {
