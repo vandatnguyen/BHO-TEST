@@ -52,7 +52,7 @@ class ForumController extends BaseController {
       url = "https://forum.r14express.vn/home?redirect_path=/&access_token=" +
           tikopToken;
     }
-    print("4rum url" + url);
+    // print("4rum url" + url);
     // url = "https://forum.r14express.vn/";
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(

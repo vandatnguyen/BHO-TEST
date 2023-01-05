@@ -64,15 +64,19 @@ class FiNewsModule {
 
   static void openFinewsModuleFromTikop(EnvironmentConfiguration envConfig,
       {Function(String stockSymbol)? openStockDetail}) {
-    envFinews = envConfig;
-    print("envFinews: " + envFinews.name);
-    Environment().initConfig(envFinews);
-    if (!Get.isRegistered<MainFiNewsProvider>()) {
-      Get.put<MainFiNewsTikopProvider>(
-        MainFiNewsTikopProvider(
-            openStockDetail
-        ),
-      );
+    try {
+      envFinews = envConfig;
+      // print("envFinews: " + envFinews.name);
+      Environment().initConfig(envFinews);
+      if (!Get.isRegistered<MainFiNewsProvider>()) {
+            Get.put<MainFiNewsTikopProvider>(
+              MainFiNewsTikopProvider(
+                  openStockDetail
+              ),
+            );
+          }
+    } catch (e) {
+      print(e);
     }
   }
 
